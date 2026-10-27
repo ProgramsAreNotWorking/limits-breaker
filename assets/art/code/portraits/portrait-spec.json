@@ -1,0 +1,39 @@
+{
+  "schema": "limits-breaker.code-art.v1",
+  "name": "Limits Breaker portrait and equipment illustration system",
+  "art_source": "code",
+  "placeholder": false,
+  "role": "runtime fallback drawing only; displayed portraits and item icons use primary PNG raster art",
+  "disclosure": "Godot code drawing is only a missing-file fallback; player, skeleton, brigand, warden and cultist portraits use Cloudflare FLUX Schnell, while the colossus, Limitless, blacksmith and angel use local PNG raster art.",
+  "canvas": [128, 128],
+  "style": "Dark medieval fantasy medallions with readable silhouettes, shared ink outlines, restrained steel, burgundy, violet, and warm gold accents.",
+  "palette": {
+    "ink": "#111319",
+    "steel": "#687382",
+    "steel_light": "#aeb6bf",
+    "gold": "#d9ab52",
+    "burgundy": "#8f3446",
+    "violet": "#9575eb",
+    "cloth": "#34303b",
+    "skin": "#b98267",
+    "outline": "#090a0d"
+  },
+  "renderer": "Godot CanvasItem draw commands used only when a raster asset is missing.",
+  "portraits": [
+    { "id": "player", "design": "Ash-gray hood, burgundy mantle, steel shoulders, gold eyes, short blade." },
+    { "id": "skeleton", "design": "Ivory skull and exposed ribs with ember-red eyes." },
+    { "id": "brigand", "design": "Leather hood, burgundy face wrap, pale eyes, scavenged steel knife." },
+    { "id": "warden", "design": "Closed steel helm, gold visor slit, segmented plate and heavy shoulders." },
+    { "id": "cultist", "design": "Carmine hood, angular mask, gold eyes and violet mark." },
+    { "id": "colossus", "design": "Oversized bone head, broken horns and stone shoulders." },
+    { "id": "limitless", "design": "Split pale mask, mismatched eyes and violet void halo." },
+    { "id": "blacksmith", "design": "Older smith with bronze hair, full beard, leather apron and hammer." },
+    { "id": "angel", "design": "Warm halo, pale robe, gold hair and ivory wing shapes." }
+  ],
+  "effects": ["slash", "arcane", "hit", "heal", "spark"],
+  "equipment_icons": [
+    "rusted_blade", "ashen_edge", "arcane_staff", "iron_cuirass", "warden_plate",
+    "oak_shield", "ember_charm", "void_sigil", "pilgrim_relic", "healing_draught", "greater_draught"
+  ],
+  "integration": "src/ui/fantasy_portrait.gd and src/ui/equipment_icon.gd"
+}

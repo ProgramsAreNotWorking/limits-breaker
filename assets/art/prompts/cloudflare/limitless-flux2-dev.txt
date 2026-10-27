@@ -1,0 +1,7 @@
+Create one production master still for The Limitless, the final boss of the 2D dark-fantasy RPG Limits Breaker.
+
+Canvas: square 512 x 512 pixels. Show exactly one full-body memorable boss, centered, with the whole silhouette inside the frame and a small margin. Three-quarter view. A tall ancient medieval-fantasy threat whose outline is partly human and partly a torn mantle of black stone dust, crowned by broken iron, with a contained arcane-violet fissure through the chest. Powerful and strange, not a generic demon; no gore and no readable symbols. Distinct asymmetric silhouette, hand-painted RPG illustration in charcoal, muted steel, restrained burgundy, violet and a tiny warm-gold rim light.
+
+Use reference image 0 only for painterly finish, brushwork, contrast, lighting, material rendering and subdued palette. Do not copy its person, face, pose, clothing, props or composition. Make the boss otherworldly and unmistakably more imposing than the other enemies.
+
+Background must be perfectly flat uniform chroma green #00FF00, edge to edge, fully separate from the figure. No floor, cast shadow, scenery, frame, text, letters, watermark, extra figures or cropped limbs.

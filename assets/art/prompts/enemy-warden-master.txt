@@ -1,0 +1,3 @@
+Create one production-ready enemy master still for the 2D game Limits Breaker.
+
+Canvas 1024 x 1024 px, square, transparent PNG. Show exactly one full-body strong enemy: an iron crypt warden, centered and fully visible, three-quarter view, readable at 170 px tall. A broad, imposing empty suit of medieval plate armor with a faint violet light in the visor, battered steel, worn dark-red bindings, a heavy two-handed axe. Strong silhouette and visible weight; mysterious, no gore. Hand-painted dark-fantasy 2D RPG illustration. Match the attached player reference's brushwork, lighting and material finish, while making this enemy visibly heavier and more dangerous. No scene, floor, border, text, watermark, or extra figures.

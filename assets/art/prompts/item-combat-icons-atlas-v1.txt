@@ -1,0 +1,33 @@
+Create one production-ready transparent PNG icon atlas for Limits Breaker, a dark fantasy 2D roguelike.
+
+CANVAS AND GRID
+- Square 1536 x 1536 px PNG with true alpha transparency around each isolated object.
+- Exact 4-column x 4-row grid. Intended cell boundaries are x=384, 768, 1152 and y=384, 768, 1152.
+- One icon centered in each cell, in the row-major order below. Use a simple, immediately readable silhouette that remains distinct at 64–128 px. Each object occupies about 66% of its cell, with at least 12% transparent margin on every side.
+- Do not draw grid lines, cell backgrounds, labels, letters, numbers, UI, frames, borders, watermarks, or shadows crossing cell boundaries. Keep all objects separate and fully inside their cells.
+- Use consistent three-quarter product-illustration lighting, outline weight, scale, and detail density. Transparent pixels must remain transparent.
+
+CELL ORDER, TOP-LEFT TO BOTTOM-RIGHT
+1. assets/art/icons/items/oathbrand.png — a straight oath-bound steel sword with a chipped blade, burgundy grip wrap, and a tiny restrained amber pommel.
+2. assets/art/icons/items/cinder_maul.png — a heavy dark iron maul with a scorched wooden haft and two contained ember seams.
+3. assets/art/icons/items/mirror_needle.png — a slender silver rapier/needle with one clean reflective facet and a dark leather grip.
+4. assets/art/icons/items/ash_mantle.png — a folded charcoal mantle with a muted burgundy clasp and ash-worn edges.
+5. assets/art/icons/items/mirror_scale.png — one polished steel armor scale, slightly curved, with a quiet mirrored-violet glint.
+6. assets/art/icons/items/choir_plate.png — a compact dark-steel chestplate with pale worn edges and a small bronze bell-shaped clasp; no lettering or symbols.
+7. assets/art/icons/items/bell_fragment.png — one fractured bronze bell shard with a visible broken rim and warm aged patina.
+8. assets/art/icons/items/rift_ember.png — one contained violet-and-amber ember crystal with a dark charcoal core, no surrounding burst.
+9. assets/art/icons/items/hollow_eye.png — an obsidian eye-shaped amulet in a worn steel setting; eerie, restrained violet glint, not a realistic eyeball.
+10. assets/art/icons/items/ash_salve.png — a small squat healing flask with dark amber-red salve, cork, and a simple burgundy tie.
+11. assets/art/icons/items/fading_elixir.png — a narrow glass vial with fading muted-violet liquid and one dim light mote inside.
+12. assets/art/icons/attacks/physical_strike.png — a compact steel sword point and short burgundy slash arc, the icon for one focused physical strike.
+13. assets/art/icons/attacks/sweeping_cut.png — a broad steel crescent blade arc with two small impact sparks, the icon for a two-target physical sweep.
+14. assets/art/icons/attacks/arcane_lance.png — one sharp violet arcane spearhead with a clean forward direction, the icon for a focused magic attack.
+15. assets/art/icons/attacks/arcane_nova.png — a compact violet astral burst with four distinct rays, the icon for magic that hits a group.
+16. assets/art/icons/attacks/berserk.png — a dark iron warrior crest breaking one chain inside a contained burgundy ember halo; reads as stored rage and a powered attack.
+
+STYLE LOCK
+Dark storybook cartoon for Limits Breaker: premium hand-painted dark-fantasy RPG art; bold readable silhouettes; chunky simplified forms; two or three value steps per material; subtle dark ink contour; controlled saturation; charcoal, steel, worn leather, muted burgundy, restrained arcane violet and warm amber; soft directional light; matte finish. These are isolated game icons, not scenes.
+
+Use the attached active item icons only as references for scale, palette, and how the game's icons sit in a square tile. Redraw them in the style lock above; do not copy their subjects or backgrounds.
+
+NEGATIVE: anime, manga, chibi, cute mascot, flat vector, hard cel shading, thick uniform outlines, neon, rainbow, pastel, bright white wash, glossy plastic, photorealistic, 3D render, blur, low contrast, excessive micro-detail, text, letters, numbers, equations, readable runes, pseudo-writing, extra objects, duplicated icons, cell dividers, labels, interface, buttons, frame, border, logo, watermark, solid background, checkerboard pattern.

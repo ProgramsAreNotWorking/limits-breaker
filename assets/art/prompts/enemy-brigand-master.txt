@@ -1,0 +1,3 @@
+Create one production-ready enemy master still for the 2D game Limits Breaker.
+
+Canvas 1024 x 1024 px, square, transparent PNG. Exactly one full-body ordinary enemy: a medieval road brigand, centered, all limbs and boots visible, three-quarter view, readable at 150 px tall. Worn leather coat over dull steel, a burgundy scarf, practical sword and small buckler, confident but tired posture. Not a skeleton and not an elite villain. Hand-painted dark-fantasy 2D RPG illustration, charcoal shadows, muted steel, restrained burgundy, tiny warm-gold edge light. Match the attached player reference for brushwork, scale, lighting and material finish. No scene, no floor, no frame, no text, no watermark, no extra characters.

@@ -1,0 +1,7 @@
+Create one production master still for a towering bone colossus miniboss in the 2D dark-fantasy RPG Limits Breaker.
+
+Canvas: square 512 x 512 pixels. Show exactly one complete towering creature, centered with the entire silhouette and both feet visible. Three-quarter view. It must feel much larger and more elaborate than a human enemy: layered ancient bones, fragments of an iron gate and battered armor, a contained dull-violet core inside its rib cage, and one massive stone-and-bone arm. Strong readable silhouette, grim but not gory. Hand-painted RPG illustration with charcoal shadows, textured bone and steel, restrained burgundy, violet and a tiny warm-gold rim light.
+
+Use reference image 0 only for painterly finish, brushwork, contrast, lighting, material rendering and subdued palette. Do not copy its person, face, pose, clothing, props or composition. Do not make a generic skeleton; this is an enormous unique miniboss.
+
+Background must be perfectly flat uniform chroma green #00FF00, edge to edge, fully separate from the creature. No floor, cast shadow, scenery, frame, text, letters, watermark, extra figures or cropped limbs.

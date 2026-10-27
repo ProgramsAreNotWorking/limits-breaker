@@ -1,0 +1,7 @@
+Create one full-body production character master for an ordinary medieval road brigand in Limits Breaker, a hand-painted 2D dark-fantasy RPG.
+
+Square 512 x 512 canvas. One complete figure, centered, head, hands, weapons and both boots visible, small margin, clear silhouette at 150 px tall. Three-quarter view with a slightly wide, guarded stance. A tired road thief in a worn brown-black leather coat over simple padded clothes, a burgundy scarf, practical short sword and a small battered buckler. No scholar's notebook, no long cloak, no plate armor. Grounded anatomy and a distinct weathered face; common enemy, not a skeleton or elite villain.
+
+Art direction: richly textured but crisp hand-painted RPG illustration, matte cloth, leather and steel, charcoal shadows, muted slate and steel, restrained burgundy, tiny warm amber rim light, contained violet only as a subtle shared-world accent. Keep saturation controlled, materials tactile and silhouette readable; no anime, no cel shading, no thick outlines. Match the same dark-fantasy universe and lighting language across all Limits Breaker characters.
+
+Background is perfectly flat uniform chroma green #00FF00, edge to edge, separate from the figure. No ground, cast shadow, scenery, frame, border, text, letters, watermark, extra characters or cropped limbs.

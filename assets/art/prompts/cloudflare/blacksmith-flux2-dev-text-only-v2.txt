@@ -1,0 +1,7 @@
+Create one full-body character illustration for the forge keeper of Limits Breaker, a hand-painted 2D dark-fantasy RPG.
+
+Square 512 x 512 canvas, solid uniform green screen RGB(0,255,0) #00FF00 behind the figure. Exactly one complete person centered, head to boots, hands and tool visible with a small margin. Three-quarter view, sturdy practical stance, experienced focused expression. Soot-dark leather apron over charcoal work clothes and muted steel protection, sleeves rolled up, holding a short-handled forge mallet pointed down at rest. Warm amber light catches the face and hands; restrained burgundy detail. Clearly a craftsperson, not a warrior: no sword, no shield, no combat armor, no anvil, no scholar's book, no extra figure.
+
+Art direction: richly textured but crisp hand-painted RPG illustration, matte leather, cloth and steel, charcoal shadows, muted slate, restrained burgundy and amber, small contained violet accents. Keep saturation controlled, materials tactile and silhouette readable. Same visual universe and lighting language as Limits Breaker; no anime, no cel shading, no thick outlines.
+
+The background is completely flat, even #00FF00 edge to edge, with no gradient, vignette, texture, floor, cast shadow or scenery. The green is only a removable chroma-key background. No frame, text, watermark, extra props or cropped limbs.

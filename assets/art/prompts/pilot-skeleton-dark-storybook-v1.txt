@@ -1,0 +1,23 @@
+# Piloto de calibración — esqueleto
+
+Estado: prompt preparado; aún no se ha generado la imagen.
+Límite autorizado: una imagen del esqueleto.
+Salida candidata: `output/art-pilot/2026-10-27/skeleton-master.png`
+Referencia para adjuntar si el workflow admite imágenes: `assets/art/characters/skeleton.png`.
+Lienzo: 1024 × 1024 px, PNG con transparencia alfa real; una figura de cuerpo completo, centrada, vista de tres cuartos.
+Lectura: silueta reconocible al reducir a 150 px de alto; lectura inmediata como enemigo común, no como jefe.
+Si Comfy ofrece un solo campo de texto, pegar el bloque negativo al final precedido por `Avoid:`; si ofrece campo negativo separado, usarlo allí.
+
+## Prompt
+
+Create one production-ready common-enemy master still for the 2D dark-fantasy game Limits Breaker.
+
+DARK STORYBOOK CARTOON — LIMITS BREAKER STYLE LOCK: Premium hand-painted dark-fantasy RPG art for a static 2D game. Bold readable silhouette; slightly stylized 5.5–6.5-head proportions; hands, boots and weapon a little larger; serious expressive face; chunky simplified shapes; two to three value steps per material; subtle dark ink contour around the silhouette and major planes; visible hand-painted gouache brush character; controlled saturation; charcoal, aged steel, weathered leather, muted burgundy, restrained arcane violet and warm amber; cinematic side lighting; matte materials; grounded weight; dark storybook mood. Keep the design legible at game size.
+
+Show exactly one full-body fragile dungeon skeleton, centered, in a narrow slightly hunched stance and three-quarter view. Preserve the recognizable bone-and-armor identity of the attached skeleton reference while restyling it into this direction. It wears mismatched rusted iron scraps and a torn muted-burgundy sash and grips one chipped short blade. Use a lean silhouette, slightly oversized skull and hands, and simplified ribcage and armor planes. The face should read as threatening but not gruesome; no gore. Keep the skeleton visibly distinct from the scholar-warrior through its exposed ivory-gray bones, narrow posture and broken armor. The complete skull, weapon, hands and feet must fit inside the square with comfortable transparent margin. The figure should occupy about 78% of canvas height.
+
+Transparent background with clean alpha. No ground plane and no cast shadow beyond the silhouette. Save a single static PNG candidate to `output/art-pilot/2026-10-27/skeleton-master.png`; do not replace the active asset.
+
+## Negative prompt
+
+Anime, manga, chibi, super-deformed, cute mascot, childish comic style, flat vector, hard cel shading, thick uniform outline, neon, rainbow, pastel palette, bright white wash, glossy plastic, photorealism, 3D render, blurry, low contrast, muddy colors, excessive detail, noisy texture, floating props, extra limbs, fused bones, malformed hands, duplicate weapons, gore, blood, text, letters, numbers, equations, mathematical notation, readable runes, pseudo-writing, symbols resembling writing, interface, buttons, frame, border, logo, watermark, signature, scenery, floor, background behind the character, cast shadow outside the silhouette, extra people or creatures, boss crown, cropped skull, cropped feet, cropped blade.

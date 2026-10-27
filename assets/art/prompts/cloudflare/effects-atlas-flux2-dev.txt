@@ -1,0 +1,12 @@
+Create a production combat-effects atlas for the 2D dark-fantasy RPG Limits Breaker.
+
+Canvas: exactly 1024 x 1024 pixels, square. A strict 4-column by 4-row grid of sixteen equal 256 x 256 cells. Cell boundaries are exact, with no gutters, no dividing lines and no effect crossing a cell. Each used cell contains one isolated centered effect with generous clear padding; each effect fades to empty at its outer edge and remains readable over a dark game scene.
+
+Fill every background pixel with perfectly flat uniform chroma cyan RGB(0,255,255) #00FFFF, including all unused cells. Do not use bright cyan or turquoise in any effect.
+
+Row 1 left to right: 1) restrained diagonal physical sword slash in muted steel and warm edge light, 2) contained violet arcane bolt, 3) stronger compact gold-violet critical burst, 4) small burgundy impact spark.
+Row 2: 1) warm healing shimmer with gold motes, 2) enemy defeat motes dissolving to charcoal, 3) clear green-gold correct-answer pulse, 4) soft red incorrect-answer ripple.
+Row 3: 1) tiny forge spark with restrained amber streak, 2) single soft particle with a sharp luminous core and radial falloff, 3) empty cyan cell, 4) empty cyan cell.
+Row 4: all four cells remain empty cyan, with no effect.
+
+Consistent hand-painted 2D RPG effects: clear motion direction, subtle material texture, restrained brightness and compact shapes that do not cover equations. The violet and green effects must stay distinct from the cyan key color. No characters, weapons as objects, text, letters, numbers, runes, symbols, UI, border, labels or watermark.

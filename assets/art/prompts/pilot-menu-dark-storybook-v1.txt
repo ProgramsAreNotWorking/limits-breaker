@@ -1,0 +1,23 @@
+# Piloto de calibración — fondo de menú
+
+Estado: prompt preparado; aún no se ha generado la imagen.
+Límite autorizado: una imagen del menú.
+Salida candidata: `output/art-pilot/2026-10-27/menu-background.png`
+Referencia para adjuntar si el workflow admite imágenes: `assets/art/environments/menu.png` como guía de composición; no debe copiar su acabado antiguo.
+Lienzo: 1600 × 900 px, horizontal 16:9, PNG opaco.
+Lectura: conservar áreas oscuras de bajo contraste para el título y botones editables de Godot.
+Si Comfy ofrece un solo campo de texto, pegar el bloque negativo al final precedido por `Avoid:`; si ofrece campo negativo separado, usarlo allí.
+
+## Prompt
+
+Create one production-ready 16:9 static title-screen background plate for the dark-fantasy mathematical roguelike Limits Breaker, in its dark storybook cartoon art direction. Output an opaque PNG at 1600 × 900 px.
+
+DARK STORYBOOK CARTOON — LIMITS BREAKER STYLE LOCK: Premium hand-painted dark-fantasy RPG art for a static 2D game. Large readable silhouettes and architectural masses; chunky simplified shapes; two to three value steps per material; subtle dark ink contours on major planes; visible hand-painted gouache brush character; controlled saturation; charcoal stone, aged steel, weathered leather, muted burgundy, restrained arcane violet and warm amber practical light; cinematic side lighting; matte materials; soft atmospheric depth; dark storybook mood. Keep the image clear beneath game UI.
+
+Use the attached existing menu background only as a composition and world-identity reference. Create a vast ancient crypt nave seen from a low, reverent angle. On the far left, place a narrow raised stone plinth and a tall empty wall niche, softly rim-lit in warm amber, with clear space for a separate standing hero cutout. Center-right, place a colossal circular stone gate with worn abstract geometry that reads only as erosion and age, with a deep restrained violet arcane glow inside it. Keep the entire right third darker, simpler and lower-contrast for the vertical title and menu controls. Add worn foreground flagstones, a few broken column bases and sparse thin gold dust motes. Use larger chunky stone masses, simplified carved planes, painterly gouache texture, soft atmospheric perspective and strong but controlled cinematic contrast. Keep the central area calm enough for readable UI.
+
+The scene contains architecture only. Do not include the hero or any other character; those are separate game assets. Save one opaque PNG candidate to `output/art-pilot/2026-10-27/menu-background.png`; do not replace the active asset.
+
+## Negative prompt
+
+People, hero, monsters, skeletons, weapons, text, title, letters, numbers, equations, mathematical notation, pseudo-writing, readable runes, symbols resembling writing, interface, buttons, panels, border, frame, logo, watermark, signature, bright focal point in the center, bright detail in the right UI zone, busy high-contrast texture behind the UI, neon, rainbow, pastel palette, bright white wash, anime, manga, chibi, flat vector, hard cel shading, glossy 3D render, photorealism, gore.

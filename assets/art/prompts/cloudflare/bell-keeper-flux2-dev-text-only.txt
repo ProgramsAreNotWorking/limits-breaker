@@ -1,0 +1,9 @@
+CHROMA-KEY SPRITE: every background pixel outside the figure must be the same flat RGB green #00FF00. No gradient, vignette, lighting, texture, ground or scenery behind it.
+
+Create exactly one full-body production enemy master for the Bell Keeper, a strong crypt sentinel in Limits Breaker, a hand-painted 2D dark-fantasy RPG.
+
+Square 512 x 512 canvas. One complete figure centered, helmet to boots and bell entirely visible, small margin, readable at 118 px inside a round combat portrait. Three-quarter view in a narrow upright stance. A gaunt grave keeper in a long weathered charcoal funerary coat over restrained blackened iron plates, with burgundy bindings and a closed bell-shaped iron cage helmet hiding the face. In one hand he carries a heavy cracked funeral handbell on a short chain; a dim amber seam glows inside the bell. Add a tiny contained violet crystal set into the chest clasp. Keep the silhouette tall and distinct from a broad armored knight or a robed cultist. No sword, no shield, no extra objects, no gore, no visible human face.
+
+Art direction: richly textured but crisp hand-painted RPG illustration, matte cloth and battered iron, charcoal shadows, muted slate and steel, restrained burgundy, contained violet light, tiny warm amber rim light. Keep saturation controlled and details readable at game size; match the same dark-fantasy universe and lighting language as the existing Limits Breaker character masters. No anime, no cel shading, no thick outlines.
+
+Background fill only: perfectly flat RGB(0,255,0) #00FF00 from corner to corner. The figure and bell must not contain green or cyan. No cast shadow or ground plane. No frame, medallion, border, text, letters, symbols, watermark, extra figures or cropped limbs.

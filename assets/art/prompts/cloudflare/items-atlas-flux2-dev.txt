@@ -1,0 +1,12 @@
+Create a production inventory icon atlas for the 2D dark-fantasy RPG Limits Breaker.
+
+Canvas: exactly 512 x 512 pixels, square. A strict 4-column by 4-row grid of sixteen equal 128 x 128 cells. Cell boundaries are exact, with no gutters, no dividing lines and no artwork crossing a cell. Each used cell contains exactly one isolated centered object with generous clear padding, a strong readable silhouette and crafted detail visible at 48 px.
+
+Fill every background pixel with perfectly flat uniform chroma cyan RGB(0,255,255) #00FFFF, including the empty cells. The art itself must not use bright cyan or turquoise.
+
+Row 1 left to right: 1) battered rusted short sword, 2) ashen enchanted steel sword with restrained violet edge light, 3) dark oak arcane staff with a small violet crystal, 4) worn iron cuirass.
+Row 2: 1) heavier iron warden plate armor with burgundy binding, 2) old oak shield with a steel rim, 3) small amber ember charm, 4) dark-violet void sigil stone.
+Row 3: 1) pilgrim's carved relic, 2) small red healing draught in a glass vial, 3) larger healing draught in a glass vial, 4) empty cyan cell with no object.
+Row 4: all four cells remain empty cyan, with no object.
+
+Consistent hand-painted 2D RPG inventory art: tactile matte metal, leather, wood and glass; charcoal shadows; muted slate and steel; restrained burgundy; contained violet magic; warm amber highlights. Match the dark-fantasy Limits Breaker character art, with controlled saturation and crisp silhouettes. No anime, no cel shading, no square icon backgrounds, no frames, no text, no labels, no numbers, no watermark, no extra objects and no scenery.

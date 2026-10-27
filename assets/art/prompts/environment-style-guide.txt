@@ -1,0 +1,5 @@
+Limits Breaker environment art direction
+
+Render cinematic, high-detail dark-fantasy game environments with weathered charcoal stone, muted slate and steel, restrained burgundy, contained violet arcane light, and warm amber practical light. Match the established menu, dungeon, boss-arena, and forge plates: realistic material texture, layered depth, filmic contrast, soft atmospheric perspective, and controlled volumetric light. Keep the central horizontal band quiet and readable beneath the game UI.
+
+Avoid flat cel shading, thick outlines, anime features, vector-like surfaces, bright white washes, neon, logos, lettering, symbols that resemble writing, and interface elements. These scene plates are intentionally opaque full-frame PNGs; transparency is for cutout characters, icons, and effects.

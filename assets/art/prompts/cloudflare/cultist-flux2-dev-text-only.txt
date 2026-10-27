@@ -1,0 +1,7 @@
+Create one full-body production character master for an elite crimson dungeon cultist in Limits Breaker, a hand-painted 2D dark-fantasy RPG.
+
+Square 512 x 512 canvas. One complete figure, centered with head, hands, focus and boots visible, small margin, readable at 170 px tall. Three-quarter view with poised narrow stance. Layered charcoal robes, angular iron half-mask, burgundy cords and a small violet crystal focus held in one hand. Strong unmistakable robed silhouette, no plate armor, no sword, no scholar's notebook, no readable occult markings, no gore.
+
+Art direction: richly textured but crisp hand-painted RPG illustration, matte cloth and iron, charcoal shadows, muted slate and steel, restrained burgundy, contained violet magic, tiny warm amber rim light. Keep saturation controlled, materials tactile and silhouette readable; no anime, no cel shading, no thick outlines. Match the same dark-fantasy universe and lighting language across all Limits Breaker characters.
+
+Background is perfectly flat uniform chroma green #00FF00, edge to edge, separate from the figure. No ground, cast shadow, scenery, frame, border, text, letters, watermark, extra figures or cropped limbs.

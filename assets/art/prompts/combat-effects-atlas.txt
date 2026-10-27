@@ -1,0 +1,3 @@
+Create a clean 4-column by 2-row VFX sprite sheet for the 2D game Limits Breaker.
+
+Canvas 1024 x 512 px, transparent background, exactly eight equal 256 x 256 px cells, no gutters and no dividing lines. One isolated restrained hand-painted effect centered per cell, with empty transparent padding and no effect crossing cell boundaries. Reading left to right: physical sword slash in muted steel; violet arcane bolt; stronger gold-violet burst; small burgundy impact spark; warm healing shimmer; enemy defeat motes fading to charcoal; clear green-gold correct-answer pulse; soft red incorrect-answer ripple. Effects must be readable against a dark background and never resemble text or cover equations. No labels, numbers, UI, characters, gore, or watermark.

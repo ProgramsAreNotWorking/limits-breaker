@@ -1,0 +1,7 @@
+Create one production master still for a medieval blacksmith character in the 2D dark-fantasy RPG Limits Breaker.
+
+Canvas: square 512 x 512 pixels. Show exactly one full-body blacksmith, centered, from head to boots, all limbs and hammer inside the frame with a small margin. Three-quarter view, experienced and focused, readable at 150 px tall. Practical soot-dark leather apron over muted steel and charcoal clothes, rolled sleeves and a sturdy smithing hammer. Restrained warm firelight along the hands and face; small burgundy and gold accents, no comic exaggeration. Grounded human proportions, strong clear silhouette, hand-painted RPG illustration with textured cloth, leather and steel.
+
+Use reference image 0 only for painterly finish, brushwork, contrast, lighting, material rendering and subdued palette. Do not copy its person, face, pose, clothing, props or composition. Keep the blacksmith's apron and work tools visually distinct from the adventurer's armor and weapons.
+
+Background must be perfectly flat uniform chroma green #00FF00, edge to edge, fully separate from the figure. No anvil, floor, cast shadow, scenery, frame, text, watermark, extra figures or cropped limbs.

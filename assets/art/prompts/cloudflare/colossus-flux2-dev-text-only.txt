@@ -1,0 +1,7 @@
+Create one towering full-body production character master for the bone colossus miniboss in Limits Breaker, a hand-painted 2D dark-fantasy RPG.
+
+Square 512 x 512 canvas. One complete enormous creature centered, entire silhouette and feet visible with a small margin. Three-quarter view. Much larger and more elaborate than a human enemy: layered ancient bones, fragments of iron gate and battered armor, a contained dull-violet core inside its rib cage, one massive stone-and-bone arm. Broad asymmetrical silhouette, grim but not gory. It must read as a unique giant miniboss, not a human skeleton in armor.
+
+Art direction: richly textured but crisp hand-painted RPG illustration, matte bone, iron and stone, charcoal shadows, muted slate and steel, restrained burgundy, contained violet light, tiny warm amber rim light. Keep saturation controlled, materials tactile and silhouette readable; no anime, no cel shading, no thick outlines. Match the same dark-fantasy universe and lighting language across all Limits Breaker characters.
+
+Background is perfectly flat uniform chroma green #00FF00, edge to edge, separate from the creature. No ground, cast shadow, scenery, frame, border, text, watermark, extra figures or cropped limbs.

@@ -1,0 +1,7 @@
+Create one full-body production character master for The Limitless, the final boss of Limits Breaker, a hand-painted 2D dark-fantasy RPG.
+
+Square 512 x 512 canvas. One complete memorable boss centered, entire silhouette visible with a small margin. Three-quarter view. A tall ancient medieval-fantasy threat, partly human and partly a torn mantle of black stone dust, with a broken iron crown and a contained arcane-violet fissure through the chest. Strange and powerful, asymmetrical silhouette, unmistakably more imposing than every other enemy. Not a generic demon; no gore, readable symbols, human face, book or ordinary weapons.
+
+Art direction: richly textured but crisp hand-painted RPG illustration, matte charcoal stone and iron, deep shadows, muted slate and steel, restrained burgundy, contained violet light, tiny warm amber rim light. Keep saturation controlled, materials tactile and silhouette readable; no anime, no cel shading, no thick outlines. Match the same dark-fantasy universe and lighting language across all Limits Breaker characters.
+
+Background is perfectly flat uniform chroma green #00FF00, edge to edge, separate from the figure. No ground, cast shadow, scenery, frame, border, text, letters, watermark, extra figures or cropped limbs.

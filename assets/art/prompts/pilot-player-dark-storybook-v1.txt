@@ -1,0 +1,23 @@
+# Piloto de calibración — héroe
+
+Estado: prompt preparado; aún no se ha generado la imagen.
+Límite autorizado: una imagen del héroe.
+Salida candidata: `output/art-pilot/2026-10-27/player-master.png`
+Referencia para adjuntar si el workflow admite imágenes: `assets/art/characters/player.png`.
+Lienzo: 1024 × 1024 px, PNG con transparencia alfa real; una figura de cuerpo completo, centrada, vista de tres cuartos.
+Lectura: silueta clara al reducir a 150 px de alto y rostro reconocible al tamaño de juego.
+Si Comfy ofrece un solo campo de texto, pegar el bloque negativo al final precedido por `Avoid:`; si ofrece campo negativo separado, usarlo allí.
+
+## Prompt
+
+Create one production-ready character master still for the 2D dark-fantasy game Limits Breaker.
+
+DARK STORYBOOK CARTOON — LIMITS BREAKER STYLE LOCK: Premium hand-painted dark-fantasy RPG art for a static 2D game. Bold readable silhouette; slightly stylized 5.5–6.5-head proportions; hands, boots and weapon a little larger; expressive serious face; chunky simplified shapes; two to three value steps per material; subtle dark ink contour around the silhouette and major planes; visible hand-painted gouache brush character; controlled saturation; charcoal, aged steel, weathered leather, muted burgundy, restrained arcane violet and warm amber; cinematic side lighting; matte materials; grounded weight; dark storybook mood. Keep the design legible at game size.
+
+Show exactly one full-body scholar-warrior, centered, in a neutral combat-ready stance and three-quarter view. Preserve the identity, costume language and recognizable silhouette of the attached player reference while restyling it into this direction. The character carries a short steel sword in one hand and a closed field notebook secured at the belt. Worn charcoal cloak, muted steel armor, burgundy cloth, tiny violet arcane accents and restrained warm-gold details. Give the face and hands clean readable shapes and a tired, alert expression. Keep the costume simple enough to reproduce consistently in later artwork. The complete head, sword, hands and both feet must fit inside the square with comfortable transparent margin. The character should occupy about 78% of canvas height.
+
+Transparent background with clean alpha. No ground plane and no cast shadow beyond the silhouette. Save a single static PNG candidate to `output/art-pilot/2026-10-27/player-master.png`; do not replace the active asset.
+
+## Negative prompt
+
+Anime, manga, chibi, super-deformed, cute mascot, childish comic style, flat vector, hard cel shading, thick uniform outline, neon, rainbow, pastel palette, bright white wash, glossy plastic, photorealistic skin, pores, 3D render, blurry, low contrast, muddy colors, excessive detail, noisy texture, floating props, extra limbs, fused fingers, malformed hands, duplicate weapons, text, letters, numbers, equations, mathematical notation, readable runes, pseudo-writing, symbols resembling writing, interface, buttons, frame, border, logo, watermark, signature, scenery, floor, background behind the character, cast shadow outside the silhouette, extra people, cropped head, cropped feet, cropped weapon.

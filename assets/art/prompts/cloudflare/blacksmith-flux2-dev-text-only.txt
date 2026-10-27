@@ -1,0 +1,7 @@
+Create one full-body production character master for the medieval blacksmith of Limits Breaker, a hand-painted 2D dark-fantasy RPG.
+
+Square 512 x 512 canvas. One complete figure centered, head to boots, hands and hammer visible, small margin, readable at 150 px tall. Three-quarter view, sturdy practical stance. Experienced focused person wearing a soot-dark leather apron over charcoal work clothes and muted steel protection, sleeves rolled up, holding one sturdy smithing hammer. Warm restrained firelight along face and hands, small burgundy and amber accents. Distinct silhouette and weathered face. No anvil, no scholar's notebook, no long cloak, no combat armor, no comic exaggeration.
+
+Art direction: richly textured but crisp hand-painted RPG illustration, matte leather, cloth and steel, charcoal shadows, muted slate and steel, restrained burgundy and warm amber, tiny contained violet accent. Keep saturation controlled, materials tactile and silhouette readable; no anime, no cel shading, no thick outlines. Match the same dark-fantasy universe and lighting language across all Limits Breaker characters.
+
+Background is perfectly flat uniform chroma green #00FF00, edge to edge, separate from the figure. No ground, cast shadow, scenery, frame, border, text, watermark, extra figures or cropped limbs.

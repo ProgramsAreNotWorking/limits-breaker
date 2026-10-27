@@ -1,0 +1,17 @@
+COMFY REMOTE TEXT-ONLY FALLBACK
+
+Create exactly ONE square image, 1024x1024, for a game-ready character master. This prompt is text-only: no reference image is attached. Follow the visual direction below directly.
+
+Subject: one lean, low, four-legged ash hound, full body, three-quarter side view, clearly facing LEFT. Its muzzle, gaze and chest turn toward the left edge; its back and tail extend toward the right. This is an athletic crypt predator, not a wolf-like pet and not a humanoid.
+
+Design: charcoal sinew beneath sparse overlapping ash-bone plates; a narrow angular canine skull and long readable muzzle; two small ember-gold eyes; exactly four separate legs with visible joints and grounded paws; visible hindquarters and tail; a battered iron collar with one short burgundy cloth strip; one thin, dim violet fissure beneath the ribs. The fissure is a small identity accent, never a broad aura. Use matte bone, worn iron, dark sinew, charcoal shadow, muted steel, restrained burgundy, contained violet and a small warm rim light.
+
+Visual direction: premium hand-painted dark-fantasy 2D RPG game art, crisp readable silhouette, controlled painterly texture, sharp clean edges, clear light and shadow shapes, rich but restrained colour. Match the cohesive finish of a polished indie RPG character sprite. No photorealism, no 3D render, no anime, no thick comic outline, no neon glow, no blur.
+
+Composition: one complete hound centered horizontally, body about 72% of canvas height, with generous empty green margin on all sides. Keep the head, tail, collar, cloth, all four paws and the small violet fissure fully inside frame. The pose is low and alert, all paws planted, head slightly lowered. Keep the legs individually readable and the tail outside the body silhouette. The character must remain recognizable at 118 pixels inside a circular combat portrait.
+
+Background: perfectly flat pure green #00FF00 across the entire canvas, with no gradient, vignette, texture, shadow, ground, scenery, glow or reflection. Keep the character fully opaque, with no transparency and no green or cyan on the character.
+
+Exclude: extra or fused legs, duplicated paws, upright pose, humanoid anatomy, large horns, spikes crossing the silhouette, weapons, other creatures, scenery, blood, gore, exposed organs, text, letters, numbers, logo, watermark, signature, UI, frame or border.
+
+After review and clean chroma removal, the intended runtime output is assets/art/characters/rift_hound.png. Preserve this generated square as the opaque source master.

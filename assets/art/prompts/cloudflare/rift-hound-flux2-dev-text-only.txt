@@ -1,0 +1,9 @@
+CHROMA-KEY SPRITE: every background pixel outside the creature must be the same flat RGB green #00FF00. No gradient, vignette, lighting, texture, ground or scenery behind it.
+
+Create exactly one full-body production enemy master for the Rift Hound, an ordinary crypt predator in Limits Breaker, a hand-painted 2D dark-fantasy RPG.
+
+Square 512 x 512 canvas. Show one complete four-legged creature, centered, head to paws visible with a small margin, readable at 118 px inside a round combat portrait. Three-quarter view facing slightly toward the viewer. A lean, low ash hound built from charcoal bone plates and dark sinew, with an angular long muzzle, a clear four-legged silhouette, one restrained violet fissure glowing inside its rib cage, and a battered iron collar with a short burgundy cloth strip. The body should feel fast and dangerous, not oversized; paws grounded and tail visible. No extra creatures, no rider, no weapon, no blood, no exposed organs, no spikes that merge into the background.
+
+Art direction: richly textured but crisp hand-painted RPG illustration, matte bone and iron, charcoal shadows, muted slate and steel, restrained burgundy, contained violet light, tiny warm amber rim light. Keep saturation controlled and details readable at game size; match the same dark-fantasy universe and lighting language as the existing Limits Breaker character masters. No anime, no cel shading, no thick outlines.
+
+Background fill only: perfectly flat RGB(0,255,0) #00FF00 from corner to corner. The creature must not contain green or cyan. No cast shadow or ground plane. No frame, medallion, border, text, letters, symbols, watermark, extra figures or cropped limbs.

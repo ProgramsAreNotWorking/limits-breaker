@@ -1,0 +1,7 @@
+Create one production master still for the iron crypt warden, a strong enemy in the 2D dark-fantasy RPG Limits Breaker.
+
+Canvas: square 512 x 512 pixels. Show exactly one full-body warden, centered, completely visible from helmet to boots, with every part of its weapon inside the frame. Three-quarter view, broad, heavy and imposing, readable at 170 px tall. It is an empty suit of battered medieval plate armor with faint contained violet light in the visor, worn dark-red bindings, and a heavy two-handed axe. Convey weight through a wide planted stance and a massive silhouette; mysterious, no gore. Hand-painted RPG illustration in charcoal, muted steel, restrained burgundy, violet and a tiny warm-gold rim light.
+
+Use reference image 0 only for painterly finish, brushwork, contrast, lighting, material rendering and subdued palette. Do not copy its person, face, pose, clothing, props or composition. Make the warden much heavier and more dangerous than a human adventurer.
+
+Background must be perfectly flat uniform chroma green #00FF00, edge to edge, fully separate from the figure. No floor, cast shadow, scenery, border, text, watermark, extra figures or cropped limbs.

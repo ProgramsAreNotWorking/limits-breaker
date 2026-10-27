@@ -1,0 +1,3 @@
+Create one production-ready enemy master still for the 2D game Limits Breaker.
+
+Canvas 1024 x 1024 px, square, transparent PNG. Show exactly one full-body weak dungeon skeleton, centered, head and feet fully visible, three-quarter view, readable at 150 px tall. A fragile old skeleton in mismatched iron scraps and a torn burgundy sash, gripping a chipped short blade; narrow silhouette, slightly hunched, threatening but not gory or gruesome. Use hand-painted 2D RPG illustration, charcoal shadows, muted steel, burgundy and tiny warm-gold accents. Match the attached player reference's brushwork, contrast, material detail and scale while keeping the monster clearly distinct. No scenery, no floor, no frame, no text, no runes resembling letters, no watermark, no extra figures.

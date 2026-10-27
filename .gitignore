@@ -1,0 +1,22 @@
+# Godot generated files and editor cache
+.godot/
+/android/
+
+# Local MCP and agent/editor state
+.gdmcp/
+.agents/
+.forge/
+.gdskills/
+
+# Generated art drafts, previews, and working files
+/output/
+/review_v3/
+/docs/SESSION_HANDOFF.md
+/assets/reference/
+
+# Local configuration and OS/editor noise
+.env
+.env.*
+!.env.example
+*.log
+.DS_Store

@@ -1,0 +1,7 @@
+Create one full-body production character master for the iron crypt warden, a powerful enemy in Limits Breaker, a hand-painted 2D dark-fantasy RPG.
+
+Square 512 x 512 canvas. One complete figure centered, helmet to boots, entire weapon inside the frame, small margin. Three-quarter view, very broad planted stance, visibly heavy at 170 px tall. An empty suit of battered medieval plate armor, thick squared shoulders, heavy greaves, dark-red bindings, dim contained violet light inside a narrow visor, and a massive two-handed axe. Make the silhouette wide and imposing, clearly heavier than a human. No face, no book, no burgundy cloak, no human adventurer proportions, no gore.
+
+Art direction: richly textured but crisp hand-painted RPG illustration, matte battered metal, charcoal shadows, muted slate and steel, restrained burgundy, small contained violet glow, tiny warm amber rim light. Keep saturation controlled, materials tactile and silhouette readable; no anime, no cel shading, no thick outlines. Match the same dark-fantasy universe and lighting language across all Limits Breaker characters.
+
+Background is perfectly flat uniform chroma green #00FF00, edge to edge, separate from the figure. No ground, cast shadow, scenery, frame, border, text, watermark, extra figures or cropped limbs.

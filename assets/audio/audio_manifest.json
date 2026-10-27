@@ -1,0 +1,314 @@
+{
+	"channels": 1,
+	"format": "WAV PCM signed 16-bit",
+	"music": {
+		"music_angel": {
+			"bars": 32,
+			"bass_pattern": [
+				0,
+				2,
+				1,
+				2
+			],
+			"bpm": 64,
+			"counterline": true,
+			"duration_seconds": 120,
+			"file": "music/music_angel.wav",
+			"form": "A-B-A'-retransition",
+			"lead_echo_delay": 0.38,
+			"lead_style": "choir",
+			"loop": true,
+			"loop_end_sample": 2646000,
+			"loop_end_seconds": 120,
+			"loop_start_sample": 0,
+			"loop_start_seconds": 0,
+			"pad_style": "choir",
+			"sample_count": 2646000,
+			"sections": [
+				8,
+				8,
+				8,
+				8
+			],
+			"source": "Synth.music",
+			"tonal_center": "La mayor"
+		},
+		"music_blacksmith": {
+			"bars": 32,
+			"bass_pattern": [
+				0,
+				2,
+				2,
+				0
+			],
+			"bpm": 88,
+			"counterline": true,
+			"duration_seconds": 87.273,
+			"file": "music/music_blacksmith.wav",
+			"form": "A-B-A'-retransition",
+			"lead_echo_delay": 0,
+			"lead_style": "hammered",
+			"loop": true,
+			"loop_end_sample": 1924364,
+			"loop_end_seconds": 87.273,
+			"loop_start_sample": 0,
+			"loop_start_seconds": 0,
+			"pad_style": "warm",
+			"sample_count": 1924364,
+			"sections": [
+				8,
+				8,
+				8,
+				8
+			],
+			"source": "Synth.music",
+			"tonal_center": "Sol menor"
+		},
+		"music_boss": {
+			"bars": 32,
+			"bass_pattern": [
+				0,
+				2,
+				1,
+				2
+			],
+			"bpm": 108,
+			"counterline": true,
+			"duration_seconds": 71.111,
+			"file": "music/music_boss.wav",
+			"form": "A-B-A'-retransition",
+			"lead_echo_delay": 0,
+			"lead_style": "brass",
+			"loop": true,
+			"loop_end_sample": 1568000,
+			"loop_end_seconds": 71.111,
+			"loop_start_sample": 0,
+			"loop_start_seconds": 0,
+			"pad_style": "dark",
+			"sample_count": 1568000,
+			"sections": [
+				8,
+				8,
+				8,
+				8
+			],
+			"source": "Synth.music",
+			"tonal_center": "La menor con cromatismo"
+		},
+		"music_combat": {
+			"bars": 32,
+			"bass_pattern": [
+				0,
+				2,
+				0,
+				2
+			],
+			"bpm": 96,
+			"counterline": true,
+			"duration_seconds": 80,
+			"file": "music/music_combat.wav",
+			"form": "A-B-A'-retransition",
+			"lead_echo_delay": 0,
+			"lead_style": "brass",
+			"loop": true,
+			"loop_end_sample": 1764000,
+			"loop_end_seconds": 80,
+			"loop_start_sample": 0,
+			"loop_start_seconds": 0,
+			"pad_style": "strings",
+			"sample_count": 1764000,
+			"sections": [
+				8,
+				8,
+				8,
+				8
+			],
+			"source": "Synth.music",
+			"tonal_center": "Re menor"
+		},
+		"music_game_over": {
+			"bars": 28,
+			"bass_pattern": [
+				0,
+				2,
+				1,
+				2
+			],
+			"bpm": 58,
+			"counterline": false,
+			"duration_seconds": 115.862,
+			"file": "music/music_game_over.wav",
+			"form": "A-B-A'-coda",
+			"lead_echo_delay": 0.3,
+			"lead_style": "strings",
+			"loop": true,
+			"loop_end_sample": 2554759,
+			"loop_end_seconds": 115.862,
+			"loop_start_sample": 0,
+			"loop_start_seconds": 0,
+			"pad_style": "dark",
+			"sample_count": 2554759,
+			"sections": [
+				8,
+				8,
+				8,
+				4
+			],
+			"source": "Synth.music",
+			"tonal_center": "Re menor"
+		},
+		"music_menu": {
+			"bars": 32,
+			"bass_pattern": [
+				0,
+				2,
+				1,
+				2
+			],
+			"bpm": 72,
+			"counterline": true,
+			"duration_seconds": 106.667,
+			"file": "music/music_menu.wav",
+			"form": "A-B-A'-retransition",
+			"lead_echo_delay": 0.24,
+			"lead_style": "harp",
+			"loop": true,
+			"loop_end_sample": 2352000,
+			"loop_end_seconds": 106.667,
+			"loop_start_sample": 0,
+			"loop_start_seconds": 0,
+			"pad_style": "warm",
+			"sample_count": 2352000,
+			"sections": [
+				8,
+				8,
+				8,
+				8
+			],
+			"source": "Synth.music",
+			"tonal_center": "Re menor"
+		}
+	},
+	"sample_rate_hz": 22050,
+	"sfx": {
+		"sfx_angel_appearance": {
+			"duration_seconds": 1.2,
+			"file": "sfx/sfx_angel_appearance.wav",
+			"loop": false,
+			"sample_count": 26460,
+			"source": "Synth.sfx"
+		},
+		"sfx_answer_correct": {
+			"duration_seconds": 0.55,
+			"file": "sfx/sfx_answer_correct.wav",
+			"loop": false,
+			"sample_count": 12127,
+			"source": "Synth.sfx"
+		},
+		"sfx_answer_incorrect": {
+			"duration_seconds": 0.3,
+			"file": "sfx/sfx_answer_incorrect.wav",
+			"loop": false,
+			"sample_count": 6615,
+			"source": "Synth.sfx"
+		},
+		"sfx_attack": {
+			"duration_seconds": 0.18,
+			"file": "sfx/sfx_attack.wav",
+			"loop": false,
+			"sample_count": 3969,
+			"source": "Synth.sfx"
+		},
+		"sfx_attack_arcane": {
+			"duration_seconds": 0.45,
+			"file": "sfx/sfx_attack_arcane.wav",
+			"loop": false,
+			"sample_count": 9922,
+			"source": "Synth.sfx"
+		},
+		"sfx_blacksmith": {
+			"duration_seconds": 0.25,
+			"file": "sfx/sfx_blacksmith.wav",
+			"loop": false,
+			"sample_count": 5512,
+			"source": "Synth.sfx"
+		},
+		"sfx_boss_appearance": {
+			"duration_seconds": 0.9,
+			"file": "sfx/sfx_boss_appearance.wav",
+			"loop": false,
+			"sample_count": 19845,
+			"source": "Synth.sfx"
+		},
+		"sfx_confirm": {
+			"duration_seconds": 0.12,
+			"file": "sfx/sfx_confirm.wav",
+			"loop": false,
+			"sample_count": 2646,
+			"source": "Synth.sfx"
+		},
+		"sfx_death": {
+			"duration_seconds": 1.4,
+			"file": "sfx/sfx_death.wav",
+			"loop": false,
+			"sample_count": 30869,
+			"source": "Synth.sfx"
+		},
+		"sfx_enemy_death": {
+			"duration_seconds": 0.6,
+			"file": "sfx/sfx_enemy_death.wav",
+			"loop": false,
+			"sample_count": 13230,
+			"source": "Synth.sfx"
+		},
+		"sfx_enemy_hit": {
+			"duration_seconds": 0.2,
+			"file": "sfx/sfx_enemy_hit.wav",
+			"loop": false,
+			"sample_count": 4410,
+			"source": "Synth.sfx"
+		},
+		"sfx_equipment": {
+			"duration_seconds": 0.25,
+			"file": "sfx/sfx_equipment.wav",
+			"loop": false,
+			"sample_count": 5512,
+			"source": "Synth.sfx"
+		},
+		"sfx_heal": {
+			"duration_seconds": 0.5,
+			"file": "sfx/sfx_heal.wav",
+			"loop": false,
+			"sample_count": 11025,
+			"source": "Synth.sfx"
+		},
+		"sfx_loot": {
+			"duration_seconds": 0.4,
+			"file": "sfx/sfx_loot.wav",
+			"loop": false,
+			"sample_count": 8820,
+			"source": "Synth.sfx"
+		},
+		"sfx_player_hit": {
+			"duration_seconds": 0.35,
+			"file": "sfx/sfx_player_hit.wav",
+			"loop": false,
+			"sample_count": 7717,
+			"source": "Synth.sfx"
+		},
+		"sfx_select": {
+			"duration_seconds": 0.05,
+			"file": "sfx/sfx_select.wav",
+			"loop": false,
+			"sample_count": 1102,
+			"source": "Synth.sfx"
+		},
+		"sfx_victory": {
+			"duration_seconds": 0.7,
+			"file": "sfx/sfx_victory.wav",
+			"loop": false,
+			"sample_count": 15434,
+			"source": "Synth.sfx"
+		}
+	}
+}

@@ -1,0 +1,97 @@
+{
+  "schema": "codeart2d.codeart_meta.v1",
+  "art_source": "code",
+  "placeholder": false,
+  "disclosure": "Godot code-drawn runtime fallback only; player, skeleton, brigand, warden and cultist use Cloudflare FLUX Schnell, while remaining character and icon art uses local PNG raster assets.",
+  "generator": "Codex-authored Godot GDScript runtime fallback",
+  "spec_sha256": "f7b60bb1bc6d2e90c242705b615af6df6093fdf4c5af79d8810663a3e7e496f7",
+  "renderer": {
+    "name": "Godot CanvasItem",
+    "version": "4.7.2 stable",
+    "route": "vector"
+  },
+  "palette": {
+    "ink": "#111319",
+    "steel": "#687382",
+    "steel_light": "#aeb6bf",
+    "gold": "#d9ab52",
+    "burgundy": "#8f3446",
+    "violet": "#9575eb",
+    "cloth": "#34303b",
+    "skin": "#b98267",
+    "outline": "#090a0d"
+  },
+  "outputs": [
+    {
+      "path": "src/ui/fantasy_portrait.gd",
+      "sha256": "e434a128deb419b7a35f29228edfda4028dc384aacb56b7ff3d970ef22b6bdb6"
+    },
+    {
+      "path": "src/ui/equipment_icon.gd",
+      "sha256": "3738797781c48ad7b9c1a0fe1a10c73b83eb8827026ba931f45f0fe49111c7d0"
+    }
+  ],
+  "route": "vector",
+  "spec": {
+    "path": "assets/art/code/portraits/portrait-spec.json",
+    "sha256": "f7b60bb1bc6d2e90c242705b615af6df6093fdf4c5af79d8810663a3e7e496f7"
+  },
+  "qa": {
+    "status": "pass",
+    "method": "Character alpha cutouts, HUD integration, combat VFX and 1280x720 visual previews were reviewed in Godot 4.7.2. A complete physical-keyboard playthrough remains pending.",
+    "notProven": [
+      "Full manual run with the physical keyboard.",
+      "Subjective audio listening in context."
+    ],
+    "checks": [
+      {
+        "id": "gameplay_test_runner",
+        "status": "pass",
+        "value": "1899 verifications passed in Godot 4.7.2."
+      },
+      {
+        "id": "portrait_coverage",
+        "status": "pass",
+        "value": 9
+      },
+      {
+        "id": "equipment_icon_coverage",
+        "status": "pass",
+        "value": 11
+      },
+      {
+        "id": "visual_gallery_export",
+        "status": "pass",
+        "value": "Visual previews captured at 1280x720 in output/previews/."
+      }
+    ],
+    "inputs": [
+      {
+        "path": "assets/art/code/portraits/portrait-spec.json",
+        "sha256": "f7b60bb1bc6d2e90c242705b615af6df6093fdf4c5af79d8810663a3e7e496f7"
+      },
+      {
+        "path": "src/ui/fantasy_portrait.gd",
+        "sha256": "e434a128deb419b7a35f29228edfda4028dc384aacb56b7ff3d970ef22b6bdb6"
+      },
+      {
+        "path": "src/ui/equipment_icon.gd",
+        "sha256": "3738797781c48ad7b9c1a0fe1a10c73b83eb8827026ba931f45f0fe49111c7d0"
+      }
+    ],
+    "outputs": [
+      {
+        "path": "src/ui/fantasy_portrait.gd",
+        "sha256": "e434a128deb419b7a35f29228edfda4028dc384aacb56b7ff3d970ef22b6bdb6"
+      },
+      {
+        "path": "src/ui/equipment_icon.gd",
+        "sha256": "3738797781c48ad7b9c1a0fe1a10c73b83eb8827026ba931f45f0fe49111c7d0"
+      }
+    ],
+    "tool": {
+      "name": "Godot test runner and CanvasItem runtime",
+      "version": "4.7.2 stable"
+    }
+  }
+}

@@ -1,0 +1,26 @@
+Create one production-ready transparent PNG atlas for Limits Breaker, a dark fantasy 2D roguelike.
+
+CANVAS AND GRID
+- Square 1536 x 1536 px PNG with true alpha transparency outside the figures.
+- Exact 3-column x 3-row grid. The intended cell boundaries are x=512 and x=1024, y=512 and y=1024.
+- One complete, separate enemy centered in each cell, in the row-major order below. Every full-body silhouette must fit within its own cell, about 72% of cell height, with visible transparent margin on all sides. Do not let weapons, cloth, effects, or shadows cross cell boundaries.
+- No visible grid, dividers, tile backgrounds, floor, scenery, labels, text, symbols resembling writing, UI, border, watermark, or extra figures.
+- Use a consistent three-quarter view, camera scale, lighting, and finish across all nine cells. Keep the face, hands, weapon, and silhouette readable when each crop is shown at about 170 x 210 px in combat.
+
+CELL ORDER, TOP-LEFT TO BOTTOM-RIGHT
+1. assets/art/characters/oath_acolyte.png — a small, frail skeletal acolyte with a narrow charcoal hood, cracked ivory bones, a thin rusted ritual blade, and one restrained burgundy oath ribbon; weak-tier silhouette.
+2. assets/art/characters/bone_pilgrim.png — a stooped bone pilgrim with an uneven skeleton, weathered slate travel cloak, a simple empty reliquary cage attached to a walking staff, and pale muted-green cloth; ordinary-tier silhouette.
+3. assets/art/characters/ash_brigand.png — a lean human ash raider in soot-dark leather, half-mask, uneven shoulder armor, a chipped curved blade, and one muted ember-orange cloth accent.
+4. assets/art/characters/cinder_warden.png — a broad iron guardian with cracked charcoal plate, a few contained amber cinder seams, heavy gauntlets, and a compact iron shield; strong-tier silhouette.
+5. assets/art/characters/slag_priest.png — a severe forge priest in layered dark robes with a collar of vitrified slag, a small contained furnace glow, and an iron censer staff; clearly distinct from a hooded cultist.
+6. assets/art/characters/hollow_choir.png — one singular tall, haunted wraith in worn charcoal and burgundy vestments; three hollow masks are integrated into one collar/hood silhouette, not separate people; restrained pale-violet light.
+7. assets/art/characters/bell_keeper.png — a resolute female sanctuary guardian in dark steel and muted blue-grey robes, carrying one cracked bronze handbell and a short bell hammer; clear upright silhouette.
+8. assets/art/characters/mirror_scholar.png — a slender scholar in layered charcoal robes with one faceted, cracked silver mirror-mask and reflective plates built into the shoulders; no floating shards or writing.
+9. assets/art/characters/rift_sentinel.png — a sturdy armored sentinel with a large asymmetrical shield and one narrow dim-violet rift through its breastplate; distinct from the cinder guardian, no orange fire.
+
+STYLE LOCK
+Dark storybook cartoon for Limits Breaker: premium hand-painted dark-fantasy RPG art; bold readable silhouettes; serious, worn characters with slightly stylized proportions, larger hands, boots, and weapons; chunky simplified forms; two or three value steps per material; subtle dark ink contour; controlled saturation; charcoal, steel, worn leather, muted burgundy, restrained arcane violet and warm amber; soft directional light; matte finish. Keep the original silhouette and identity of each cell distinct.
+
+Use the attached player and colossus PNGs only as references for the game's palette, silhouette readability, and material language. Do not copy their poses, anatomy, armor, or bright background colors.
+
+NEGATIVE: anime, manga, chibi, cute mascot, flat vector, hard cel shading, thick uniform outlines, neon, rainbow, pastel, bright white wash, glossy plastic, photorealistic skin, pores, 3D render, blur, muddy low contrast, excessive micro-detail, gore, blood, duplicated limbs, fused hands, duplicate weapons, extra people, extra heads outside the single specified character, text, letters, numbers, equations, readable runes, pseudo-writing, interface, buttons, frame, border, logo, watermark, scenery, floor, cast shadow outside the character.

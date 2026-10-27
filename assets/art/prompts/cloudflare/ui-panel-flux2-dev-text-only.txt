@@ -1,0 +1,7 @@
+Create one reusable fantasy RPG interface frame for Limits Breaker, matching the hand-painted dark-fantasy game art.
+
+Square 512 x 512 canvas. Straight-on symmetrical rectangular panel frame with a large open rectangular center. Even border thickness on all four sides, suitable for nine-slice scaling. Forged charcoal and muted-steel construction, restrained burgundy enamel, four small ornamental corners and fine warm-amber bevel highlights. Premium crafted material, crisp straight edges, elegant, not busy, readable at small UI scale.
+
+Art direction: the same tactile hand-painted finish, charcoal shadows, muted slate and steel, restrained burgundy and warm amber used throughout the Limits Breaker character art. Controlled saturation; no neon, anime, cel shading or thick outlines.
+
+Make the exterior and entire open center perfectly flat uniform chroma green #00FF00 so both can be removed cleanly; only the frame itself may contain color. No shadow beyond the frame, no text, letters, symbols, numerals, logo, watermark, scenery or extra decoration. Do not tilt the panel or use perspective.
