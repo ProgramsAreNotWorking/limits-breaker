@@ -101,6 +101,8 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
+	if overlay != null and is_instance_valid(overlay):
+		return
 	if phase != "select":
 		return
 	time_left -= delta
@@ -162,6 +164,11 @@ func _build() -> void:
 	stats_label.custom_minimum_size = Vector2(360, 17)
 	stats_box.add_child(stats_label)
 	top.add_child(stats_box)
+	var menu_btn := UIKit.button("Menú", UIKit.STEEL_DARK)
+	menu_btn.custom_minimum_size = Vector2(92, 36)
+	menu_btn.add_theme_font_size_override("font_size", 14)
+	menu_btn.pressed.connect(_show_system_menu)
+	top.add_child(menu_btn)
 	var inv_btn := UIKit.button("Inventario", UIKit.STEEL_DARK)
 	inv_btn.custom_minimum_size = Vector2(126, 36)
 	inv_btn.add_theme_font_size_override("font_size", 14)
@@ -874,7 +881,7 @@ func _toggle_berserk() -> void:
 
 func _choose(choice: Variant) -> void:
 	# Compatibilidad con llamadas antiguas: un entero selecciona el ataque por índice.
-	var attack_id := String(choice)
+	var attack_id := str(choice)
 	if typeof(choice) == TYPE_INT:
 		attack_id = String(Combat.ATTACK_IDS[clampi(int(choice), 0, Combat.ATTACK_IDS.size() - 1)])
 	_choose_attack(attack_id)
@@ -1127,14 +1134,17 @@ func _resolve(correct: bool) -> void:
 			if vfx != null:
 				var player_center := _portrait_center(_active_player_portrait())
 				vfx.burst(player_center + Vector2(-22, 10), "incorrect", 0.55)
-				vfx.pop_number(player_center, "-%d" % self_dmg, UIKit.VIOLET, 22, Vector2(58, 20))
+				vfx.pop_number(player_center, "-%d" % self_dmg, UIKit.VIOLET, 22, Vector2(0, -60))
 
 	var enemy_attack_result := _apply_enemy_attacks()
 	var enemy_damage_total := int(enemy_attack_result.get("total", 0))
+	var enemy_summary := str(enemy_attack_result.get("summary", ""))
 	var reaction_parts: Array[String] = []
 	if self_dmg > 0:
-		reaction_parts.append("Retroceso −%d HP" % self_dmg)
-	if enemy_damage_total > 0:
+		reaction_parts.append("−%d HP de retroceso arcano" % self_dmg)
+	if enemy_summary != "":
+		reaction_parts.append(enemy_summary)
+	elif enemy_damage_total > 0:
 		reaction_parts.append("Contraataque −%d HP" % enemy_damage_total)
 	if not reaction_parts.is_empty():
 		result_parts.append(" · ".join(reaction_parts))
@@ -1261,7 +1271,7 @@ func _apply_enemy_attacks() -> Dictionary:
 			var enemy_center := _portrait_center(attacker_portrait)
 			var hit_aim := (player_center - enemy_center).normalized()
 			vfx.burst(player_center, "impact", 0.9, hit_aim)
-			vfx.pop_number(player_center, "-%d" % received, UIKit.DANGER, 28, Vector2(float(index % 2) * 34.0, float(index / 2) * 15.0))
+			vfx.pop_number(player_center, "-%d" % received, UIKit.DANGER, 28, Vector2(0, -60))
 	return {"total": total, "summary": ", ".join(summaries)}
 
 
@@ -1618,7 +1628,82 @@ func _inventory_item_card(item_id: String, index: int) -> Control:
 		_show_inventory())
 	actions.add_child(discard)
 	return card
+
+
 func _close_overlay() -> void:
 	if overlay != null and is_instance_valid(overlay):
 		overlay.queue_free()
 	overlay = null
+	if phase == "solve" and input != null and is_instance_valid(input):
+		input.grab_focus()
+
+
+func _open_system_overlay(min_size: Vector2) -> VBoxContainer:
+	if overlay != null and is_instance_valid(overlay):
+		overlay.queue_free()
+	if input != null and is_instance_valid(input) and input.has_focus():
+		input.release_focus()
+	overlay = Control.new()
+	overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	overlay.z_index = 30
+	add_child(overlay)
+	overlay.add_child(UIKit.dimmer())
+	var center := CenterContainer.new()
+	center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	overlay.add_child(center)
+	var panel := UIKit.panel(Color(0.045, 0.055, 0.07, 0.98), Color("#4a4232"), true, UIKit.GOLD)
+	panel.custom_minimum_size = min_size
+	center.add_child(panel)
+	var v := UIKit.vbox(10)
+	panel.add_child(v)
+	return v
+
+
+func _show_system_menu() -> void:
+	var v := _open_system_overlay(Vector2(600, 0))
+	v.add_child(UIKit.eyebrow("Pausa · Encuentro %d" % int(Game.run.get("encounter", 1)), UIKit.GOLD))
+	v.add_child(UIKit.display_label("Menú", 32, UIKit.TEXT, 600, 0))
+	v.add_child(UIKit.label("%s · Nivel %d · %d/%d HP" % [
+		String(world.get("name", "La Cripta")),
+		Game.player_level(),
+		Game.hp(),
+		Game.max_hp(),
+	], 13, UIKit.STEEL))
+	v.add_child(UIKit.rule(Color(UIKit.STONE, 0.7), 1))
+	var resume := _menu_action("Reanudar combate", UIKit.STEEL_DARK)
+	resume.pressed.connect(_close_overlay)
+	v.add_child(resume)
+	var end_btn := _menu_action("Terminar run", UIKit.DANGER)
+	end_btn.pressed.connect(_show_end_run_confirm)
+	v.add_child(end_btn)
+	v.add_child(UIKit.label("Terminar la run la cierra sin victoria y vuelve al menú principal. La maestría se conserva.", 11, UIKit.MUTED))
+
+
+func _show_end_run_confirm() -> void:
+	var v := _open_system_overlay(Vector2(600, 0))
+	v.add_child(UIKit.eyebrow("Confirmar", UIKit.DANGER))
+	v.add_child(UIKit.display_label("¿Terminar la run?", 28, UIKit.TEXT, 600, 0))
+	v.add_child(UIKit.label("Cerrás la expedición en el Encuentro %d y perdés el botín y el progreso de esta run." % int(Game.run.get("encounter", 1)), 13, UIKit.STEEL))
+	v.add_child(UIKit.rule(Color(UIKit.STONE, 0.7), 1))
+	var row := UIKit.hbox(10)
+	v.add_child(row)
+	var cancel := _menu_action("Cancelar", UIKit.STEEL_DARK)
+	cancel.pressed.connect(_show_system_menu)
+	row.add_child(cancel)
+	var confirm := _menu_action("Terminar run", UIKit.DANGER)
+	confirm.pressed.connect(_end_run_now)
+	row.add_child(confirm)
+
+
+func _menu_action(text: String, accent: Color) -> Button:
+	var b := UIKit.button(text, accent)
+	b.custom_minimum_size = Vector2(0, 42)
+	b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	b.add_theme_font_size_override("font_size", 14)
+	return b
+
+
+func _end_run_now() -> void:
+	Game.end_run(false, "abandon")
+	_close_overlay()
+	go.emit("menu", null)

@@ -23,7 +23,7 @@ const PLAYER_ATTACKS := {
 		"description": "Ataque físico amplio: alcanza hasta 2 enemigos.",
 	},
 	"arcane_lance": {
-		"name": "Lanza arcana", "type": "magic", "power": 1.25,
+		"name": "Lanza arcana", "type": "magic", "power": 1.1,
 		"targets": 1, "penetration": 1, "difficulty_shift": 2,
 		"description": "Daño mágico concentrado; atraviesa 1 punto de resistencia mágica.",
 	},

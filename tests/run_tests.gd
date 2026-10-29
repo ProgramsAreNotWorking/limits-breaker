@@ -37,6 +37,7 @@ func _run() -> void:
 	await _test_hard_failure_penalties()
 	await _test_victory_milestone()
 	await _test_special_encounters()
+	await _test_combat_menu_and_abandon()
 	if failures.is_empty():
 		print("PASS: %d verificaciones." % checks)
 	else:
@@ -567,6 +568,43 @@ func _test_special_encounters() -> void:
 	angel_right._answer(MathRules.format_answer(angel_right.problem))
 	_check(Game.hp() == expected_heal, "respuesta correcta del ángel cura según su dificultad y HP máximo")
 	angel_right.queue_free()
+	await get_tree().process_frame
+
+
+func _test_combat_menu_and_abandon() -> void:
+	Game._reset_mastery()
+	Game.start_run()
+	var app: Variant = MainSceneScript.new()
+	get_tree().root.add_child(app)
+	await get_tree().process_frame
+	_check(_click(app, "Nueva run"), "el menú de combate parte de una run real")
+	await get_tree().process_frame
+	var fight: Variant = app.current
+	if not _is_script(fight, CombatScreenScript):
+		_check(false, "combate activo para probar el menú del juego")
+		app.queue_free()
+		await get_tree().process_frame
+		return
+	_check(_find_button(fight, "Menú") != null, "la barra superior ofrece acceso al menú del juego")
+	fight._show_system_menu()
+	await get_tree().process_frame
+	_check(fight.overlay != null, "el menú del juego se abre sobre el combate")
+	_check(_find_button(fight, "Reanudar combate") != null, "el menú permite reanudar")
+	_check(_find_button(fight, "Terminar run") != null, "el menú permite terminar la run")
+	var frozen := float(fight.time_left)
+	fight._process(5.0)
+	_check(is_equal_approx(fight.time_left, frozen), "el temporizador se pausa mientras el menú está abierto")
+	fight._show_end_run_confirm()
+	await get_tree().process_frame
+	_check(_find_button(fight, "Cancelar") != null, "la confirmación permite cancelar")
+	_check(_find_button(fight, "Terminar run") != null, "la confirmación permite terminar la run")
+	fight._end_run_now()
+	await get_tree().process_frame
+	_check(not bool(Game.run["active"]), "terminar la run cierra la expedición")
+	_check(String(Game.run["stats"].get("result", "")) == "abandon", "la run abandonada registra su resultado")
+	_check(not _is_script(app.current, CombatScreenScript), "terminar la run vuelve al menú principal")
+	_check(_find_button(app.current, "Nueva run") != null, "el menú principal queda operativo tras abandonar")
+	app.queue_free()
 	await get_tree().process_frame
 
 

@@ -13,6 +13,7 @@ const BURST_LAYER_BOTTOM_RATIO := 0.02
 var _spark_texture: Texture2D
 var _soft_texture: Texture2D
 var _burst_layer: Control
+var _active_pops: Array[Control] = []
 
 
 func _ready() -> void:
@@ -137,6 +138,7 @@ func pop_number(center: Vector2, text: String, color: Color, font_size: int = 28
 	var safe_right := maxf(safe_left, bounds.x - _burst_layer.position.x - 154.0)
 	safe_position.x = clampf(safe_position.x, safe_left, safe_right)
 	safe_position.y = clampf(safe_position.y, safe_top, maxf(safe_top, bounds.y - 56.0))
+	safe_position = _free_pop_position(safe_position, safe_top)
 	label.position = safe_position
 	label.pivot_offset = Vector2(75, 23)
 	label.scale = Vector2(0.78, 0.78)
@@ -147,6 +149,8 @@ func pop_number(center: Vector2, text: String, color: Color, font_size: int = 28
 	label.add_theme_color_override("font_outline_color", Color(0.02, 0.02, 0.03, 0.95))
 	label.add_theme_constant_override("outline_size", 5)
 	add_child(label)
+	_active_pops.append(label)
+	label.tree_exiting.connect(_forget_pop.bind(label))
 	var tween := create_tween()
 	tween.set_parallel(true)
 	var float_target := maxf(safe_position.y - 48.0, safe_top + 2.0)
@@ -154,6 +158,33 @@ func pop_number(center: Vector2, text: String, color: Color, font_size: int = 28
 	tween.tween_property(label, "scale", Vector2.ONE, 0.24).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	tween.tween_property(label, "modulate:a", 0.0, 0.78).set_delay(0.12)
 	tween.chain().tween_callback(label.queue_free)
+
+
+func _free_pop_position(position: Vector2, safe_top: float) -> Vector2:
+	var size := Vector2(150, 46)
+	var pruned: Array[Control] = []
+	for label in _active_pops:
+		if is_instance_valid(label):
+			pruned.append(label)
+	_active_pops = pruned
+	var candidate := position
+	for _attempt in 4:
+		var taken := false
+		for label in _active_pops:
+			if Rect2(candidate, size).intersects(Rect2(label.position, label.size)):
+				taken = true
+				break
+		if not taken:
+			return candidate
+		var next_y := candidate.y - 46.0
+		if next_y < safe_top:
+			return candidate
+		candidate.y = next_y
+	return candidate
+
+
+func _forget_pop(label: Control) -> void:
+	_active_pops.erase(label)
 
 
 func _burst_config(effect_id: String) -> Dictionary:

@@ -426,13 +426,13 @@ func should_spawn_angel(encounter: int, rng: RandomNumberGenerator) -> bool:
 
 # ------------------------------------------------------------------ deaths
 
-func end_run(victory: bool = false) -> Dictionary:
+func end_run(victory: bool = false, result: String = "") -> Dictionary:
 	var st: Dictionary = run["stats"]
 	st["furthest"] = maxi(
 		int(st.get("furthest", 0)),
 		int(run["encounter"]) - (1 if victory else 0)
 	)
-	st["result"] = "victory" if victory else "death"
+	st["result"] = result if result != "" else ("victory" if victory else "death")
 	var need: Array = []
 	for t in MathEngine.TOPICS:
 		var s := topic_stats(t)

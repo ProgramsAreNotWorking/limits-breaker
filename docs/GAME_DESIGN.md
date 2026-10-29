@@ -21,7 +21,7 @@ Cada encuentro puede reunir hasta cuatro enemigos. El jugador selecciona uno com
 |---|---|---:|---:|---:|---:|
 | Tajo perforante | Físico | 1 | 1,00× | 2 de armadura | +1 |
 | Barrido | Físico | hasta 2 | 0,78× | 0 | 0 |
-| Lanza arcana | Mágico | 1 | 1,25× | 1 de resistencia mágica | +2 |
+| Lanza arcana | Mágico | 1 | 1,10× | 1 de resistencia mágica | +2 |
 | Nova astral | Mágico | hasta 4 | 0,54× | 0 | −1 |
 
 Cada enemigo puede tener armadura, resistencia mágica, debilidades o una combinación de ellas. La carta de cada ataque enseña su daño estimado contra el objetivo seleccionado y señala si explota su debilidad o si el enemigo lo resiste.
