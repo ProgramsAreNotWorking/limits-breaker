@@ -11,6 +11,8 @@ var maximum_hp := 1
 var art_size := Vector2(170, 210)
 var incoming_intent := ""
 var incoming_intent_color := UIKit.STEEL
+var status_text := ""
+var status_color := UIKit.STEEL
 var selected_for_action := false
 
 var portrait: FantasyPortrait
@@ -20,9 +22,10 @@ var health_bar: ProgressBar
 var health_label: Label
 var name_label: Label
 var intent_label: Label
+var status_label: Label
 
 
-func configure(index: int, data: Dictionary, hp: int, max_hp: int, intent: String, selected: bool, portrait_size: Vector2 = Vector2(170, 210), intent_color: Color = UIKit.STEEL) -> void:
+func configure(index: int, data: Dictionary, hp: int, max_hp: int, intent: String, selected: bool, portrait_size: Vector2 = Vector2(170, 210), intent_color: Color = UIKit.STEEL, effects: String = "", effects_color: Color = UIKit.STEEL) -> void:
 	enemy_index = index
 	enemy_data = data
 	current_hp = hp
@@ -30,6 +33,8 @@ func configure(index: int, data: Dictionary, hp: int, max_hp: int, intent: Strin
 	art_size = portrait_size
 	incoming_intent = intent
 	incoming_intent_color = intent_color
+	status_text = effects
+	status_color = effects_color
 	selected_for_action = selected
 	if is_inside_tree() and portrait == null:
 		_build_view()
@@ -119,6 +124,12 @@ func _build_view() -> void:
 	intent_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	intent_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	stack.add_child(intent_label)
+	status_label = UIKit.inline_label("", 9, UIKit.STEEL, 600)
+	status_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	status_label.clip_text = true
+	status_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	status_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	stack.add_child(status_label)
 	_refresh_style()
 
 
@@ -134,6 +145,10 @@ func _refresh_view() -> void:
 	health_label.text = "%d/%d" % [maxi(0, current_hp), maximum_hp]
 	name_label.text = String(enemy_data.get("name", "Enemigo"))
 	intent_label.text = incoming_intent
+	if status_label != null:
+		status_label.text = status_text
+		status_label.visible = status_text != ""
+		status_label.add_theme_color_override("font_color", status_color)
 	name_label.add_theme_color_override("font_color", Color("#f0d28b") if selected_for_action else UIKit.TEXT)
 	var intent_color := incoming_intent_color
 	if selected_for_action:

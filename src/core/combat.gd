@@ -18,23 +18,26 @@ const PLAYER_ATTACKS := {
 	"piercing_strike": {
 		"name": "Tajo perforante", "type": "physical", "power": 1.0,
 		"targets": 1, "penetration": 2, "difficulty_shift": 1,
-		"description": "Golpe físico preciso. Atraviesa 2 puntos de armadura y castiga a los enemigos débiles a lo físico.",
+		"bleed": 2, "bleed_turns": 3,
+		"description": "Golpe físico preciso. Atraviesa 2 puntos de armadura, castiga a los enemigos débiles a lo físico y provoca Sangrado: 2 de daño por turno durante 3 turnos a los enemigos vivos.",
 	},
 	"sweeping_cut": {
 		"name": "Barrido", "type": "physical", "power": 0.78,
 		"targets": 2, "penetration": 0, "difficulty_shift": 0,
-		"description": "Ataque físico amplio: alcanza hasta 2 enemigos.",
+		"mutilation_chance": 0.33,
+		"description": "Ataque físico amplio: alcanza hasta 2 enemigos y tiene un 33 % de probabilidad de Mutilación, que hace perder el siguiente turno al enemigo.",
 	},
 	"arcane_lance": {
 		"name": "Lanza arcana", "type": "magic", "power": 1.0,
 		"targets": 1, "penetration": 1, "difficulty_shift": 1,
-		"description": "Daño mágico concentrado. Atraviesa 1 punto de resistencia mágica y castiga a los enemigos débiles a lo mágico.",
+		"weak_pct": 25, "weak_turns": 2,
+		"description": "Daño mágico concentrado. Atraviesa 1 punto de resistencia mágica, castiga a los enemigos débiles a lo mágico y les aplica Debilidad: −25 % de daño durante 2 turnos.",
 	},
 	"arcane_nova": {
 		"name": "Nova astral", "type": "magic", "power": 0.54,
 		"targets": MAX_ENEMIES_PER_ENCOUNTER, "penetration": 0, "difficulty_shift": -1,
-		"fragile": 2, "fragile_turns": 2,
-		"description": "Daño mágico de área; alcanza a todos los enemigos vivos y les aplica Frágil +2 durante 2 turnos.",
+		"flux": 3, "flux_turns": 3,
+		"description": "Daño mágico de área; alcanza a todos los enemigos vivos y les aplica Flujo de magia: 3 de daño por turno durante 3 turnos.",
 	},
 	"ward_sigil": {
 		"name": "Sello de guarda", "type": "defense", "power": 0.0,
@@ -351,6 +354,66 @@ const ENEMIES := [
 		],
 	},
 ]
+
+# Los tipos definen qué efectos pueden prender en cada cuerpo. Un enemigo
+# «vivo» sangra; los no muertos, constructos y criaturas mágicas no tienen un
+# flujo vital que la magia pueda encender.
+const ENEMY_TAGS := {
+	"skeleton": ["undead"],
+	"brigand": ["living"],
+	"warden": ["construct", "magical"],
+	"cultist": ["living", "magical"],
+	"colossus": ["undead"],
+	"limitless": ["magical"],
+	"oath_acolyte": ["living"],
+	"bone_pilgrim": ["undead"],
+	"ash_brigand": ["living"],
+	"cinder_warden": ["construct", "magical"],
+	"slag_priest": ["living", "magical"],
+	"hollow_choir": ["magical"],
+	"bell_keeper": ["living"],
+	"mirror_scholar": ["living", "magical"],
+	"rift_sentinel": ["magical"],
+	"lead_bound": ["undead"],
+	"slag_hound": ["living"],
+	"chalk_moth": ["living", "magical"],
+}
+
+
+static func enemy_tags(enemy: Dictionary) -> Array[String]:
+	var raw: Array = ENEMY_TAGS.get(String(enemy.get("id", "")), ["living"])
+	var tags: Array[String] = []
+	for tag in raw:
+		tags.append(String(tag))
+	return tags
+
+
+static func enemy_has_tag(enemy: Dictionary, tag: String) -> bool:
+	return tag in enemy_tags(enemy)
+
+
+static func is_living_enemy(enemy: Dictionary) -> bool:
+	return enemy_has_tag(enemy, "living")
+
+
+static func is_magic_flux_immune(enemy: Dictionary) -> bool:
+	# Todo cuerpo sin flujo vital (no muerto, constructo o variante mágica)
+	# resiste el flujo de magia.
+	return not is_living_enemy(enemy) or enemy_has_tag(enemy, "magical")
+
+
+static func enemy_type_label(enemy: Dictionary) -> String:
+	var parts: Array[String] = []
+	if is_living_enemy(enemy):
+		parts.append("Vivo")
+	if enemy_has_tag(enemy, "undead"):
+		parts.append("No muerto")
+	if enemy_has_tag(enemy, "magical"):
+		parts.append("Mágico")
+	if enemy_has_tag(enemy, "construct"):
+		parts.append("Constructo")
+	return " · ".join(parts) if not parts.is_empty() else "Vivo"
+
 
 const ITEMS := {
 	"rusted_blade": {

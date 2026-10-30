@@ -17,6 +17,16 @@ var enemy_bonus_damage: Array[int] = []
 var enemy_bonus_turns: Array[int] = []
 var enemy_fragile_bonus: Array[int] = []
 var enemy_fragile_turns: Array[int] = []
+var enemy_weak_pct: Array[int] = []
+var enemy_weak_turns: Array[int] = []
+var enemy_weak_applied_turn: Array[int] = []
+var enemy_flux_damage: Array[int] = []
+var enemy_flux_turns: Array[int] = []
+var enemy_flux_applied_turn: Array[int] = []
+var enemy_bleed_damage: Array[int] = []
+var enemy_bleed_turns: Array[int] = []
+var enemy_bleed_applied_turn: Array[int] = []
+var enemy_stun_turns: Array[int] = []
 var enemy_death_turns: Array[int] = []
 var enemy_last_ability: Array[String] = []
 var enemy_last_kind: Array[String] = []
@@ -113,6 +123,16 @@ func _ready() -> void:
 		enemy_bonus_turns.append(0)
 		enemy_fragile_bonus.append(0)
 		enemy_fragile_turns.append(0)
+		enemy_weak_pct.append(0)
+		enemy_weak_turns.append(0)
+		enemy_weak_applied_turn.append(-1)
+		enemy_flux_damage.append(0)
+		enemy_flux_turns.append(0)
+		enemy_flux_applied_turn.append(-1)
+		enemy_bleed_damage.append(0)
+		enemy_bleed_turns.append(0)
+		enemy_bleed_applied_turn.append(-1)
+		enemy_stun_turns.append(0)
 		enemy_death_turns.append(-1)
 		enemy_last_ability.append("")
 		enemy_last_kind.append("")
@@ -409,7 +429,7 @@ func _rebuild_enemy_actors() -> void:
 		actor.configure(
 			i, enemies[i], enemy_hps[i], enemy_max_hps[i],
 			_enemy_intent_text(i), i == selected_enemy_index, portrait_size,
-			_enemy_intent_color(i)
+			_enemy_intent_color(i), _enemy_status_text(i), _enemy_status_color(i)
 		)
 		actor.pressed.connect(_select_target.bind(i))
 		enemy_actors.append(actor)
@@ -464,21 +484,31 @@ func _enemy_actor_width(enemy_count: int) -> float:
 
 
 func _enemy_actor_height(enemy_count: int) -> float:
+	# La franja inferior reserva una línea para Debilidad, Sangrado, Flujo de
+	# magia o Mutilación, aunque el enemigo no tenga estados activos.
 	if enemy_count == 1 and (_contains_tier("boss") or _contains_tier("miniboss")):
-		return 364.0
+		return 377.0
 	match enemy_count:
 		1:
-			return 336.0
+			return 349.0
 		2:
-			return 324.0
+			return 337.0
 		3:
-			return 306.0
+			return 319.0
 		_:
-			return 292.0
+			return 305.0
 
 
 func _schedule_enemy_formation_fit() -> void:
-	call_deferred("_fit_enemy_formation")
+	call_deferred("_fit_enemy_formation_after_layout")
+
+
+func _fit_enemy_formation_after_layout() -> void:
+	# El panel cambia de alto en el mismo frame en que se renderiza la fase.
+	# Espera a que el contenedor recalcule su posición antes de ajustar actores.
+	await get_tree().process_frame
+	await get_tree().process_frame
+	_fit_enemy_formation()
 
 
 func _fit_enemy_formation() -> void:
@@ -522,7 +552,9 @@ func _fit_enemy_formation() -> void:
 			_enemy_intent_text(i),
 			i == selected_enemy_index,
 			enemy_layout_portrait_size,
-			_enemy_intent_color(i)
+			_enemy_intent_color(i),
+			_enemy_status_text(i),
+			_enemy_status_color(i)
 		)
 
 
@@ -644,6 +676,16 @@ func _remove_enemy_at(index: int) -> void:
 	enemy_bonus_turns.remove_at(index)
 	enemy_fragile_bonus.remove_at(index)
 	enemy_fragile_turns.remove_at(index)
+	enemy_weak_pct.remove_at(index)
+	enemy_weak_turns.remove_at(index)
+	enemy_weak_applied_turn.remove_at(index)
+	enemy_flux_damage.remove_at(index)
+	enemy_flux_turns.remove_at(index)
+	enemy_flux_applied_turn.remove_at(index)
+	enemy_bleed_damage.remove_at(index)
+	enemy_bleed_turns.remove_at(index)
+	enemy_bleed_applied_turn.remove_at(index)
+	enemy_stun_turns.remove_at(index)
 	enemy_death_turns.remove_at(index)
 	enemy_last_ability.remove_at(index)
 	enemy_last_kind.remove_at(index)
@@ -692,6 +734,16 @@ func _choose_enemy_intents() -> void:
 			enemy_bonus_turns.append(0)
 			enemy_fragile_bonus.append(0)
 			enemy_fragile_turns.append(0)
+			enemy_weak_pct.append(0)
+			enemy_weak_turns.append(0)
+			enemy_weak_applied_turn.append(-1)
+			enemy_flux_damage.append(0)
+			enemy_flux_turns.append(0)
+			enemy_flux_applied_turn.append(-1)
+			enemy_bleed_damage.append(0)
+			enemy_bleed_turns.append(0)
+			enemy_bleed_applied_turn.append(-1)
+			enemy_stun_turns.append(0)
 			enemy_last_ability.append("")
 			enemy_last_kind.append("")
 		if enemy_hps[i] <= 0:
@@ -719,15 +771,36 @@ func _enemy_intent_for(index: int) -> Dictionary:
 	return {}
 
 
+func _enemy_attack_damage(index: int, ability: Dictionary, bonus: int = 0) -> int:
+	var damage := Game.enemy_ability_damage(ability, maxi(1, _living_enemy_indices().size()), bonus, player_vulnerable_bonus)
+	return _weakened_enemy_damage(index, damage)
+
+
+func _weakened_enemy_damage(index: int, damage: int) -> int:
+	if index < 0 or index >= enemy_weak_turns.size():
+		return damage
+	if enemy_weak_turns[index] <= 0:
+		return damage
+	if index < enemy_weak_applied_turn.size() and enemy_weak_applied_turn[index] == turn_number:
+		# La Debilidad recién aplicada empieza a contar en el turno siguiente.
+		return damage
+	var pct := enemy_weak_pct[index] if index < enemy_weak_pct.size() else 0
+	if pct <= 0:
+		return damage
+	return maxi(1, int(roundf(float(damage) * (1.0 - float(pct) / 100.0))))
+
+
 func _enemy_intent_text(index: int) -> String:
 	if index < 0 or index >= enemies.size() or enemy_hps[index] <= 0:
 		return "Derrotado"
+	if index < enemy_stun_turns.size() and enemy_stun_turns[index] > 0:
+		return "Mutilado · pierde el turno"
 	var ability := _enemy_intent_for(index)
 	var kind := String(ability.get("kind", "attack"))
 	var damage := 0
 	if kind == "attack":
 		var bonus := enemy_bonus_damage[index] if index < enemy_bonus_damage.size() else 0
-		damage = Game.enemy_ability_damage(ability, maxi(1, _living_enemy_indices().size()), bonus, player_vulnerable_bonus)
+		damage = _enemy_attack_damage(index, ability, bonus)
 	var text := Combat.ability_intent_text(ability, damage)
 	var guard := enemy_guards[index] if index < enemy_guards.size() else 0
 	if kind == "defend":
@@ -740,13 +813,15 @@ func _enemy_intent_text(index: int) -> String:
 func _enemy_intent_short_text(index: int) -> String:
 	if index < 0 or index >= enemies.size() or enemy_hps[index] <= 0:
 		return "Derrotado"
+	if index < enemy_stun_turns.size() and enemy_stun_turns[index] > 0:
+		return "Mutilado · pierde el turno"
 	var ability := _enemy_intent_for(index)
 	var kind := String(ability.get("kind", "attack"))
 	var indicator := Combat.ability_indicator(ability)
 	match kind:
 		"attack":
 			var bonus := enemy_bonus_damage[index] if index < enemy_bonus_damage.size() else 0
-			var damage := Game.enemy_ability_damage(ability, maxi(1, _living_enemy_indices().size()), bonus, player_vulnerable_bonus)
+			var damage := _enemy_attack_damage(index, ability, bonus)
 			var hits := maxi(1, int(ability.get("hits", 1)))
 			if hits > 1:
 				return "%s %d×%d" % [indicator, hits, damage]
@@ -810,8 +885,13 @@ func _enemy_tooltip(index: int) -> String:
 	var data: Dictionary = enemies[index]
 	var ability := _enemy_intent_for(index)
 	var lines: Array[String] = [String(data.get("name", "Enemigo"))]
+	lines.append("Cuerpo: %s" % Combat.enemy_type_label(data))
+	if Combat.is_magic_flux_immune(data):
+		lines.append("Inmune a flujo de magia")
+	if not Combat.is_living_enemy(data):
+		lines.append("No sangra")
 	if not ability.is_empty():
-		lines.append("Tipo: %s" % Combat.ability_indicator(ability))
+		lines.append("Acción: %s" % Combat.ability_indicator(ability))
 		lines.append("Intención: %s" % String(ability.get("name", "")))
 		lines.append(Combat.ability_effect_text(ability))
 	lines.append("HP %d / %d · Armadura %d · Resistencia mágica %d" % [
@@ -831,7 +911,42 @@ func _enemy_tooltip(index: int) -> String:
 		lines.append("Furia: +%d de daño (%d turnos)" % [enemy_bonus_damage[index], enemy_bonus_turns[index]])
 	if index < enemy_fragile_turns.size() and enemy_fragile_turns[index] > 0:
 		lines.append("Frágil: +%d de daño recibido (%d turnos)" % [enemy_fragile_bonus[index], enemy_fragile_turns[index]])
+	if index < enemy_weak_turns.size() and enemy_weak_turns[index] > 0:
+		lines.append("Debilidad: −%d%% de daño enemigo (%d turnos)" % [enemy_weak_pct[index], enemy_weak_turns[index]])
+	if index < enemy_flux_turns.size() and enemy_flux_turns[index] > 0:
+		lines.append("Flujo de magia: %d de daño por turno (%d turnos)" % [enemy_flux_damage[index], enemy_flux_turns[index]])
+	if index < enemy_bleed_turns.size() and enemy_bleed_turns[index] > 0:
+		lines.append("Sangrado: %d de daño por turno (%d turnos)" % [enemy_bleed_damage[index], enemy_bleed_turns[index]])
+	if index < enemy_stun_turns.size() and enemy_stun_turns[index] > 0:
+		lines.append("Mutilación: pierde el siguiente turno")
 	return "\n".join(lines)
+
+
+func _enemy_status_text(index: int) -> String:
+	var parts: Array[String] = []
+	if index < enemy_stun_turns.size() and enemy_stun_turns[index] > 0:
+		parts.append("Mutilado: pierde turno")
+	if index < enemy_bleed_turns.size() and enemy_bleed_turns[index] > 0:
+		parts.append("Sangrado %d · %dt" % [enemy_bleed_damage[index], enemy_bleed_turns[index]])
+	if index < enemy_flux_turns.size() and enemy_flux_turns[index] > 0:
+		parts.append("Flujo %d · %dt" % [enemy_flux_damage[index], enemy_flux_turns[index]])
+	if index < enemy_weak_turns.size() and enemy_weak_turns[index] > 0:
+		parts.append("Debilidad −%d%% · %dt" % [enemy_weak_pct[index], enemy_weak_turns[index]])
+	if index < enemy_fragile_turns.size() and enemy_fragile_turns[index] > 0:
+		parts.append("Frágil +%d · %dt" % [enemy_fragile_bonus[index], enemy_fragile_turns[index]])
+	return "  ·  ".join(parts)
+
+
+func _enemy_status_color(index: int) -> Color:
+	if index < enemy_stun_turns.size() and enemy_stun_turns[index] > 0:
+		return UIKit.DANGER
+	if index < enemy_flux_turns.size() and enemy_flux_turns[index] > 0:
+		return UIKit.VIOLET
+	if index < enemy_bleed_turns.size() and enemy_bleed_turns[index] > 0:
+		return Color("#d97862")
+	if index < enemy_weak_turns.size() and enemy_weak_turns[index] > 0:
+		return Color("#d7b46a")
+	return UIKit.STEEL
 
 
 func _most_wounded_enemy() -> int:
@@ -878,7 +993,8 @@ func _refresh_battlefield() -> void:
 		var portrait_size := enemy_layout_portrait_size if enemy_layout_portrait_size != Vector2.ZERO else _enemy_portrait_size(enemies.size())
 		enemy_actors[i].configure(
 			i, enemies[i], enemy_hps[i], enemy_max_hps[i],
-			_enemy_intent_text(i), selected, portrait_size, _enemy_intent_color(i)
+			_enemy_intent_text(i), selected, portrait_size, _enemy_intent_color(i),
+			_enemy_status_text(i), _enemy_status_color(i)
 		)
 		enemy_actors[i].set_selected_for_action(selected)
 		enemy_actors[i].set_targetable(phase == "select")
@@ -1134,9 +1250,24 @@ func _render_select() -> void:
 		elif is_heal:
 			effectiveness_color = UIKit.OK
 			effectiveness_copy = "Curación directa"
-		elif int(attack_profile.get("fragile", 0)) > 0:
+		elif int(attack_profile.get("flux", 0)) > 0:
 			effectiveness_color = UIKit.VIOLET
-			effectiveness_copy = "Área · Frágil +%d" % int(attack_profile.get("fragile", 0))
+			effectiveness_copy = "Área · Flujo %d · %dt" % [
+				int(attack_profile.get("flux", 0)),
+				maxi(1, int(attack_profile.get("flux_turns", 1))),
+			]
+		elif int(attack_profile.get("bleed", 0)) > 0:
+			effectiveness_color = Color("#d97862")
+			effectiveness_copy = "Sangrado %d · %dt" % [
+				int(attack_profile.get("bleed", 0)),
+				maxi(1, int(attack_profile.get("bleed_turns", 1))),
+			]
+		elif float(attack_profile.get("mutilation_chance", 0.0)) > 0.0:
+			effectiveness_color = UIKit.DANGER
+			effectiveness_copy = "Mutilación %d%%" % int(roundf(float(attack_profile.get("mutilation_chance", 0.0)) * 100.0))
+		elif int(attack_profile.get("weak_pct", 0)) > 0:
+			effectiveness_color = Color("#d7b46a")
+			effectiveness_copy = "Debilidad −%d%%" % int(attack_profile.get("weak_pct", 0))
 		var effectiveness_label := UIKit.inline_label(effectiveness_copy, 9, effectiveness_color, 600)
 		effectiveness_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		cv.add_child(effectiveness_label)
@@ -1173,6 +1304,33 @@ func _attack_value_preview(attack_id: String, difficulty: int, target: Dictionar
 	if Combat.is_healing_attack(attack_id):
 		return Game.attack_heal(difficulty, attack_id)
 	return _damage_preview(attack_id, difficulty, target)
+
+
+func _attack_status_tag(profile: Dictionary) -> String:
+	var parts: Array[String] = []
+	if int(profile.get("flux", 0)) > 0:
+		parts.append("Flujo %d · %dt" % [
+			int(profile.get("flux", 0)),
+			maxi(1, int(profile.get("flux_turns", 1))),
+		])
+	if int(profile.get("bleed", 0)) > 0:
+		parts.append("Sangrado %d · %dt" % [
+			int(profile.get("bleed", 0)),
+			maxi(1, int(profile.get("bleed_turns", 1))),
+		])
+	if float(profile.get("mutilation_chance", 0.0)) > 0.0:
+		parts.append("Mutilación %d%%" % int(roundf(float(profile.get("mutilation_chance", 0.0)) * 100.0)))
+	if int(profile.get("weak_pct", 0)) > 0:
+		parts.append("Debilidad −%d%% · %dt" % [
+			int(profile.get("weak_pct", 0)),
+			maxi(1, int(profile.get("weak_turns", 1))),
+		])
+	if int(profile.get("fragile", 0)) > 0:
+		parts.append("Frágil +%d · %dt" % [
+			int(profile.get("fragile", 0)),
+			maxi(1, int(profile.get("fragile_turns", 1))),
+		])
+	return " · ".join(parts)
 
 
 func _target_names(indices: Array[int]) -> String:
@@ -1311,6 +1469,9 @@ func _render_solve() -> void:
 	damage_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	damage_box.add_child(damage_label)
 	var value_sub := "HP recuperable" if is_heal else ("para este turno" if is_defense else "a %d objetivo(s)" % attack_target_indices.size())
+	var status_tag := _attack_status_tag(attack_profile)
+	if status_tag != "":
+		value_sub += " · " + status_tag
 	damage_box.add_child(UIKit.inline_label(value_sub, 10, UIKit.STEEL_DARK))
 	# El panel de resolución puede crecer sobre las etiquetas de intención del
 	# escenario. Esta tira mantiene las acciones enemigas visibles durante la
@@ -1433,6 +1594,10 @@ func _resolve(correct: bool) -> void:
 	var total_player_damage := 0
 	var guard_absorbed := 0
 	var fragile_targets: Array[String] = []
+	var weak_targets: Array[String] = []
+	var flux_targets: Array[String] = []
+	var bleed_targets: Array[String] = []
+	var mutilated_targets: Array[String] = []
 	var defeated_names: Array[String] = []
 	var attack_profile: Dictionary = Combat.PLAYER_ATTACKS[chosen_attack_id]
 	var damage_type := String(attack_profile.get("type", "physical"))
@@ -1520,6 +1685,16 @@ func _resolve(correct: bool) -> void:
 				if enemy_hps[index] <= 0:
 					enemy_fragile_bonus[index] = 0
 					enemy_fragile_turns[index] = 0
+					enemy_weak_pct[index] = 0
+					enemy_weak_turns[index] = 0
+					enemy_weak_applied_turn[index] = -1
+					enemy_flux_damage[index] = 0
+					enemy_flux_turns[index] = 0
+					enemy_flux_applied_turn[index] = -1
+					enemy_bleed_damage[index] = 0
+					enemy_bleed_turns[index] = 0
+					enemy_bleed_applied_turn[index] = -1
+					enemy_stun_turns[index] = 0
 					if index < enemy_death_turns.size() and enemy_death_turns[index] < 0:
 						enemy_death_turns[index] = turn_number
 					defeated_names.append(target_name)
@@ -1539,6 +1714,33 @@ func _resolve(correct: bool) -> void:
 						enemy_fragile_bonus[index] = maxi(enemy_fragile_bonus[index], fragile_value)
 						enemy_fragile_turns[index] = maxi(enemy_fragile_turns[index], fragile_turns)
 						fragile_targets.append(target_name)
+					var weak_pct := int(attack_profile.get("weak_pct", 0))
+					if weak_pct > 0:
+						var weak_turns := maxi(1, int(attack_profile.get("weak_turns", 1)))
+						enemy_weak_pct[index] = maxi(enemy_weak_pct[index], weak_pct)
+						enemy_weak_turns[index] = maxi(enemy_weak_turns[index], weak_turns)
+						enemy_weak_applied_turn[index] = turn_number
+						weak_targets.append(target_name)
+					var bleed_value := int(attack_profile.get("bleed", 0))
+					if bleed_value > 0 and Combat.is_living_enemy(target):
+						var bleed_turns := maxi(1, int(attack_profile.get("bleed_turns", 1)))
+						enemy_bleed_damage[index] = maxi(enemy_bleed_damage[index], bleed_value)
+						enemy_bleed_turns[index] = maxi(enemy_bleed_turns[index], bleed_turns)
+						enemy_bleed_applied_turn[index] = turn_number
+						bleed_targets.append(target_name)
+					var flux_value := int(attack_profile.get("flux", 0))
+					if flux_value > 0 and not Combat.is_magic_flux_immune(target):
+						var flux_turns := maxi(1, int(attack_profile.get("flux_turns", 1)))
+						enemy_flux_damage[index] = maxi(enemy_flux_damage[index], flux_value)
+						enemy_flux_turns[index] = maxi(enemy_flux_turns[index], flux_turns)
+						enemy_flux_applied_turn[index] = turn_number
+						flux_targets.append(target_name)
+					var mutilation_chance := float(attack_profile.get("mutilation_chance", 0.0))
+					if mutilation_chance > 0.0 and rng.randf() < mutilation_chance:
+						enemy_stun_turns[index] = maxi(enemy_stun_turns[index], 1)
+						mutilated_targets.append(target_name)
+						if vfx != null:
+							vfx.pop_number(_portrait_center(actor_portrait), "MUTILADO", UIKit.DANGER, 14, Vector2(0, 24))
 					Audio.play_sfx("enemy_hit")
 			_refresh_battlefield()
 			Audio.play_sfx("correct" if correct else "incorrect")
@@ -1557,6 +1759,26 @@ func _resolve(correct: bool) -> void:
 					int(attack_profile.get("fragile", 0)),
 					maxi(1, int(attack_profile.get("fragile_turns", 1))),
 				])
+			if not weak_targets.is_empty():
+				result_parts.append("Debilidad en %s: −%d%% de daño enemigo durante %d turnos" % [
+					", ".join(weak_targets),
+					int(attack_profile.get("weak_pct", 0)),
+					maxi(1, int(attack_profile.get("weak_turns", 1))),
+				])
+			if not bleed_targets.is_empty():
+				result_parts.append("Sangrado en %s: %d de daño por turno durante %d turnos" % [
+					", ".join(bleed_targets),
+					int(attack_profile.get("bleed", 0)),
+					maxi(1, int(attack_profile.get("bleed_turns", 1))),
+				])
+			if not flux_targets.is_empty():
+				result_parts.append("Flujo de magia en %s: %d de daño por turno durante %d turnos" % [
+					", ".join(flux_targets),
+					int(attack_profile.get("flux", 0)),
+					maxi(1, int(attack_profile.get("flux_turns", 1))),
+				])
+			if not mutilated_targets.is_empty():
+				result_parts.append("Mutilación en %s: pierde el siguiente turno" % ", ".join(mutilated_targets))
 			if not defeated_names.is_empty():
 				result_parts.append("Derrotados: " + ", ".join(defeated_names))
 			result_parts.append_array(level_messages)
@@ -1602,8 +1824,12 @@ func _resolve(correct: bool) -> void:
 	player_shield_grace_eligible = false
 	if not reaction_parts.is_empty():
 		result_parts.append(" · ".join(reaction_parts))
+	var dot_levels: Array = enemy_attack_result.get("dot_levels", [])
+	if not dot_levels.is_empty():
+		result_parts.append_array(dot_levels)
 	_tick_player_statuses(weaken_at_start, vulnerable_at_start)
 	_tick_enemy_statuses(enemy_fragile_before)
+	_tick_enemy_weakness()
 	Game.charge_berserk_turn()
 	berserk_attack_active = false
 	berserk_armed = false
@@ -1633,6 +1859,19 @@ func _tick_enemy_statuses(fragile_before: Array) -> void:
 		enemy_fragile_turns[index] = maxi(0, enemy_fragile_turns[index] - 1)
 		if enemy_fragile_turns[index] == 0:
 			enemy_fragile_bonus[index] = 0
+
+
+func _tick_enemy_weakness() -> void:
+	for index in range(enemy_weak_turns.size()):
+		if enemy_weak_turns[index] <= 0:
+			continue
+		if index < enemy_weak_applied_turn.size() and enemy_weak_applied_turn[index] == turn_number:
+			# La Debilidad aplicada este turno no se descuenta en la misma ronda.
+			continue
+		enemy_weak_turns[index] = maxi(0, enemy_weak_turns[index] - 1)
+		if enemy_weak_turns[index] == 0:
+			enemy_weak_pct[index] = 0
+			enemy_weak_applied_turn[index] = -1
 
 
 func _render_feedback(correct: bool, result: String) -> void:
@@ -1758,6 +1997,16 @@ func _summon_enemy(ability: Dictionary) -> String:
 	enemy_bonus_turns.append(0)
 	enemy_fragile_bonus.append(0)
 	enemy_fragile_turns.append(0)
+	enemy_weak_pct.append(0)
+	enemy_weak_turns.append(0)
+	enemy_weak_applied_turn.append(-1)
+	enemy_flux_damage.append(0)
+	enemy_flux_turns.append(0)
+	enemy_flux_applied_turn.append(-1)
+	enemy_bleed_damage.append(0)
+	enemy_bleed_turns.append(0)
+	enemy_bleed_applied_turn.append(-1)
+	enemy_stun_turns.append(0)
 	enemy_death_turns.append(-1)
 	enemy_last_ability.append("")
 	enemy_last_kind.append("idle")
@@ -1765,13 +2014,95 @@ func _summon_enemy(ability: Dictionary) -> String:
 	return String(data.get("name", "un aliado"))
 
 
+func _tick_enemy_damage_over_time() -> Dictionary:
+	var total := 0
+	var summaries: Array[String] = []
+	var deaths: Array[String] = []
+	var levels: Array[String] = []
+	var touched := false
+	for index in range(enemies.size()):
+		if enemy_hps[index] <= 0:
+			continue
+		var target: Dictionary = enemies[index]
+		var bleed_damage := 0
+		if index < enemy_bleed_turns.size() and enemy_bleed_turns[index] > 0:
+			if Combat.is_living_enemy(target) and enemy_bleed_applied_turn[index] != turn_number:
+				bleed_damage = maxi(1, enemy_bleed_damage[index])
+				enemy_bleed_turns[index] = maxi(0, enemy_bleed_turns[index] - 1)
+				if enemy_bleed_turns[index] == 0:
+					enemy_bleed_damage[index] = 0
+					enemy_bleed_applied_turn[index] = -1
+		var flux_damage := 0
+		if index < enemy_flux_turns.size() and enemy_flux_turns[index] > 0:
+			if not Combat.is_magic_flux_immune(target) and enemy_flux_applied_turn[index] != turn_number:
+				flux_damage = maxi(1, enemy_flux_damage[index])
+				enemy_flux_turns[index] = maxi(0, enemy_flux_turns[index] - 1)
+				if enemy_flux_turns[index] == 0:
+					enemy_flux_damage[index] = 0
+					enemy_flux_applied_turn[index] = -1
+		if bleed_damage <= 0 and flux_damage <= 0:
+			continue
+		touched = true
+		var target_name := String(target.get("name", "Enemigo"))
+		var before_hp := int(enemy_hps[index])
+		enemy_hps[index] = maxi(0, before_hp - bleed_damage - flux_damage)
+		var dealt := before_hp - enemy_hps[index]
+		total += dealt
+		var parts: Array[String] = []
+		if bleed_damage > 0:
+			parts.append("sangrado −%d" % bleed_damage)
+		if flux_damage > 0:
+			parts.append("flujo −%d" % flux_damage)
+		summaries.append("%s: %s" % [target_name, ", ".join(parts)])
+		var actor_portrait: FantasyPortrait = enemy_actors[index].portrait if index < enemy_actors.size() else null
+		if is_instance_valid(actor_portrait):
+			actor_portrait.play_effect("arcane" if flux_damage > 0 else "slash")
+		if vfx != null:
+			var target_center := _portrait_center(actor_portrait)
+			vfx.burst(target_center, "arcane" if flux_damage > 0 else "slash", 0.7)
+			vfx.pop_number(target_center, "−%d" % dealt, UIKit.VIOLET if flux_damage > 0 else Color("#d97862"), 22)
+		if enemy_hps[index] <= 0:
+			enemy_fragile_bonus[index] = 0
+			enemy_fragile_turns[index] = 0
+			enemy_weak_pct[index] = 0
+			enemy_weak_turns[index] = 0
+			enemy_weak_applied_turn[index] = -1
+			enemy_flux_damage[index] = 0
+			enemy_flux_turns[index] = 0
+			enemy_flux_applied_turn[index] = -1
+			enemy_bleed_damage[index] = 0
+			enemy_bleed_turns[index] = 0
+			enemy_bleed_applied_turn[index] = -1
+			enemy_stun_turns[index] = 0
+			if index < enemy_death_turns.size() and enemy_death_turns[index] < 0:
+				enemy_death_turns[index] = turn_number
+			deaths.append(target_name)
+			Game.run["stats"]["enemies"] = int(Game.run["stats"].get("enemies", 0)) + 1
+			var levels_gained := Game.award_combat_xp(Combat.xp_for(target))
+			if levels_gained > 0:
+				levels.append("Subes a nivel %d" % Game.player_level())
+			if is_instance_valid(actor_portrait):
+				actor_portrait.play_effect("defeat")
+			if vfx != null:
+				vfx.burst(_portrait_center(actor_portrait), "defeat", 1.2)
+			Audio.play_sfx("enemy_death")
+		else:
+			Audio.play_sfx("enemy_hit")
+	if touched:
+		_refresh_battlefield()
+	return {"total": total, "summary": ", ".join(summaries), "deaths": deaths, "levels": levels}
+
+
 func _apply_enemy_attacks() -> Dictionary:
+	var dot := _tick_enemy_damage_over_time()
 	var attackers := _living_enemy_indices()
 	var attacker_count := attackers.size()
 	var total := 0
 	var absorbed := 0
 	var attacked := false
 	var summaries: Array[String] = []
+	if String(dot.get("summary", "")) != "":
+		summaries.append(String(dot.get("summary", "")))
 	var bonus_for_round := enemy_bonus_damage.duplicate()
 	var buff_turns_at_start := enemy_bonus_turns.duplicate()
 	var vulnerable_for_round := player_vulnerable_bonus
@@ -1781,6 +2112,11 @@ func _apply_enemy_attacks() -> Dictionary:
 		var ability := _enemy_intent_for(index)
 		var kind := String(ability.get("kind", "attack"))
 		var enemy_name := String(enemies[index].get("name", "Enemigo"))
+		if index < enemy_stun_turns.size() and enemy_stun_turns[index] > 0:
+			enemy_stun_turns[index] = maxi(0, enemy_stun_turns[index] - 1)
+			summaries.append("%s está mutilado y pierde el turno" % enemy_name)
+			_play_enemy_support(index, "incorrect")
+			continue
 		if kind == "idle":
 			summaries.append("%s se incorpora al combate" % enemy_name)
 			continue
@@ -1830,7 +2166,7 @@ func _apply_enemy_attacks() -> Dictionary:
 		for _hit in range(hits):
 			if Game.hp() <= 0:
 				break
-			var damage := Game.enemy_ability_damage(ability, attacker_count, bonus, vulnerable_for_round)
+			var damage := _weakened_enemy_damage(index, Game.enemy_ability_damage(ability, attacker_count, bonus, vulnerable_for_round))
 			var blocked := mini(player_shield, damage)
 			player_shield -= blocked
 			absorbed += blocked
@@ -1882,7 +2218,15 @@ func _apply_enemy_attacks() -> Dictionary:
 			enemy_bonus_turns[i] = maxi(0, enemy_bonus_turns[i] - 1)
 			if enemy_bonus_turns[i] == 0:
 				enemy_bonus_damage[i] = 0
-	return {"total": total, "absorbed": absorbed, "attacked": attacked, "summary": ", ".join(summaries)}
+	return {
+		"total": total,
+		"absorbed": absorbed,
+		"attacked": attacked,
+		"summary": ", ".join(summaries),
+		"dot_total": int(dot.get("total", 0)),
+		"dot_deaths": dot.get("deaths", []),
+		"dot_levels": dot.get("levels", []),
+	}
 
 
 func _apply_enemy_attack() -> int:
@@ -1902,6 +2246,7 @@ func _on_timeout() -> void:
 	var timeout_summary := String(enemy_attack_result.get("summary", ""))
 	_tick_player_statuses(weaken_at_start, vulnerable_at_start)
 	_tick_enemy_statuses(enemy_fragile_before)
+	_tick_enemy_weakness()
 	Game.charge_berserk_turn()
 	berserk_armed = false
 	_clear_phase()

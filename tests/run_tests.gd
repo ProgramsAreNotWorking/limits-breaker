@@ -55,6 +55,40 @@ func _check(condition: bool, label: String) -> void:
 		failures.append(label)
 
 
+func _clear_fight_statuses(fight: Variant) -> void:
+	for i in range(fight.enemies.size()):
+		fight.enemy_fragile_bonus[i] = 0
+		fight.enemy_fragile_turns[i] = 0
+		fight.enemy_weak_pct[i] = 0
+		fight.enemy_weak_turns[i] = 0
+		fight.enemy_weak_applied_turn[i] = -1
+		fight.enemy_flux_damage[i] = 0
+		fight.enemy_flux_turns[i] = 0
+		fight.enemy_flux_applied_turn[i] = -1
+		fight.enemy_bleed_damage[i] = 0
+		fight.enemy_bleed_turns[i] = 0
+		fight.enemy_bleed_applied_turn[i] = -1
+		fight.enemy_stun_turns[i] = 0
+		fight.enemy_guards[i] = 0
+		fight.enemy_bonus_damage[i] = 0
+		fight.enemy_bonus_turns[i] = 0
+		fight.enemy_intents[i] = {"name": "Prueba defensiva", "kind": "defend", "value": 0, "text": "Sin ataque."}
+	fight.player_weaken_pct = 0
+	fight.player_weaken_turns = 0
+	fight.player_vulnerable_bonus = 0
+	fight.player_vulnerable_turns = 0
+	fight.player_shield = 0
+	Game.run["hp"] = Game.max_hp()
+
+
+func _set_test_enemy(fight: Variant, index: int, enemy_id: String, hp: int) -> void:
+	if index < 0 or index >= fight.enemies.size():
+		return
+	fight.enemies[index] = CombatRules.enemy_by_id(enemy_id).duplicate(true)
+	fight.enemy_max_hps[index] = maxi(1, hp)
+	fight.enemy_hps[index] = maxi(1, hp)
+
+
 func _test_math_generation() -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 731942
@@ -387,6 +421,28 @@ func _test_enemy_kits_and_ward() -> void:
 	var lanza_vs_skeleton := CombatRules.damage_for_attack(20, "arcane_lance", skeleton)
 	_check(tajo_vs_cultist > lanza_vs_cultist, "el Tajo supera a la Lanza contra un enemigo débil a lo físico")
 	_check(lanza_vs_skeleton > tajo_vs_skeleton, "la Lanza supera al Tajo contra un enemigo débil a lo mágico")
+	var brigand := CombatRules.enemy_by_id("brigand")
+	var warden := CombatRules.enemy_by_id("warden")
+	var cultist_tags_ok := CombatRules.is_living_enemy(cultist) and CombatRules.is_magic_flux_immune(cultist)
+	_check(brigand.get("id", "") == "brigand" and CombatRules.is_living_enemy(brigand), "el bandido es un enemigo vivo")
+	_check(not CombatRules.is_living_enemy(skeleton) and CombatRules.is_magic_flux_immune(skeleton), "el esqueleto es no muerto e inmune al flujo mágico")
+	_check(not CombatRules.is_living_enemy(warden) and CombatRules.is_magic_flux_immune(warden), "el guardián constructo es inmune y no sangra")
+	_check(cultist_tags_ok, "el cultista vivo pero mágico es inmune al flujo y puede sangrar")
+	_check(not CombatRules.is_magic_flux_immune(brigand), "un enemigo vivo común no es inmune al flujo mágico")
+	var tags_ok := CombatRules.ENEMY_TAGS.size() == CombatRules.ENEMIES.size()
+	for data in CombatRules.ENEMIES:
+		if CombatRules.enemy_tags(data).is_empty() or CombatRules.enemy_type_label(data) == "":
+			tags_ok = false
+	_check(tags_ok, "todo el bestiario declara un tipo de cuerpo")
+	var sweep_profile: Dictionary = CombatRules.PLAYER_ATTACKS["sweeping_cut"]
+	_check(is_equal_approx(float(sweep_profile.get("mutilation_chance", 0.0)), 0.33), "Barrido declara 33% de Mutilación")
+	var mut_rng := RandomNumberGenerator.new()
+	mut_rng.seed = 987654
+	var mut_applied := 0
+	for i in range(10000):
+		if mut_rng.randf() < float(sweep_profile.get("mutilation_chance", 0.0)):
+			mut_applied += 1
+	_check(mut_applied > 3000 and mut_applied < 3600, "la tirada de Mutilación ronda el 33%")
 	_check(CombatRules.ability_indicator({"kind": "summon"}) == "INVOCACIÓN", "la invocación muestra su tipo")
 	_check(CombatRules.ability_indicator({"kind": "attack", "effect": "vulnerable"}) == "ATAQUE · MARCA", "las intenciones híbridas muestran su efecto")
 	var kit_rng := RandomNumberGenerator.new()
@@ -530,41 +586,180 @@ func _test_enemy_kits_and_ward() -> void:
 	_check(Game.hp() == 10 + expected_heal, "el aliento vital cura sin depender de un objetivo enemigo")
 	_check(fight.enemy_hps[0] == enemy_hp_before_heal, "la curación no daña a los enemigos")
 
+	# --- Estados de las técnicas: Debilidad, Flujo, Sangrado y Mutilación ---
+	_set_test_enemy(fight, 0, "brigand", 500)
 	fight.phase = "select"
-	for i in range(fight.enemies.size()):
-		fight.enemy_hps[i] = fight.enemy_max_hps[i]
-		fight.enemy_guards[i] = 0
-		fight.enemy_fragile_bonus[i] = 0
-		fight.enemy_fragile_turns[i] = 0
-		fight.enemy_intents[i] = {"name": "Prueba defensiva", "kind": "defend", "value": 0, "text": "Sin ataque."}
+	fight.selected_enemy_index = 0
 	fight._sync_selected_enemy()
+	_clear_fight_statuses(fight)
+	fight._refresh_battlefield()
+
+	# Debilidad de Lanza arcana: no reduce el golpe de la ronda en que se aplica,
+	# pero sí los dos contraataques siguientes.
+	fight._choose_attack("arcane_lance")
+	fight._resolve(true)
+	_check(fight.enemy_weak_pct[0] == 25 and fight.enemy_weak_turns[0] == 2, "Lanza arcana aplica Debilidad −25% durante 2 turnos")
+	_check(fight.enemy_weak_applied_turn[0] == fight.turn_number, "Debilidad registra el turno en que se aplicó")
+	fight.turn_number += 1
+	for i in range(fight.enemies.size()):
+		fight.enemy_intents[i] = {"name": "Prueba defensiva", "kind": "defend", "value": 0, "text": "Sin ataque."}
+	fight.enemy_intents[0] = CombatRules.enemy_basic_attack(fight.enemies[0])
 	Game.run["hp"] = Game.max_hp()
+	fight.player_shield = 0
+	var living_count: int = fight._living_enemy_indices().size()
+	var weak_base := Game.enemy_ability_damage(fight.enemy_intents[0], living_count, 0, 0)
+	var weak_expected := maxi(1, int(roundf(float(weak_base) * 0.75)))
+	var weak_result: Dictionary = fight._apply_enemy_attacks()
+	_check(int(weak_result.get("total", 0)) == weak_expected, "Debilidad reduce un 25% el daño enemigo")
+	_check(fight.enemy_weak_turns[0] == 2, "Debilidad no se descuenta en el turno en que se aplicó")
+	fight._tick_enemy_weakness()
+	_check(fight.enemy_weak_turns[0] == 1, "Debilidad descuenta un turno después de la ronda")
+	fight.turn_number += 1
+	fight.enemy_intents[0] = CombatRules.enemy_basic_attack(fight.enemies[0])
+	Game.run["hp"] = Game.max_hp()
+	var weak_result_second: Dictionary = fight._apply_enemy_attacks()
+	_check(int(weak_result_second.get("total", 0)) == weak_expected, "Debilidad sigue reduciendo el daño en el segundo turno")
+	fight._tick_enemy_weakness()
+	_check(fight.enemy_weak_turns[0] == 0 and fight.enemy_weak_pct[0] == 0, "Debilidad expira tras dos turnos")
+
+	# Flujo de magia de Nova astral: daño por turno durante tres turnos.
+	_clear_fight_statuses(fight)
+	_set_test_enemy(fight, 0, "brigand", 500)
+	fight.phase = "select"
+	fight.selected_enemy_index = 0
+	fight._sync_selected_enemy()
+	fight._refresh_battlefield()
 	fight._choose_attack("arcane_nova")
 	var nova_hp_before := int(fight.enemy_hps[0])
 	fight._resolve(true)
-	_check(fight.enemy_fragile_bonus[0] == 2 and fight.enemy_fragile_turns[0] == 2, "Nova astral aplica Frágil +2 durante 2 turnos")
+	_check(fight.enemy_flux_damage[0] == 3 and fight.enemy_flux_turns[0] == 3, "Nova astral aplica Flujo de magia 3 durante 3 turnos")
+	_check(fight.enemy_fragile_turns[0] == 0 and fight.enemy_fragile_bonus[0] == 0, "Nova astral ya no aplica Frágil")
 	_check(fight.enemy_hps[0] < nova_hp_before, "Nova astral daña a los enemigos vivos")
+	var nova_after := int(fight.enemy_hps[0])
+	var same_turn_flux: Dictionary = fight._tick_enemy_damage_over_time()
+	_check(int(same_turn_flux.get("total", 0)) == 0 and int(fight.enemy_hps[0]) == nova_after, "el Flujo no daña en la ronda en que se aplica")
+	for tick in range(3):
+		fight.turn_number += 1
+		var flux_tick: Dictionary = fight._tick_enemy_damage_over_time()
+		_check(int(fight.enemy_hps[0]) == maxi(0, nova_after - 3 * (tick + 1)), "el Flujo resta 3 HP por turno")
+		_check(fight.enemy_flux_turns[0] == 2 - tick, "el Flujo descuenta un turno por ronda")
+		if tick == 0:
+			_check(String(flux_tick.get("summary", "")).contains("flujo −3"), "el resumen del Flujo informa el daño")
+	_check(fight.enemy_flux_turns[0] == 0 and fight.enemy_flux_damage[0] == 0, "el Flujo expira después de tres turnos")
 
-	fight.phase = "select"
+	# Inmunidad al Flujo: los no muertos no reciben el estado.
+	_clear_fight_statuses(fight)
 	for i in range(fight.enemies.size()):
-		fight.enemy_guards[i] = 0
-		fight.enemy_intents[i] = {"name": "Prueba defensiva", "kind": "defend", "value": 0, "text": "Sin ataque."}
+		_set_test_enemy(fight, i, "skeleton", 500)
+	fight.phase = "select"
+	fight.selected_enemy_index = 0
 	fight._sync_selected_enemy()
-	fight._choose_attack("piercing_strike")
-	var fragile_raw := Game.attack_damage(fight.chosen_diff, "piercing_strike")
-	var fragile_expected := CombatRules.damage_for_attack(fragile_raw, "piercing_strike", fight.enemies[0]) + 2
-	# El bestiario crece y el primer enemigo puede tener poca vida; deja margen
-	# para medir el golpe completo de Frágil sin que el objetivo muera antes.
-	if fight.enemy_hps[0] <= fragile_expected:
-		fight.enemy_max_hps[0] = fragile_expected + 5
-		fight.enemy_hps[0] = fight.enemy_max_hps[0]
-		fight._sync_selected_enemy()
-	var fragile_hp_before := int(fight.enemy_hps[0])
+	fight._refresh_battlefield()
+	fight._choose_attack("arcane_nova")
 	fight._resolve(true)
-	_check(fragile_hp_before - fight.enemy_hps[0] == fragile_expected, "Frágil suma daño a los ataques posteriores")
-	var fragile_before: Array = fight.enemy_fragile_turns.duplicate()
-	fight._tick_enemy_statuses(fragile_before)
-	_check(fight.enemy_fragile_turns[0] == 0 and fight.enemy_fragile_bonus[0] == 0, "Frágil expira al agotar sus turnos")
+	var flux_immune := true
+	for i in range(fight.enemies.size()):
+		if fight.enemy_flux_turns[i] != 0:
+			flux_immune = false
+	_check(flux_immune, "los no muertos son inmunes al Flujo de magia")
+
+	# Sangrado de Tajo perforante: sólo en cuerpos vivos.
+	_clear_fight_statuses(fight)
+	_set_test_enemy(fight, 0, "brigand", 500)
+	fight.phase = "select"
+	fight.selected_enemy_index = 0
+	fight._sync_selected_enemy()
+	fight._refresh_battlefield()
+	fight._choose_attack("piercing_strike")
+	fight._resolve(true)
+	_check(fight.enemy_bleed_damage[0] == 2 and fight.enemy_bleed_turns[0] == 3, "Tajo perforante aplica Sangrado 2 durante 3 turnos")
+	var bleed_after := int(fight.enemy_hps[0])
+	var same_turn_bleed: Dictionary = fight._tick_enemy_damage_over_time()
+	_check(int(same_turn_bleed.get("total", 0)) == 0 and int(fight.enemy_hps[0]) == bleed_after, "el Sangrado no daña en la ronda en que se aplica")
+	for tick in range(3):
+		fight.turn_number += 1
+		fight._tick_enemy_damage_over_time()
+		_check(int(fight.enemy_hps[0]) == maxi(0, bleed_after - 2 * (tick + 1)), "el Sangrado resta 2 HP por turno")
+		_check(fight.enemy_bleed_turns[0] == 2 - tick, "el Sangrado descuenta un turno por ronda")
+	_check(fight.enemy_bleed_turns[0] == 0 and fight.enemy_bleed_damage[0] == 0, "el Sangrado expira después de tres turnos")
+	_clear_fight_statuses(fight)
+	_set_test_enemy(fight, 0, "skeleton", 500)
+	fight.phase = "select"
+	fight.selected_enemy_index = 0
+	fight._sync_selected_enemy()
+	fight._refresh_battlefield()
+	fight._choose_attack("piercing_strike")
+	fight._resolve(true)
+	_check(fight.enemy_bleed_turns[0] == 0, "los no muertos no sangran")
+	_clear_fight_statuses(fight)
+	_set_test_enemy(fight, 0, "cultist", 500)
+	fight.phase = "select"
+	fight.selected_enemy_index = 0
+	fight._sync_selected_enemy()
+	fight._refresh_battlefield()
+	fight._choose_attack("piercing_strike")
+	fight._resolve(true)
+	_check(fight.enemy_bleed_turns[0] == 3, "un enemigo vivo de naturaleza mágica todavía sangra")
+
+	# Mutilación: el enemigo pierde el turno inmediato siguiente.
+	_clear_fight_statuses(fight)
+	_set_test_enemy(fight, 0, "brigand", 500)
+	fight.enemy_stun_turns[0] = 1
+	fight.enemy_intents[0] = CombatRules.enemy_basic_attack(fight.enemies[0])
+	Game.run["hp"] = Game.max_hp()
+	var stun_result: Dictionary = fight._apply_enemy_attacks()
+	_check(int(stun_result.get("total", 0)) == 0, "Mutilación hace perder el turno enemigo")
+	_check(String(stun_result.get("summary", "")).contains("mutilado"), "el resumen informa la Mutilación")
+	_check(fight.enemy_stun_turns[0] == 0, "Mutilación se consume después del turno perdido")
+
+	# Barrido aplica Mutilación con una tirada real; se busca una semilla cuyo
+	# primer randf esté por debajo del 33%, sin alterar la probabilidad del juego.
+	_clear_fight_statuses(fight)
+	_set_test_enemy(fight, 0, "brigand", 500)
+	fight.phase = "select"
+	fight.selected_enemy_index = 0
+	fight._sync_selected_enemy()
+	fight._refresh_battlefield()
+	fight._choose_attack("sweeping_cut")
+	var mut_seed := 1
+	while true:
+		var probe := RandomNumberGenerator.new()
+		probe.seed = mut_seed
+		if probe.randf() < 0.33:
+			break
+		mut_seed += 1
+	fight.rng.seed = mut_seed
+	fight._resolve(true)
+	_check(fight.last_message.contains("Mutilación") or fight.last_message.contains("mutilado"), "Barrido puede aplicar Mutilación al golpear")
+	_check(fight.enemy_stun_turns[0] == 0, "la Mutilación de Barrido se consume en el contraataque inmediato")
+
+	# La muerte por daño por turno limpia los estados y registra el turno.
+	_clear_fight_statuses(fight)
+	_set_test_enemy(fight, 0, "brigand", 1)
+	fight.turn_number += 1
+	fight.enemy_bleed_damage[0] = 2
+	fight.enemy_bleed_turns[0] = 3
+	fight.enemy_bleed_applied_turn[0] = fight.turn_number - 1
+	fight.enemy_flux_damage[0] = 3
+	fight.enemy_flux_turns[0] = 3
+	fight.enemy_flux_applied_turn[0] = fight.turn_number - 1
+	fight.enemy_weak_pct[0] = 25
+	fight.enemy_weak_turns[0] = 2
+	fight.enemy_stun_turns[0] = 1
+	var dot_death_turn := int(fight.turn_number)
+	fight._tick_enemy_damage_over_time()
+	_check(fight.enemy_hps[0] == 0, "el daño por turno puede derrotar a un enemigo")
+	_check(fight.enemy_death_turns[0] == dot_death_turn, "la muerte por daño por turno registra el turno")
+	_check(fight.enemy_bleed_turns[0] == 0 and fight.enemy_flux_turns[0] == 0 and fight.enemy_weak_turns[0] == 0 and fight.enemy_stun_turns[0] == 0, "los estados se limpian al morir")
+
+	# Deja el combate listo para las pruebas de invocación y retirada.
+	_clear_fight_statuses(fight)
+	_set_test_enemy(fight, 0, "brigand", 500)
+	fight.enemy_death_turns[0] = -1
+	fight.phase = "select"
+	fight.selected_enemy_index = 0
+	fight._sync_selected_enemy()
+	fight._refresh_battlefield()
 
 	fight.phase = "select"
 	for i in range(fight.enemies.size()):

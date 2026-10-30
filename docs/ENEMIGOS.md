@@ -15,7 +15,41 @@
 
 El **primer turno** de cada encuentro siempre usa el ataque básico. Después, la IA pondera ataque 1,5, defensa 1,0, habilidad especial 0,9 e invocación 0,75. Repetir la misma habilidad reduce su peso a 0,2 y no se puede defender dos veces seguidas.
 
-La defensa aplica su guardia al inicio del turno: el enemigo no ataca ese turno, pero la guardia absorbe el siguiente golpe recibido hasta agotarse. La guardia no se acumula por encima del máximo activo. La intención se anuncia con un prefijo visible: **ATAQUE**, **DEFENSA**, **CURA**, **POTENCIA**, **MALDICIÓN** o **INVOCACIÓN**, con variantes como **ATAQUE · MARCA**. Los efectos de curación, furia, maldición, marca, drenaje, múltiple, perforación, Frágil e invocación se explican en [GAME_DESIGN.md](GAME_DESIGN.md#habilidades-enemigas-y-estados). Los derrotados siguen visibles durante el turno de su muerte y los dos turnos siguientes, y desaparecen al comenzar el tercer turno posterior, después de dos turnos completos.
+La defensa aplica su guardia al inicio del turno: el enemigo no ataca ese turno, pero la guardia absorbe el siguiente golpe recibido hasta agotarse. La guardia no se acumula por encima del máximo activo. La intención se anuncia con un prefijo visible: **ATAQUE**, **DEFENSA**, **CURA**, **POTENCIA**, **MALDICIÓN** o **INVOCACIÓN**, con variantes como **ATAQUE · MARCA**. Los efectos de curación, furia, maldición, marca, drenaje, múltiple, perforación e invocación se explican en [GAME_DESIGN.md](GAME_DESIGN.md#habilidades-enemigas-y-estados). Los derrotados siguen visibles durante el turno de su muerte y los dos turnos siguientes, y desaparecen al comenzar el tercer turno posterior, después de dos turnos completos.
+
+## Tipo de cuerpo e inmunidades
+
+Cada enemigo tiene una o varias etiquetas de cuerpo. Las técnicas del jugador consultan esas etiquetas para decidir si aplican sus estados:
+
+| Tipo | ¿Sangrado? | ¿Flujo de magia? |
+|---|---|---|
+| Vivo | Sí | Sí, salvo que además sea Mágico |
+| No muerto | No | Inmune |
+| Constructo | No | Inmune |
+| Mágico | Sólo si además es Vivo | Inmune |
+
+Un enemigo **Vivo · Mágico** puede sangrar, pero no recibe Flujo. Los no vivos (No muerto, Constructo o Mágico sin Vivo) no sangran. La Mutilación y la Debilidad no dependen del tipo de cuerpo: se aplican a cualquier enemigo que sobreviva al golpe.
+
+| Enemigo | Tipo | Flujo | Sangrado |
+|---|---|---|---|
+| Esqueleto de Cripta | No muerto | Inmune | No |
+| Acólito del Juramento | Vivo | Sí | Sí |
+| Peregrino de Hueso | No muerto | Inmune | No |
+| Bandido de la Marca | Vivo | Sí | Sí |
+| Encadenado de Plomo | No muerto | Inmune | No |
+| Cultista Carmesí | Vivo · Mágico | Inmune | Sí |
+| Bandido de Ceniza | Vivo | Sí | Sí |
+| Guardián de Brasas | Constructo · Mágico | Inmune | No |
+| Guardián de Hierro | Constructo · Mágico | Inmune | No |
+| Sabueso de Escoria | Vivo | Sí | Sí |
+| Sacerdote de Escoria | Vivo · Mágico | Inmune | Sí |
+| Coloso de Hueso | No muerto | Inmune | No |
+| Coro Hueco | Mágico | Inmune | No |
+| Polilla de Cal | Vivo · Mágico | Inmune | Sí |
+| Centinela de la Grieta | Mágico | Inmune | No |
+| Guardiana de la Campana | Vivo | Sí | Sí |
+| Erudito del Espejo | Vivo · Mágico | Inmune | Sí |
+| Limitless | Mágico | Inmune | No |
 
 ## Cripta de los Juramentos · encuentros 1–3
 

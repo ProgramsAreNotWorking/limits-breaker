@@ -88,10 +88,10 @@ La historia no determina si es una criatura anterior a la Z, una figura producid
 | Elegir técnica y objetivo bajo presión | Las criaturas anuncian sus intenciones mediante la postura. El viajero observa el peligro y decide cómo responder. |
 | Resolver el problema sin cronómetro | La urgencia está en la batalla. El cálculo da al jugador tiempo para comprender la forma que dará a la magia. |
 | Acierto y error | Un acierto conduce la fuerza hacia el objetivo; un error deja que la intención enemiga se cumpla. Los retos avanzados pueden hacer que el exceso de fuerza rebote. |
-| Tajo perforante | Concentra un golpe contra un objetivo y puede atravesar parte de su armadura. Rinde más contra cuerpos débiles a lo físico. |
-| Barrido | Alcanza hasta dos enemigos con el mismo golpe amplio. |
-| Lanza arcana | Organiza una descarga mágica contra un objetivo, atraviesa parte de su resistencia arcana y castiga a los cuerpos débiles a la magia. |
-| Nova astral | Desata una marea de luz sobre todos los enemigos vivos y los deja Frágiles, más expuestos al siguiente golpe. |
+| Tajo perforante | Concentra un golpe contra un objetivo, atraviesa parte de su armadura y deja una herida que sigue sangrando. Rinde más contra cuerpos débiles a lo físico. |
+| Barrido | Alcanza hasta dos enemigos con el mismo golpe amplio y puede mutilar a los alcanzados, arrebatándoles el siguiente turno. |
+| Lanza arcana | Organiza una descarga mágica contra un objetivo, atraviesa parte de su resistencia arcana y lo debilita para que golpee con menos fuerza. |
+| Nova astral | Desata una marea de luz sobre todos los enemigos vivos y deja en ellos un flujo de magia que sigue quemando durante varios turnos. |
 | Sello de guarda | Traza una frontera para contener los golpes; la guardia que sobrevive puede sostenerse hasta dos turnos más. |
 | Aliento vital | Recupera una pequeña cantidad de vida sin dañar a nadie; el viajero sigue expuesto a las intenciones enemigas. |
 | Grupos de enemigos | La fractura reúne varias criaturas en una sala; el viajero debe priorizar y leer su formación. |

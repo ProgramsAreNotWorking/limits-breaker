@@ -29,14 +29,14 @@ Es el único personaje controlable. Desciende desde el Encuentro I hasta el Tron
 
 | Técnica | Tipo | Función |
 |---|---|---|
-| Tajo perforante | Físico, 1 objetivo | 1,00× de daño y ajuste +1; atraviesa 2 de armadura. |
-| Barrido | Físico, hasta 2 objetivos | 0,78× de daño y ajuste 0; alcanza al objetivo y al siguiente enemigo vivo. |
-| Lanza arcana | Mágico, 1 objetivo | 1,00× de daño y ajuste +1; atraviesa 1 de resistencia mágica. |
-| Nova astral | Mágico, hasta 4 objetivos | 0,54× de daño y ajuste −1; alcanza a todos los enemigos vivos y les aplica Frágil +2 durante 2 turnos. |
+| Tajo perforante | Físico, 1 objetivo | 1,00× de daño y ajuste +1; atraviesa 2 de armadura y aplica Sangrado 2 durante 3 turnos a enemigos vivos. |
+| Barrido | Físico, hasta 2 objetivos | 0,78× de daño y ajuste 0; alcanza al objetivo y al siguiente enemigo vivo. Tiene un 33 % de probabilidad por objetivo de aplicar Mutilación, que consume el turno enemigo inmediato. |
+| Lanza arcana | Mágico, 1 objetivo | 1,00× de daño y ajuste +1; atraviesa 1 de resistencia mágica y aplica Debilidad −25 % durante 2 turnos. |
+| Nova astral | Mágico, hasta 4 objetivos | 0,54× de daño y ajuste −1; alcanza a todos los enemigos vivos y aplica Flujo de magia 3 durante 3 turnos a los que no son inmunes. |
 | Sello de guarda | Defensa, propio | No hace daño. Otorga 12/18/26/34 de escudo según la dificultad, más 2 por punto de defensa; absorbe los ataques enemigos y conserva cualquier remanente hasta dos turnos adicionales. |
 | Aliento vital | Curación, propio | No hace daño. Cura 7/10/13/16 HP según la dificultad; los enemigos siguen actuando. |
 
-El Tajo y la Lanza comparten fuerza base y dificultad: la diferencia sale del tipo de daño, de la penetración, de las debilidades del enemigo y del arma equipada. El Tajo recibe el daño completo del arma; la Lanza recibe siempre la mitad y, en Avanzado/Superdifícil, también su hechizo. Nova astral es el ataque de área que prepara el siguiente turno con Frágil.
+El Tajo y la Lanza comparten fuerza base y dificultad: la diferencia sale del tipo de daño, de la penetración, de las debilidades del enemigo y del arma equipada. El Tajo recibe el daño completo del arma; la Lanza recibe siempre la mitad y, en Avanzado/Superdifícil, también su hechizo. Nova astral es el ataque de área que mantiene presión con Flujo de magia; Tajo y Barrido castigan a los cuerpos vivos con Sangrado y Mutilación, y la Lanza reduce el contraataque enemigo con Debilidad.
 
 El **Berserk** se carga durante siete turnos de combate y se conserva al cambiar de encuentro. Al activarlo, un acierto multiplica por 1,5 el daño, el escudo o la curación; un fallo conserva el 0,4× y las penalizaciones normales. El turno de activación cuenta para la siguiente carga.
 

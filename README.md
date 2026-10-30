@@ -8,6 +8,7 @@ Roguelike RPG de fantasía oscura en el que resolver límites es el sistema de c
 
 - Combate por turnos con cuatro técnicas ofensivas, una defensa y una curación, selección de objetivo y grupos de hasta cuatro enemigos. Las intenciones enemigas siguen visibles en el panel de resolución y los derrotados se retiran después de dos turnos completos.
 - Enemigos con ataque básico, defensa y habilidades especiales; los fuertes y élites añaden una tercera y el miniboss y el jefe llegan a cuatro.
+- Estados de técnica con interacción por tipo de cuerpo: Debilidad, Flujo de magia, Sangrado y Mutilación. Los no muertos, constructos y variantes mágicas tienen inmunidades propias.
 - Ejercicios de límites directos y laterales, gráficas, tablas y factorización. La dificultad varía según la progresión de la run y la maestría; resolver no tiene cronómetro.
 - Cuatro mundos, dieciocho enemigos, veintiséis objetos, equipo, inventario, fragua, eventos especiales, muerte permanente y un jefe final.
 - Maestría matemática persistente, selección adaptativa de temas, guardado local y ajustes de audio y accesibilidad.
@@ -34,6 +35,7 @@ En **Opciones** puedes elegir el tamaño de la ventana y cambiar entre modo vent
 
 ## Documentación
 
+- [Estado del proyecto y pendientes](docs/ESTADO.md)
 - [Diseño y reglas del juego](docs/GAME_DESIGN.md)
 - [Personajes](docs/PERSONAJES.md)
 - [Enemigos](docs/ENEMIGOS.md)

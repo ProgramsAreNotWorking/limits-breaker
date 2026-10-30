@@ -198,6 +198,13 @@ func _ready() -> void:
 	Game.start_run()
 	app._on_go("combat")
 	await _snap("combat-select-960")
+	Game.run["encounter"] = 2
+	app._on_go("combat")
+	while app.current.enemies.size() < 2:
+		app.current._summon_enemy({"enemy": "bell_keeper"})
+	app.current._refresh_battlefield()
+	app.current._refresh_hud()
+	await _snap("combat-two-960")
 	Game.run["encounter"] = 9
 	app._on_go("combat")
 	while app.current.enemies.size() < 4:
@@ -235,6 +242,17 @@ func _ready() -> void:
 	app.current.phase = "solve"
 	app.current._render_solve()
 	await _snap("combat-graph-four-960")
+
+	for i in range(mini(4, app.current.enemies.size())):
+		app.current.enemy_weak_pct[i] = 25
+		app.current.enemy_weak_turns[i] = 2
+		app.current.enemy_flux_damage[i] = 3
+		app.current.enemy_flux_turns[i] = 3
+		app.current.enemy_bleed_damage[i] = 2
+		app.current.enemy_bleed_turns[i] = 3
+	app.current.enemy_stun_turns[1] = 1
+	app.current._refresh_battlefield()
+	await _snap("combat-graph-four-status-960")
 
 	print("preview viewport: %s" % get_viewport().get_visible_rect().size)
 	get_tree().quit()
