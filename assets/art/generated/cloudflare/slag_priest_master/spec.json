@@ -1,0 +1,22 @@
+{
+  "schema": "generate2dsprite.master_spec.v1",
+  "name": "slag_priest",
+  "subject": "a severe forge priest with a slag collar and enclosed coal censer, full body",
+  "identity": "Dark-robed, close-cropped bearded forge priest with a broad collar of vitrified slag, iron staff topped by a closed perforated censer, small amber coal visible only through its holes.",
+  "pose": "Three-quarter view, upright and watchful, holding the staff at his side.",
+  "recap": "severe forge priest with a slag collar and enclosed coal censer, full body (Dark-robed, close-cropped bearded forge priest with a broad collar of vitrified slag, iron staff topped by a closed perforated censer, small amber coal visible only through its holes)",
+  "facing": "right",
+  "facing_parts": null,
+  "view": null,
+  "class": "mob",
+  "finish": "hd",
+  "key": "#FF00FF",
+  "genre": null,
+  "pronoun": "they",
+  "identity_ref": null,
+  "style_ref": null,
+  "allowed_text": null,
+  "extra_bans": [],
+  "opaque_parts": null,
+  "extra": null
+}

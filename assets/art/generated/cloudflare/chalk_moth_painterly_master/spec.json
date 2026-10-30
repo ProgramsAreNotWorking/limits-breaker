@@ -1,0 +1,22 @@
+{
+  "schema": "generate2dsprite.master_spec.v1",
+  "name": "chalk_moth",
+  "subject": "the Chalk Moth, full body",
+  "identity": "Eerie insect from a ruined sanctuary, narrow segmented charcoal body, six thin jointed legs, two broad pale ash-grey wings with ragged edges and sparse dark veins folded down like a funeral mantle, tiny sunken black eyes with no white shine or mouth, two short antennae.",
+  "pose": "Hovering slightly with its six thin legs separated beneath its body.",
+  "recap": "Chalk Moth, full body (Eerie insect from a ruined sanctuary, narrow segmented charcoal body, six thin jointed legs, two broad pale ash-grey wings with ragged edges and sparse dark veins folded down like a funeral mantle, tiny sunken black eyes with no white shine or mouth, two short antennae)",
+  "facing": "none",
+  "facing_parts": null,
+  "view": null,
+  "class": "mob",
+  "finish": "hd",
+  "key": "#FF00FF",
+  "genre": null,
+  "pronoun": "they",
+  "identity_ref": null,
+  "style_ref": null,
+  "allowed_text": null,
+  "extra_bans": [],
+  "opaque_parts": null,
+  "extra": null
+}

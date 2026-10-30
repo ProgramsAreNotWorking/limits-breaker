@@ -3,7 +3,6 @@ extends Control
 ## Retrato raster, con reserva de dibujo y efectos animados de pantalla.
 
 const MediaManifest = preload("res://src/core/asset_manifest.gd")
-const ToonArt = preload("res://src/ui/toon_art.gd")
 
 const INK := Color("#111319")
 const INK_HI := Color("#1c2028")
@@ -30,7 +29,6 @@ const EFFECT_DURATION := 0.48
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
-	ToonArt.apply(self, 10.0, 0.20, 4.0, 1.05)
 	_setup_particles()
 	resized.connect(_sync_particle_layout)
 	_sync_particle_layout()
@@ -47,17 +45,6 @@ func configure(value: String) -> void:
 func set_free_standing(value: bool) -> void:
 	free_standing = value
 	queue_redraw()
-
-
-func set_battle_readability(accent: Color) -> void:
-	var portrait_shader := material as ShaderMaterial
-	if portrait_shader == null:
-		return
-	portrait_shader.set_shader_parameter("brightness", 1.18)
-	portrait_shader.set_shader_parameter("shadow_lift", 0.025)
-	portrait_shader.set_shader_parameter("saturation", 1.14)
-	portrait_shader.set_shader_parameter("rim_color", accent)
-	portrait_shader.set_shader_parameter("rim_strength", 0.42)
 
 
 func play_effect(value: String) -> void:

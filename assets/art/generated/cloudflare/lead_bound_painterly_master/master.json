@@ -1,0 +1,174 @@
+{
+  "schema": "generate2dsprite.master.v1",
+  "tool": {
+    "name": "master_still",
+    "version": "0.4.0"
+  },
+  "created": "2026-10-29T06:55:39.787Z",
+  "name": "lead_bound",
+  "subject": "the Lead-Bound, full body",
+  "identity_recap": "Lead-Bound, full body (Gaunt adult figure in a worn slate funeral coat, bald with a severe tired face, one rusted iron chain crossed across the chest and exactly one plain heavy lead seal at the sternum; bare feet)",
+  "facing": "left",
+  "view": "side view (profile to three-quarter)",
+  "finish": "hd",
+  "class": "mob",
+  "framing": {
+    "canvas": [
+      1024,
+      1024
+    ],
+    "subject_height_px": 471,
+    "top_margin_px": 406,
+    "lead_px": 100,
+    "preset": "mob",
+    "subject_bbox": [
+      505,
+      406,
+      719,
+      877
+    ],
+    "anchor": [
+      618.0,
+      877.0
+    ],
+    "opaque_area_px": 55233,
+    "width_limited": false
+  },
+  "key": "#FF00FF",
+  "files": {
+    "master": {
+      "path": "master.png",
+      "sha256": "ca2072e3b1dc58f9fdf7fb5ca3bc08acabd50a42fd20e0733ab597ef7b96c794",
+      "bytes": 110865,
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    "cutout": {
+      "path": "master_rgba.png",
+      "sha256": "c8ba745e096712c147f6a7f1576f91486961646f986208cdbd45fb717002efe7",
+      "bytes": 127885,
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    "source": {
+      "path": "source.png",
+      "sha256": "9e983b90f302a6c81ee96c08a9862511df49e7886d2e14e660a412059a57c063",
+      "bytes": 398098,
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    "spec": {
+      "path": "spec.json",
+      "sha256": "4d18acc62ce8f2b4f49eeb608f40970a98cb5ed0ecf1811859de32c8130388fd",
+      "bytes": 910
+    },
+    "prompt": {
+      "path": "prompt.txt",
+      "sha256": "ab4e4af81ccd50d12234f6de71c2abcc63fb0bb1039ca938912aa11201e372e8",
+      "bytes": 2018
+    }
+  },
+  "references": [],
+  "transform": {
+    "mapping": "master = scale * source + offset (continuous pixel coordinates: pixel i spans [i, i + 1))",
+    "source_size": [
+      1024,
+      1024
+    ],
+    "source_subject_bbox": [
+      326,
+      40,
+      762,
+      1004
+    ],
+    "crop_box": [
+      320,
+      34,
+      768,
+      1010
+    ],
+    "crop_margin_px": 6,
+    "scale": 0.48858921161825725,
+    "offset": [
+      346.20746887966806,
+      386.4564315352697
+    ],
+    "canvas": [
+      1024,
+      1024
+    ],
+    "resampler": "box",
+    "premultiplied": true,
+    "alpha_floor_px": 0,
+    "subject_parts": 1,
+    "ignored_parts": 1,
+    "ignored_px": 2,
+    "source_touches": [],
+    "key_rgb": [
+      255,
+      0,
+      255
+    ]
+  },
+  "route": "cloudflare-mcp-workers-ai-flux-2-klein-4b",
+  "provenance": {
+    "command": "external",
+    "run": null,
+    "take": null,
+    "source_name": "lead_bound_painterly_cutout.png",
+    "source_sha256": "9e983b90f302a6c81ee96c08a9862511df49e7886d2e14e660a412059a57c063",
+    "media": null,
+    "media_cli_source": null,
+    "edit": null
+  },
+  "matte": {
+    "requested": "soft",
+    "key_estimate": {
+      "key": [
+        255.0,
+        0.0,
+        255.0
+      ],
+      "source": "native_alpha",
+      "valid": false,
+      "ring_share": 0.0,
+      "coverage": 0.0,
+      "distance_from_declared": 0.0
+    },
+    "quality": "native_alpha",
+    "qa": {
+      "key": [
+        255.0,
+        0.0,
+        255.0
+      ],
+      "opaque_key_px": 0,
+      "outer_ring_spill_fraction": 0.21581812359910343,
+      "semitransparent_fraction": 0.004314523108880042,
+      "enclosed_key_pockets": 0,
+      "key_hued_px": 0,
+      "visible_px": 231080,
+      "outer_ring_px": 3123,
+      "thresholds": {
+        "key_tolerance": 48.0,
+        "spill_threshold": 20.0,
+        "min_pocket_area": 16,
+        "opaque_alpha": 128,
+        "spill_hue_balance": 0.5
+      },
+      "method": "forge_matte.matte_qa v1: straight-colour key distance and dominance on the keyed image; two-channel keys count spill only where the key channels are balanced"
+    },
+    "key_choice": {
+      "status": "ok",
+      "overlap_share": 0.0,
+      "rule": "reject a key when more than 0.5% of subject pixels have key dominance >= 40; first acceptable candidate wins"
+    }
+  },
+  "warnings": []
+}

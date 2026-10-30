@@ -10,7 +10,6 @@ const BlacksmithScreenScript = preload("res://src/ui/blacksmith_screen.gd")
 const AngelScreenScript = preload("res://src/ui/angel_screen.gd")
 const DeathScreenScript = preload("res://src/ui/death_screen.gd")
 const VictoryScreenScript = preload("res://src/ui/victory_screen.gd")
-const ToonArt = preload("res://src/ui/toon_art.gd")
 
 var checks := 0
 var failures: Array[String] = []
@@ -38,6 +37,7 @@ func _run() -> void:
 	await _test_victory_milestone()
 	await _test_special_encounters()
 	await _test_combat_menu_and_abandon()
+	await _test_enemy_kits_and_ward()
 	if failures.is_empty():
 		print("PASS: %d verificaciones." % checks)
 	else:
@@ -104,6 +104,10 @@ func _test_combat_balance() -> void:
 	_check(CombatRules.enemies_for_encounter(5, encounter_rng)["id"] == "colossus", "miniboss en encuentro 5")
 	var equipped := {"weapon": "ashen_edge", "armor": "oak_shield", "relic": "ember_charm"}
 	_check(CombatRules.player_attack(1, equipped) == 20, "arma y reliquia modifican el ataque")
+	var staff := {"weapon": "arcane_staff"}
+	_check(CombatRules.player_attack(0, staff, "arcane_lance") == CombatRules.player_attack(0, {}, "arcane_lance"), "el hechizo no bonifica la Lanza en Fácil")
+	_check(CombatRules.player_attack(2, staff, "arcane_lance") == CombatRules.player_attack(2, {}, "arcane_lance") + 4, "el hechizo bonifica la Lanza en Avanzado")
+	_check(CombatRules.player_attack(0, staff, "piercing_strike") == CombatRules.player_attack(0, {}, "piercing_strike") + 1, "el daño del báculo sí bonifica las técnicas físicas")
 	_check(CombatRules.player_defense(equipped) == 2, "armadura modifica defensa")
 	_check(CombatRules.max_hp_bonus({"weapon": "", "armor": "iron_cuirass", "relic": "pilgrim_relic"}) == 25, "equipo modifica HP máximo")
 
@@ -132,8 +136,8 @@ func _test_world_expansion() -> void:
 	_check(String(CombatRules.world_for_encounter(4)["id"]) == "ash", "el cuarto encuentro entra en Ceniza")
 	_check(String(CombatRules.world_for_encounter(7)["id"]) == "bell", "el séptimo encuentro entra en la Campana")
 	_check(String(CombatRules.world_for_encounter(10)["id"]) == "throne", "el jefe final abre el Trono")
-	_check(CombatRules.ENEMIES.size() == 15, "el repertorio crece a quince enemigos")
-	_check(CombatRules.ITEMS.size() == 22, "la base de objetos crece a veintidós entradas")
+	_check(CombatRules.ENEMIES.size() == 18, "el repertorio crece a dieciocho enemigos")
+	_check(CombatRules.ITEMS.size() == 26, "la base de objetos crece a veintiséis entradas")
 	var world_assets_ok := true
 	var pools_ok := true
 	var world_loot_ok := true
@@ -283,12 +287,6 @@ func _test_audio_and_visual_assets() -> void:
 		var effect_path := MediaManifest.effect_art(String(effect_id))
 		_check(FileAccess.file_exists(effect_path), "efecto raster " + String(effect_id))
 		_check(load(effect_path) is Texture2D, "efecto cargable " + String(effect_id))
-	_check(ResourceLoader.exists("res://src/ui/cartoon_art.gdshader"), "shader de tratamiento ilustrado disponible")
-	var toon_material := ToonArt.material()
-	_check(toon_material != null and toon_material.shader != null, "material ilustrado configurable")
-	_check(ToonArt.ENABLED, "tratamiento ilustrado activo")
-
-
 func _test_persistence_and_mastery() -> void:
 	Game._reset_mastery()
 	Game.start_run()
@@ -336,6 +334,284 @@ func _test_inventory_and_equipment() -> void:
 	Game.apply_upgrade("reinforce")
 	_check(Game.max_hp() == max_before + 12, "refuerzo aumenta HP máximo")
 	_check(Game.hp() == 62, "refuerzo también cura doce HP")
+
+
+func _test_enemy_kits_and_ward() -> void:
+	var valid_kinds := ["attack", "defend", "heal", "buff", "debuff", "summon"]
+	var counts_ok := true
+	var kinds_ok := true
+	var basic_ok := true
+	for data in CombatRules.ENEMIES:
+		var abilities: Array = data.get("abilities", [])
+		var tier := String(data.get("tier", "weak"))
+		var maximum := 4 if tier in ["miniboss", "boss"] else 3
+		if abilities.size() < 2 or abilities.size() > maximum:
+			counts_ok = false
+		if tier in ["miniboss", "boss"] and abilities.size() != 4:
+			counts_ok = false
+		var has_basic := false
+		for ability in abilities:
+			if not valid_kinds.has(String(ability.get("kind", ""))):
+				kinds_ok = false
+			if String(ability.get("kind", "")) == "attack" and String(ability.get("effect", "")) == "":
+				has_basic = true
+		if not has_basic:
+			basic_ok = false
+		var basic := CombatRules.enemy_basic_attack(data)
+		if int(basic.get("damage", 0)) != int(data.get("attack", 0)):
+			basic_ok = false
+	_check(counts_ok, "cada enemigo tiene 2-3 habilidades y los jefes cuatro")
+	_check(kinds_ok, "las habilidades enemigas usan tipos válidos")
+	_check(basic_ok, "cada enemigo conserva un ataque básico con su daño original")
+	_check(CombatRules.ATTACK_IDS.size() == 6 and CombatRules.ATTACK_IDS[4] == "ward_sigil" and CombatRules.ATTACK_IDS[5] == "vital_breath", "el repertorio incluye sello y aliento vital")
+	_check(CombatRules.is_defense_attack("ward_sigil") and not CombatRules.is_defense_attack("piercing_strike"), "el sello se identifica como defensa")
+	_check(CombatRules.is_healing_attack("vital_breath") and not CombatRules.is_healing_attack("ward_sigil"), "el aliento se identifica como curación")
+	_check(CombatRules.player_shield(0, 0) == 12 and CombatRules.player_shield(3, 0) == 34, "el escudo escala con la dificultad")
+	_check(CombatRules.player_shield(1, 2) == 22, "la defensa del jugador suma al escudo")
+	_check(CombatRules.player_heal(0) == 7 and CombatRules.player_heal(3) == 16, "la curación escala con la dificultad")
+	_check(CombatRules.damage_for_attack(99, "ward_sigil", CombatRules.enemy_by_id("skeleton")) == 0, "el sello no hace daño")
+	_check(CombatRules.damage_for_attack(99, "vital_breath", CombatRules.enemy_by_id("skeleton")) == 0, "el aliento no hace daño")
+	_check(CombatRules.attack_effectiveness_label("ward_sigil", CombatRules.enemy_by_id("skeleton")) == "Protección para este turno", "la carta defensiva no muestra debilidad ofensiva")
+	var parity_ok := true
+	for difficulty in range(4):
+		if CombatRules.player_attack(difficulty, {}, "piercing_strike") != CombatRules.player_attack(difficulty, {}, "arcane_lance"):
+			parity_ok = false
+	_check(parity_ok, "Tajo y Lanza comparten la misma fuerza base")
+	var range_parity := CombatRules.attack_difficulty_range(1, 3, "piercing_strike") == CombatRules.attack_difficulty_range(1, 3, "arcane_lance")
+	_check(range_parity, "Tajo y Lanza afrontan la misma dificultad")
+	var cultist := CombatRules.enemy_by_id("cultist")
+	var skeleton := CombatRules.enemy_by_id("skeleton")
+	var tajo_vs_cultist := CombatRules.damage_for_attack(20, "piercing_strike", cultist)
+	var lanza_vs_cultist := CombatRules.damage_for_attack(20, "arcane_lance", cultist)
+	var tajo_vs_skeleton := CombatRules.damage_for_attack(20, "piercing_strike", skeleton)
+	var lanza_vs_skeleton := CombatRules.damage_for_attack(20, "arcane_lance", skeleton)
+	_check(tajo_vs_cultist > lanza_vs_cultist, "el Tajo supera a la Lanza contra un enemigo débil a lo físico")
+	_check(lanza_vs_skeleton > tajo_vs_skeleton, "la Lanza supera al Tajo contra un enemigo débil a lo mágico")
+	_check(CombatRules.ability_indicator({"kind": "summon"}) == "INVOCACIÓN", "la invocación muestra su tipo")
+	_check(CombatRules.ability_indicator({"kind": "attack", "effect": "vulnerable"}) == "ATAQUE · MARCA", "las intenciones híbridas muestran su efecto")
+	var kit_rng := RandomNumberGenerator.new()
+	kit_rng.seed = 4417
+	var choices_ok := true
+	var defend_blocked := true
+	var boss := CombatRules.enemy_by_id("colossus")
+	var ability_names: Array[String] = []
+	for ability in boss.get("abilities", []):
+		ability_names.append(String(ability.get("name", "")))
+	for i in range(240):
+		var chosen_ability := CombatRules.choose_enemy_ability(boss, kit_rng)
+		if not ability_names.has(String(chosen_ability.get("name", ""))):
+			choices_ok = false
+	for i in range(120):
+		var chosen_ability := CombatRules.choose_enemy_ability(boss, kit_rng, "", "defend")
+		if String(chosen_ability.get("kind", "")) == "defend":
+			defend_blocked = false
+	_check(choices_ok, "la IA enemiga elige sólo habilidades de su kit")
+	_check(defend_blocked, "la IA no defiende dos veces seguidas")
+
+	Game._reset_mastery()
+	Game.start_run()
+	var app: Variant = MainSceneScript.new()
+	get_tree().root.add_child(app)
+	await get_tree().process_frame
+	_click(app, "Nueva run")
+	await get_tree().process_frame
+	var fight: Variant = app.current
+	if not _is_script(fight, CombatScreenScript):
+		_check(false, "combate activo para probar kits y sello")
+		app.queue_free()
+		await get_tree().process_frame
+		return
+	_check(int(fight.turn_number) == 1, "el primer turno del combate está activo")
+	_check(fight.enemy_intents.size() == fight.enemies.size(), "cada enemigo recibe una intención")
+	_check(String(fight._enemy_intent_for(0).get("kind", "")) == "attack", "el primer turno enemigo siempre ataca")
+	var basic := CombatRules.enemy_basic_attack(fight.enemies[0])
+	fight.enemy_intents[0] = basic
+	Game.run["hp"] = Game.max_hp()
+	var raw_hit := Game.enemy_ability_damage(basic, 1, 0, 0)
+	fight.player_shield = 1000
+	var shield_result: Dictionary = fight._apply_enemy_attacks()
+	_check(int(shield_result.get("absorbed", 0)) == raw_hit, "el escudo absorbe el golpe básico")
+	_check(Game.hp() == Game.max_hp(), "el escudo evita el daño a la vida")
+	_check(fight.player_shield == 1000 - raw_hit, "el escudo se consume al absorber")
+	Game.run["hp"] = Game.max_hp()
+	fight.player_shield = 0
+	var plain_result: Dictionary = fight._apply_enemy_attacks()
+	_check(int(plain_result.get("total", 0)) == raw_hit, "sin escudo el golpe básico llega completo")
+	_check(Game.hp() == Game.max_hp() - raw_hit, "sin escudo la vida baja")
+
+	fight.enemy_hps[0] = fight.enemy_max_hps[0]
+	fight._sync_selected_enemy()
+	fight.enemy_guards[0] = 4
+	fight.phase = "select"
+	fight._choose_attack("piercing_strike")
+	var raw_player_hit := CombatRules.damage_for_attack(Game.attack_damage(fight.chosen_diff, "piercing_strike"), "piercing_strike", fight.enemies[0])
+	var before_guard_hp := int(fight.enemy_hps[0])
+	fight._resolve(true)
+	_check(fight.enemy_hps[0] == maxi(0, before_guard_hp - maxi(0, raw_player_hit - 4)), "la guardia enemiga reduce el daño recibido")
+	_check(int(fight.enemy_guards[0]) == 0, "la guardia enemiga se consume con el golpe")
+
+	fight.enemy_hps[0] = fight.enemy_max_hps[0]
+	fight.enemy_intents[0] = {"name": "Prueba de cura", "kind": "heal", "value": 8, "text": "Cura de prueba."}
+	var before_heal := int(fight.enemy_hps[0]) - 10
+	fight.enemy_hps[0] = before_heal
+	fight._sync_selected_enemy()
+	fight._apply_enemy_attacks()
+	_check(fight.enemy_hps[0] == mini(fight.enemy_max_hps[0], before_heal + 8), "la habilidad de cura restaura vida enemiga")
+
+	fight.enemy_intents[0] = {"name": "Prueba de furia", "kind": "buff", "value": 4, "turns": 3, "text": "Furia de prueba."}
+	fight._apply_enemy_attacks()
+	_check(fight.enemy_bonus_damage[0] == 4 and fight.enemy_bonus_turns[0] == 3, "la furia enemiga acumula daño y duración")
+
+	fight.player_weaken_pct = 0
+	fight.player_weaken_turns = 0
+	fight.enemy_intents[0] = {"name": "Prueba de maldición", "kind": "debuff", "effect": "weaken", "value": 25, "turns": 2, "text": "Maldición de prueba."}
+	fight._apply_enemy_attacks()
+	_check(fight.player_weaken_pct == 25 and fight.player_weaken_turns == 2, "la maldición reduce el daño del jugador")
+
+	fight.player_vulnerable_bonus = 0
+	fight.player_vulnerable_turns = 0
+	fight.enemy_intents[0] = {"name": "Prueba de marca", "kind": "attack", "damage": 1, "effect": "vulnerable", "value": 3, "turns": 2, "text": "Marca de prueba."}
+	fight._apply_enemy_attacks()
+	_check(fight.player_vulnerable_bonus == 3 and fight.player_vulnerable_turns == 2, "la marca aumenta el daño recibido")
+
+	Game.run["hp"] = Game.max_hp()
+	fight.player_shield = 0
+	fight.player_vulnerable_bonus = 0
+	fight.player_vulnerable_turns = 0
+	fight.enemy_bonus_damage[0] = 0
+	fight.enemy_bonus_turns[0] = 0
+	fight.enemy_intents[0] = {"name": "Prueba doble", "kind": "attack", "damage": 1, "effect": "multi", "hits": 2, "text": "Doble golpe de prueba."}
+	var multi_result: Dictionary = fight._apply_enemy_attacks()
+	_check(int(multi_result.get("total", 0)) == 2, "el ataque múltiple golpea dos veces")
+
+	fight.enemy_hps[0] = fight.enemy_max_hps[0] - 10
+	fight._sync_selected_enemy()
+	fight.enemy_intents[0] = {"name": "Prueba de drenaje", "kind": "attack", "damage": 5, "effect": "drain", "value": 0.5, "text": "Drenaje de prueba."}
+	Game.run["hp"] = Game.max_hp()
+	var before_drain := int(fight.enemy_hps[0])
+	fight._apply_enemy_attacks()
+	_check(fight.enemy_hps[0] == mini(fight.enemy_max_hps[0], before_drain + 3), "el drenaje cura la mitad del daño causado")
+
+	fight.phase = "select"
+	fight.enemy_hps[0] = fight.enemy_max_hps[0]
+	fight._sync_selected_enemy()
+	fight.enemy_guards[0] = 0
+	fight.player_shield = 0
+	fight.player_weaken_pct = 0
+	fight.player_weaken_turns = 0
+	fight.player_vulnerable_bonus = 0
+	fight.player_vulnerable_turns = 0
+	fight.enemy_bonus_damage[0] = 0
+	fight.enemy_bonus_turns[0] = 0
+	fight.enemy_intents[0] = basic
+	Game.run["hp"] = Game.max_hp()
+	fight._choose_attack("ward_sigil")
+	_check(fight.attack_target_indices.is_empty(), "el sello no exige objetivo enemigo")
+	var shield_value := Game.attack_shield(fight.chosen_diff)
+	fight._resolve(true)
+	_check(fight.last_message.contains("escudo"), "el resultado explica el escudo del sello")
+	_check(fight.enemy_hps[0] == fight.enemy_max_hps[0], "el sello no daña al enemigo")
+	_check(Game.hp() == Game.max_hp(), "el sello bloquea por completo el ataque básico")
+	_check(fight.player_shield == maxi(0, shield_value - raw_hit), "el escudo restante queda registrado")
+
+	fight.phase = "select"
+	for i in range(fight.enemies.size()):
+		fight.enemy_hps[i] = fight.enemy_max_hps[i]
+		fight.enemy_guards[i] = 0
+		fight.enemy_fragile_bonus[i] = 0
+		fight.enemy_fragile_turns[i] = 0
+		fight.enemy_intents[i] = {"name": "Prueba defensiva", "kind": "defend", "value": 0, "text": "Sin ataque."}
+	fight._sync_selected_enemy()
+	fight._choose_attack("vital_breath")
+	var expected_heal := Game.attack_heal(fight.chosen_diff, "vital_breath")
+	Game.run["hp"] = 10
+	var enemy_hp_before_heal := int(fight.enemy_hps[0])
+	fight._resolve(true)
+	_check(Game.hp() == 10 + expected_heal, "el aliento vital cura sin depender de un objetivo enemigo")
+	_check(fight.enemy_hps[0] == enemy_hp_before_heal, "la curación no daña a los enemigos")
+
+	fight.phase = "select"
+	for i in range(fight.enemies.size()):
+		fight.enemy_hps[i] = fight.enemy_max_hps[i]
+		fight.enemy_guards[i] = 0
+		fight.enemy_fragile_bonus[i] = 0
+		fight.enemy_fragile_turns[i] = 0
+		fight.enemy_intents[i] = {"name": "Prueba defensiva", "kind": "defend", "value": 0, "text": "Sin ataque."}
+	fight._sync_selected_enemy()
+	Game.run["hp"] = Game.max_hp()
+	fight._choose_attack("arcane_nova")
+	var nova_hp_before := int(fight.enemy_hps[0])
+	fight._resolve(true)
+	_check(fight.enemy_fragile_bonus[0] == 2 and fight.enemy_fragile_turns[0] == 2, "Nova astral aplica Frágil +2 durante 2 turnos")
+	_check(fight.enemy_hps[0] < nova_hp_before, "Nova astral daña a los enemigos vivos")
+
+	fight.phase = "select"
+	for i in range(fight.enemies.size()):
+		fight.enemy_guards[i] = 0
+		fight.enemy_intents[i] = {"name": "Prueba defensiva", "kind": "defend", "value": 0, "text": "Sin ataque."}
+	fight._sync_selected_enemy()
+	fight._choose_attack("piercing_strike")
+	var fragile_raw := Game.attack_damage(fight.chosen_diff, "piercing_strike")
+	var fragile_expected := CombatRules.damage_for_attack(fragile_raw, "piercing_strike", fight.enemies[0]) + 2
+	# El bestiario crece y el primer enemigo puede tener poca vida; deja margen
+	# para medir el golpe completo de Frágil sin que el objetivo muera antes.
+	if fight.enemy_hps[0] <= fragile_expected:
+		fight.enemy_max_hps[0] = fragile_expected + 5
+		fight.enemy_hps[0] = fight.enemy_max_hps[0]
+		fight._sync_selected_enemy()
+	var fragile_hp_before := int(fight.enemy_hps[0])
+	fight._resolve(true)
+	_check(fragile_hp_before - fight.enemy_hps[0] == fragile_expected, "Frágil suma daño a los ataques posteriores")
+	var fragile_before: Array = fight.enemy_fragile_turns.duplicate()
+	fight._tick_enemy_statuses(fragile_before)
+	_check(fight.enemy_fragile_turns[0] == 0 and fight.enemy_fragile_bonus[0] == 0, "Frágil expira al agotar sus turnos")
+
+	fight.phase = "select"
+	for i in range(fight.enemies.size()):
+		fight.enemy_intents[i] = {"name": "Prueba defensiva", "kind": "defend", "value": 0, "text": "Sin ataque."}
+	fight.player_shield = 0
+	fight.player_shield_expires_turn = 0
+	fight._sync_selected_enemy()
+	Game.run["hp"] = Game.max_hp()
+	fight._choose_attack("ward_sigil")
+	fight._resolve(true)
+	_check(fight.player_shield > 0 and fight.player_shield_expires_turn == fight.turn_number + 3, "el sello intacto persiste dos turnos extra")
+	_check(fight.last_message.contains("2 turnos más"), "el resultado avisa que el escudo persiste")
+
+	if fight.enemies.size() < CombatRules.MAX_ENEMIES_PER_ENCOUNTER:
+		var summon_name := str(fight._summon_enemy({"enemy": "skeleton", "summon_name": "Esqueleto de Cripta"}))
+		_check(summon_name == "Esqueleto de Cripta" and fight.enemies.size() == fight.enemy_fragile_turns.size(), "la invocación añade un enemigo con sus estados")
+		_check(fight.enemy_death_turns.size() == fight.enemies.size(), "la invocación mantiene el registro de turnos de muerte")
+	if fight.enemies.size() >= 2:
+		var purge_index := 0
+		var purge_total: int = int(fight.enemies.size())
+		fight.phase = "select"
+		for i in range(fight.enemies.size()):
+			fight.enemy_guards[i] = 0
+			fight.enemy_intents[i] = {"name": "Prueba defensiva", "kind": "defend", "value": 0, "text": "Sin ataque."}
+		fight.enemy_hps[purge_index] = 1
+		fight.selected_enemy_index = purge_index
+		fight._sync_selected_enemy()
+		Game.run["hp"] = Game.max_hp()
+		fight._choose_attack("piercing_strike")
+		fight._resolve(true)
+		_check(fight.enemy_hps[purge_index] == 0, "el golpe puede derrotar al enemigo de prueba")
+		var death_turn := int(fight.turn_number)
+		_check(fight.enemy_death_turns[purge_index] == death_turn, "la muerte queda registrada en el turno actual")
+		fight.turn_number = death_turn + 1
+		fight._purge_expired_enemy_corpses()
+		_check(fight.enemies.size() == purge_total, "el derrotado permanece durante el turno de su muerte")
+		fight.turn_number = death_turn + 2
+		fight._purge_expired_enemy_corpses()
+		_check(fight.enemies.size() == purge_total, "el derrotado permanece durante el primer turno siguiente")
+		fight.turn_number = death_turn + 3
+		fight._purge_expired_enemy_corpses()
+		_check(fight.enemies.size() == purge_total - 1, "el derrotado desaparece después de dos turnos completos")
+		_check(fight.enemy_actors.size() == fight.enemies.size(), "la formación se reajusta al retirar al derrotado")
+		_check(fight.enemy_death_turns.size() == fight.enemies.size(), "los registros de muerte quedan alineados")
+		_check(fight.selected_enemy_index >= 0 and fight.selected_enemy_index < fight.enemy_hps.size() and fight.enemy_hps[fight.selected_enemy_index] > 0, "la selección apunta a un enemigo vivo tras la retirada")
+	app.queue_free()
+	await get_tree().process_frame
 
 
 func _test_save_recovery() -> void:

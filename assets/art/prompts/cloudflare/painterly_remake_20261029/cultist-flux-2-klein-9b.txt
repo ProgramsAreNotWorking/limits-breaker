@@ -1,0 +1,9 @@
+Painterly dark fantasy game portrait for Limits Breaker, a hand-painted 2D medieval RPG. One full-body human enemy, centered in a square 1024 by 1024 image; three-quarter view; head, hands and both feet visible; consistent standing scale with ample margin.
+
+Subject: the Crimson Cultist, a lean adult ritualist in layered charcoal robes and a dark hood. Preserve the distinctive angular iron half-mask, burgundy cords crossing the chest, ash-stained gloves, small belt knife and a small faceted violet crystal held in the open left hand. The crystal is solid and dim, not glowing. Solemn, weathered, physically natural proportions.
+
+Style: traditional painterly fantasy illustration rendered digitally with visible but fine brush texture, nuanced painted forms, realistic matte fabric and worn iron, subtle edge variation, dark charcoal and muted slate with restrained burgundy and very limited violet. Warm amber key light from upper left, cool shadows. Strong clear silhouette, detailed focal face mask and hands, crisp image at game size. Painted contours only; no black line art, no inked outlines, no cel shading and no comic-book look.
+
+Background: perfectly uniform flat pure magenta #FF00FF across the entire square, with no variation whatsoever; no floor, vignette, gradients, lighting, shadow, aura or scenery. Leave a clean gap between the figure and canvas edges; no object touches the edge. No text, writing, equations, runes, watermark, interface or other characters.
+
+Avoid anime, manga, cartoon, graphic novel, thick black outline, orange rim light, neon, glossy 3D, photorealism, blurry details, cropped limbs, extra fingers, fused hands, duplicate objects, luminous violet aura, cast shadow.

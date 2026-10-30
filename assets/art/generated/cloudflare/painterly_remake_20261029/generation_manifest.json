@@ -1,0 +1,191 @@
+{
+  "model": "@cf/black-forest-labs/flux-2-klein-9b",
+  "route": "Cloudflare Workers AI MCP",
+  "guidance": 6,
+  "width": 1024,
+  "height": 1024,
+  "status": "partial: 2 staging pilots generated; remaining batch blocked by HTTP 429 / error 4006 (daily free allocation 10,000 neurons exhausted)",
+  "generated_staging": [
+    {
+      "id": "cultist",
+      "category": "enemy",
+      "source": "assets/art/generated/cloudflare/painterly_remake_20261029/raw/cultist-klein9b-source.jpg",
+      "cutout": "assets/art/generated/cloudflare/painterly_remake_20261029/characters/cultist-cutout.png",
+      "processed": "assets/art/generated/cloudflare/painterly_remake_20261029/characters/cultist.png"
+    },
+    {
+      "id": "healing_draught",
+      "category": "item",
+      "source": "assets/art/generated/cloudflare/painterly_remake_20261029/raw/healing-draught-source.jpg",
+      "cutout": "assets/art/generated/cloudflare/painterly_remake_20261029/items/healing_draught-cutout.png",
+      "processed": "assets/art/generated/cloudflare/painterly_remake_20261029/items/healing_draught.png"
+    }
+  ],
+  "requested_assets": [
+    {
+      "id": "skeleton",
+      "category": "enemy",
+      "prompt": "assets/art/prompts/cloudflare/painterly_remake_20261029/queued/skeleton.txt"
+    },
+    {
+      "id": "brigand",
+      "category": "enemy",
+      "prompt": "assets/art/prompts/cloudflare/painterly_remake_20261029/queued/brigand.txt"
+    },
+    {
+      "id": "warden",
+      "category": "enemy",
+      "prompt": "assets/art/prompts/cloudflare/painterly_remake_20261029/queued/warden.txt"
+    },
+    {
+      "id": "cultist",
+      "category": "enemy",
+      "prompt": "assets/art/prompts/cloudflare/painterly_remake_20261029/queued/cultist.txt"
+    },
+    {
+      "id": "colossus",
+      "category": "enemy",
+      "prompt": "assets/art/prompts/cloudflare/painterly_remake_20261029/queued/colossus.txt"
+    },
+    {
+      "id": "limitless",
+      "category": "enemy",
+      "prompt": "assets/art/prompts/cloudflare/painterly_remake_20261029/queued/limitless.txt"
+    },
+    {
+      "id": "oath_acolyte",
+      "category": "enemy",
+      "prompt": "assets/art/prompts/cloudflare/painterly_remake_20261029/queued/oath_acolyte.txt"
+    },
+    {
+      "id": "bone_pilgrim",
+      "category": "enemy",
+      "prompt": "assets/art/prompts/cloudflare/painterly_remake_20261029/queued/bone_pilgrim.txt"
+    },
+    {
+      "id": "ash_brigand",
+      "category": "enemy",
+      "prompt": "assets/art/prompts/cloudflare/painterly_remake_20261029/queued/ash_brigand.txt"
+    },
+    {
+      "id": "cinder_warden",
+      "category": "enemy",
+      "prompt": "assets/art/prompts/cloudflare/painterly_remake_20261029/queued/cinder_warden.txt"
+    },
+    {
+      "id": "slag_priest",
+      "category": "enemy",
+      "prompt": "assets/art/prompts/cloudflare/painterly_remake_20261029/queued/slag_priest.txt"
+    },
+    {
+      "id": "hollow_choir",
+      "category": "enemy",
+      "prompt": "assets/art/prompts/cloudflare/painterly_remake_20261029/queued/hollow_choir.txt"
+    },
+    {
+      "id": "bell_keeper",
+      "category": "enemy",
+      "prompt": "assets/art/prompts/cloudflare/painterly_remake_20261029/queued/bell_keeper.txt"
+    },
+    {
+      "id": "mirror_scholar",
+      "category": "enemy",
+      "prompt": "assets/art/prompts/cloudflare/painterly_remake_20261029/queued/mirror_scholar.txt"
+    },
+    {
+      "id": "rift_sentinel",
+      "category": "enemy",
+      "prompt": "assets/art/prompts/cloudflare/painterly_remake_20261029/queued/rift_sentinel.txt"
+    },
+    {
+      "id": "lead_bound",
+      "category": "enemy",
+      "prompt": "assets/art/prompts/cloudflare/painterly_remake_20261029/queued/lead_bound.txt"
+    },
+    {
+      "id": "slag_hound",
+      "category": "enemy",
+      "prompt": "assets/art/prompts/cloudflare/painterly_remake_20261029/queued/slag_hound.txt"
+    },
+    {
+      "id": "chalk_moth",
+      "category": "enemy",
+      "prompt": "assets/art/prompts/cloudflare/painterly_remake_20261029/queued/chalk_moth.txt"
+    },
+    {
+      "id": "rusted_blade",
+      "category": "item",
+      "prompt": "assets/art/prompts/cloudflare/painterly_remake_20261029/queued/rusted_blade.txt"
+    },
+    {
+      "id": "ashen_edge",
+      "category": "item",
+      "prompt": "assets/art/prompts/cloudflare/painterly_remake_20261029/queued/ashen_edge.txt"
+    },
+    {
+      "id": "arcane_staff",
+      "category": "item",
+      "prompt": "assets/art/prompts/cloudflare/painterly_remake_20261029/queued/arcane_staff.txt"
+    },
+    {
+      "id": "iron_cuirass",
+      "category": "item",
+      "prompt": "assets/art/prompts/cloudflare/painterly_remake_20261029/queued/iron_cuirass.txt"
+    },
+    {
+      "id": "warden_plate",
+      "category": "item",
+      "prompt": "assets/art/prompts/cloudflare/painterly_remake_20261029/queued/warden_plate.txt"
+    },
+    {
+      "id": "oak_shield",
+      "category": "item",
+      "prompt": "assets/art/prompts/cloudflare/painterly_remake_20261029/queued/oak_shield.txt"
+    },
+    {
+      "id": "ember_charm",
+      "category": "item",
+      "prompt": "assets/art/prompts/cloudflare/painterly_remake_20261029/queued/ember_charm.txt"
+    },
+    {
+      "id": "void_sigil",
+      "category": "item",
+      "prompt": "assets/art/prompts/cloudflare/painterly_remake_20261029/queued/void_sigil.txt"
+    },
+    {
+      "id": "pilgrim_relic",
+      "category": "item",
+      "prompt": "assets/art/prompts/cloudflare/painterly_remake_20261029/queued/pilgrim_relic.txt"
+    },
+    {
+      "id": "healing_draught",
+      "category": "item",
+      "prompt": "assets/art/prompts/cloudflare/painterly_remake_20261029/queued/healing_draught.txt"
+    },
+    {
+      "id": "greater_draught",
+      "category": "item",
+      "prompt": "assets/art/prompts/cloudflare/painterly_remake_20261029/queued/greater_draught.txt"
+    },
+    {
+      "id": "threshold_spike",
+      "category": "item",
+      "prompt": "assets/art/prompts/cloudflare/painterly_remake_20261029/queued/threshold_spike.txt"
+    },
+    {
+      "id": "slag_fang",
+      "category": "item",
+      "prompt": "assets/art/prompts/cloudflare/painterly_remake_20261029/queued/slag_fang.txt"
+    },
+    {
+      "id": "silent_shroud",
+      "category": "item",
+      "prompt": "assets/art/prompts/cloudflare/painterly_remake_20261029/queued/silent_shroud.txt"
+    },
+    {
+      "id": "chalk_tonic",
+      "category": "item",
+      "prompt": "assets/art/prompts/cloudflare/painterly_remake_20261029/queued/chalk_tonic.txt"
+    }
+  ]
+}

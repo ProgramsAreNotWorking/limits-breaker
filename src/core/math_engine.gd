@@ -244,9 +244,6 @@ static func _graph(diff: int, rng: RandomNumberGenerator) -> Problem:
 		b2 = b1
 	var left_y := m1 * a + b1
 	var right_y := m2 * a + b2
-	var piecewise := "f(x) = { %s  si x < %d ;  %s  si x ≥ %d }" % [
-		poly_str(0, m1, b1), a, poly_str(0, m2, b2), a,
-	]
 	p.graph = {
 		"a": a,
 		"xmin": a - 3,
@@ -256,7 +253,6 @@ static func _graph(diff: int, rng: RandomNumberGenerator) -> Problem:
 		"left_y": left_y,
 		"right_y": right_y,
 		"continuous": left_y == right_y,
-		"formula": piecewise,
 	}
 	var limit_formula := "lim x→%d  f(x)" % a
 	match diff:
@@ -279,7 +275,7 @@ static func _graph(diff: int, rng: RandomNumberGenerator) -> Problem:
 				p.statement = "¿Existe el límite bilateral en x = %d?" % a
 				p.answer_kind = "dne"
 				p.answer_value = NAN
-	p.expression = "%s\ncon  %s" % [limit_formula, piecewise]
+	p.expression = limit_formula
 	if p.answer_kind == "dne":
 		p.steps = PackedStringArray([
 			"Por la izquierda la función tiende a %d." % left_y,
@@ -300,27 +296,22 @@ static func _table(diff: int, rng: RandomNumberGenerator) -> Problem:
 	var a := rint(rng, 1, 5)
 	var rows: Array = []
 	var limit_value := 0.0
-	var expression := ""
 	match diff:
 		0:
 			var m := rint(rng, -3, 3)
 			var b := rint(rng, -5, 5)
-			expression = poly_str(0, m, b)
 			limit_value = float(m * a + b)
 			for d: float in [0.1, 0.01, 0.001]:
 				rows.append([a - d, snappedf(m * (a - d) + b, 0.0001)])
 				rows.append([a + d, snappedf(m * (a + d) + b, 0.0001)])
 		1:
-			expression = poly_str(1, rint(rng, -3, 3), rint(rng, -5, 5))
 			var b1 := rint(rng, -3, 3)
 			var c1 := rint(rng, -5, 5)
-			expression = poly_str(1, b1, c1)
 			limit_value = float(a * a + b1 * a + c1)
 			for d: float in [0.1, 0.01, 0.001]:
 				rows.append([a - d, snappedf((a - d) * (a - d) + b1 * (a - d) + c1, 0.0001)])
 				rows.append([a + d, snappedf((a + d) * (a + d) + b1 * (a + d) + c1, 0.0001)])
 		2:
-			expression = "( x² − %d ) / ( x − %d )" % [a * a, a]
 			limit_value = float(2 * a)
 			for d: float in [0.1, 0.01, 0.001]:
 				var xl := a - d
@@ -328,7 +319,6 @@ static func _table(diff: int, rng: RandomNumberGenerator) -> Problem:
 				rows.append([xl, snappedf((xl * xl - a * a) / (xl - a), 0.0001)])
 				rows.append([xr, snappedf((xr * xr - a * a) / (xr - a), 0.0001)])
 		_:
-			expression = "( x³ − %d ) / ( x − %d )" % [a * a * a, a]
 			limit_value = float(3 * a * a)
 			for d: float in [0.1, 0.01, 0.001]:
 				var xl := a - d
@@ -337,7 +327,7 @@ static func _table(diff: int, rng: RandomNumberGenerator) -> Problem:
 				rows.append([xr, snappedf((xr * xr * xr - a * a * a) / (xr - a), 0.0001)])
 	p.table = rows
 	p.statement = "Aproxima el límite usando la tabla de valores. Redondea a 4 decimales si hace falta."
-	p.expression = "lim x→%d  f(x),  con f(x) = %s" % [a, expression]
+	p.expression = "lim x→%d  f(x)" % a
 	p.answer_value = limit_value
 	p.steps = PackedStringArray([
 		"Al acercarnos por ambos lados, los valores de f(x) se aproximan a un mismo número.",

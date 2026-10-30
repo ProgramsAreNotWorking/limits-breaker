@@ -1,0 +1,177 @@
+{
+  "model": "@cf/black-forest-labs/flux-2-klein-9b",
+  "guidance": 6,
+  "width": 1024,
+  "height": 1024,
+  "characterStyle": "Painterly dark-fantasy character portrait for Limits Breaker, a hand-painted 2D medieval RPG. Exactly one complete character or creature, centered in a square 1024 by 1024 canvas, front three-quarter view, full silhouette, head and both feet visible with margin. Natural anatomy and grounded proportions, dimensional painted forms, fine brush texture, matte cloth, aged iron, leather, bone and stone. Warm amber key light from upper left with cool charcoal shadows; restrained charcoal, slate, aged steel, burgundy and small violet accents. Soft painterly transitions with controlled edges; no black ink contour, no flat cel shading, no cartoon finish. Clear facial/material detail and silhouette at 512 pixels. Background should be flat pure magenta #FF00FF, with no floor, cast shadow, vignette, halo or scenery. No text, letters, equations, runes, frame, border, watermark, other characters, cropped limbs or props touching the canvas. Avoid anime, manga, caricature, graphic novel, thick outlines, neon, glossy plastic, photorealism, blur, extra limbs, fused hands, duplicate objects.",
+  "itemStyle": "Painterly dark-fantasy inventory icon for Limits Breaker, a hand-painted 2D medieval RPG. Exactly one isolated object centered in a square 1024 by 1024 canvas, front three-quarter view, object occupies roughly 64 percent of the canvas with generous even margin. Strong recognizable silhouette at 32 pixels. Natural dimensional forms, fine brush texture, tactile matte material, aged iron, leather, cloth, glass, stone or wood. Warm amber highlight from upper left with cool charcoal shadow, restrained palette of charcoal, slate, steel, burgundy, muted violet and aged brass. Soft painterly transitions with controlled edges; no thick black outline, no flat cel shading, no glossy plastic, no cartoon finish. Pure flat magenta #FF00FF background, no gradient, vignette, floor, cast shadow, halo or scenery. No hand, person, stand, card, frame, border, label, text, letters, runes, numbers, watermark, duplicate object or cropped edge. Avoid anime, manga, graphic novel, neon, photoreal product photography, blur.",
+  "enemies": [
+    {
+      "id": "skeleton",
+      "name": "Esqueleto de Cripta",
+      "subject": "A thin crypt skeleton warrior of yellowed, weathered bones, leaning slightly forward. A rusted short sword is gripped in one bony hand; a few torn dark burgundy cloth strips remain tied around the ribs and waist. Fragile, spare silhouette, no armor."
+    },
+    {
+      "id": "brigand",
+      "name": "Bandido de la Marca",
+      "subject": "A tired adult road thief with a weathered face, worn brown-black leather coat over padded clothes, a burgundy scarf, a practical short sword and a small battered round buckler. Guarded, slightly wide stance; ordinary human proportions, no plate armor."
+    },
+    {
+      "id": "warden",
+      "name": "Guardián de Hierro",
+      "subject": "A massive empty suit of aged iron plate armor, broad shoulders and heavy gauntlets, a dark violet slit visible inside the closed visor, carrying a heavy square-headed war hammer. The armor is cold, worn and unadorned, with only a small burgundy cloth remnant."
+    },
+    {
+      "id": "cultist",
+      "name": "Cultista Carmesí",
+      "subject": "A lean human ritualist in layered charcoal robes, dark hood, angular iron half-mask, restrained burgundy inner garment and cords across the chest. Ash-stained gloves, a small ritual knife at the belt and a small faceted violet crystal held in one hand; solemn and physically grounded."
+    },
+    {
+      "id": "colossus",
+      "name": "Coloso de Hueso",
+      "subject": "A towering skeletal brute assembled from enormous mismatched bones, hunched shoulders, deep visible ribcage, heavy arms and thick legs. Broken fragments of dark stone and old iron hang from the shoulders; a small dim violet fracture sits deep beneath the ribs. Ancient, massive silhouette, no gore."
+    },
+    {
+      "id": "limitless",
+      "name": "Limitless",
+      "subject": "A tall, unstable entity with no recognizable human face or fixed anatomy: a narrow charcoal-black shroud of torn cloth and smoke-like layers, long ragged edges, a small fractured violet core visible through the chest. Keep the form solemn and restrained; no flames, no human face, no identifiable origin, no crown."
+    },
+    {
+      "id": "oath_acolyte",
+      "name": "Acólito del Juramento",
+      "subject": "A slender hooded devotee of the crypt in a worn charcoal robe, pale bone half-mask and a small aged-brass oath token on a cord. Narrow silhouette, simple belt, ash on the hem; no written vows or symbols."
+    },
+    {
+      "id": "bone_pilgrim",
+      "name": "Peregrino de Hueso",
+      "subject": "A hunched skeletal pilgrim in a weathered gray travel cloak, carrying a crooked bone staff and a small iron cage lantern with a dim ember inside. Thin limbs, exposed aged bones and a quiet, burdened posture; no armor."
+    },
+    {
+      "id": "ash_brigand",
+      "name": "Bandido de Ceniza",
+      "subject": "A lean soot-covered raider wearing a practical dark leather coat, simple half-mask, one uneven shoulder guard and a chipped curved blade held low. One muted ember-orange cloth strip is tied at the waist; quick guarded stance, not an elite knight."
+    },
+    {
+      "id": "cinder_warden",
+      "name": "Guardián de Brasas",
+      "subject": "A broad armored guardian in heavy weathered steel plate, rounded shoulder guards and a dark iron war hammer. A few restrained dull ember seams show at the joints, as if the armor retains heat from a dead forge; no bright glow."
+    },
+    {
+      "id": "slag_priest",
+      "name": "Sacerdote de Escoria",
+      "subject": "An older human priest in layered soot-dark robes, iron rings and a heavy staff topped with a small caged forge lantern. His face is weathered and visible, hands stained with ash; solemn, imposing but human, with no skull mask."
+    },
+    {
+      "id": "hollow_choir",
+      "name": "Coro Hueco",
+      "subject": "A single tall robed figure in charcoal and muted slate, wearing a smooth pale mask with no mouth. Small bone tokens rest at the shoulders and chest; layered robe folds suggest a chorus without adding extra bodies. Quiet and uncanny, no readable writing."
+    },
+    {
+      "id": "bell_keeper",
+      "name": "Guardiana de la Campana",
+      "subject": "A composed adult woman sentinel in practical dark steel armor over a muted slate skirt, with a small broken bronze bell fragment secured at her belt and a straight sword held low. Natural proportions, calm watchful stance, no ornate crown."
+    },
+    {
+      "id": "mirror_scholar",
+      "name": "Erudito del Espejo",
+      "subject": "A slender older scholar with a pale tired face, simple ash-gray robe and narrow leather belt. A fractured hand mirror with a dull steel frame is held close to the chest; a few tiny reflective splinters sit at the collar. No equations, writing or glowing eyes."
+    },
+    {
+      "id": "rift_sentinel",
+      "name": "Centinela de la Grieta",
+      "subject": "A sturdy knight in weathered charcoal armor with a dark steel shield and a short spear. One fine muted-violet fracture crosses the breastplate; the light is contained inside the crack, not a glow around the body. Guarded defensive posture."
+    },
+    {
+      "id": "lead_bound",
+      "name": "Encadenado de Plomo",
+      "subject": "A weary middle-aged prisoner in a plain gray ash-stained robe, weighed down by thick lead chain around the torso and wrists. One length of chain drags from the belt; bowed shoulders and a still, exhausted stance, no wounds or gore."
+    },
+    {
+      "id": "slag_hound",
+      "name": "Sabueso de Escoria",
+      "subject": "A large four-legged black hound with powerful paws, short coarse fur and irregular plates of dark vitrified slag along its spine. A few faint ember seams appear beneath the plates; low alert stance and clear canine head, no extra limbs."
+    },
+    {
+      "id": "chalk_moth",
+      "name": "Polilla de Cal",
+      "subject": "A large pale moth with broad dusty bone-white wings, soot-gray body, long delicate antennae and lightly worn wing edges. Wings held in a natural upright spread; powdery surface texture, small and eerie rather than monstrous."
+    }
+  ],
+  "items": [
+    {
+      "id": "rusted_blade",
+      "name": "Hoja Oxidada",
+      "subject": "A short straight sword with a chipped, rust-eaten iron blade, a plain crossguard and a worn dark-leather grip. Practical and modest, no gem."
+    },
+    {
+      "id": "ashen_edge",
+      "name": "Hacha de Ceniza",
+      "subject": "A compact hand axe with one broad dark-iron blade, ash-gray pitted surface and a leather-wrapped wooden haft. The head is slightly chipped; no flame."
+    },
+    {
+      "id": "arcane_staff",
+      "name": "Báculo Arcano",
+      "subject": "A crooked staff of dark weathered wood with a small faceted violet crystal set into its head by aged iron prongs. The crystal is dim and solid, not glowing."
+    },
+    {
+      "id": "iron_cuirass",
+      "name": "Coraza de Hierro",
+      "subject": "A simple dark iron cuirass with a natural torso shape, scratched steel surface and plain leather side straps. No mannequin, insignia or extra armor pieces."
+    },
+    {
+      "id": "warden_plate",
+      "name": "Placa del Guardián",
+      "subject": "A heavier aged-steel breastplate with broad shoulder plates and muted burgundy leather faulds below. Solid and protective, distinct from a simple cuirass; no crest."
+    },
+    {
+      "id": "oak_shield",
+      "name": "Escudo de Roble",
+      "subject": "A compact kite shield built from dark oak planks, with a worn iron rim and a small central boss. Scratched wood grain, practical medieval construction."
+    },
+    {
+      "id": "ember_charm",
+      "name": "Talismán de Brasa",
+      "subject": "A small amber teardrop stone held in a worn bronze setting with a simple hanging loop. A dim warm inclusion sits inside the stone; it is a charm, not a flame."
+    },
+    {
+      "id": "void_sigil",
+      "name": "Sigilo del Vacío",
+      "subject": "A dark obsidian medallion with a clean circular hollow at its center and a faint muted-violet reflection inside the void. No runes, letters or bright aura."
+    },
+    {
+      "id": "pilgrim_relic",
+      "name": "Reliquia del Peregrino",
+      "subject": "A small weathered carved-stone relic, like a worn marker carried on a journey: irregular rectangular silhouette, shallow hood-like notch and chipped edges. No readable marks or text."
+    },
+    {
+      "id": "healing_draught",
+      "name": "Bremaje Curativo",
+      "subject": "A small upright clear-glass vial with a narrow neck, dark cork stopper, worn bronze wire around the neck and deep muted carmine-red restorative liquid filling the lower half. Aged cloudy glass, no label."
+    },
+    {
+      "id": "greater_draught",
+      "name": "Bremaje Mayor",
+      "subject": "A slightly broader ornate clear-glass vial with a dark stopper, aged bronze neck ring and deep plum-red restorative liquid. Thick glass and a small metal shoulder clasp distinguish it from the common draught; no label."
+    },
+    {
+      "id": "threshold_spike",
+      "name": "Clavo del Umbral",
+      "subject": "A long black-iron threshold nail with a small flat hammer head, tapered point and a narrow strip of worn burgundy cord wrapped near the head. Pitted, old metal, no glow."
+    },
+    {
+      "id": "slag_fang",
+      "name": "Colmillo de Escoria",
+      "subject": "One curved pale beast tooth with a dark vitrified root, a few hairline cracks and a small dull ember-colored seam. It remains clearly a tooth, not a weapon."
+    },
+    {
+      "id": "silent_shroud",
+      "name": "Manto sin Eco",
+      "subject": "A folded charcoal hooded mantle of matte weathered cloth with a small tarnished clasp. Fine ash dust on the folds, compact readable silhouette, no mannequin."
+    },
+    {
+      "id": "chalk_tonic",
+      "name": "Tónico de Cal",
+      "subject": "A squat stoppered smoky-glass vial with a short neck, half-filled with opaque chalk-white tonic; a few pale flecks settle at the bottom. A thin bronze wire circles the neck, no label."
+    }
+  ]
+}

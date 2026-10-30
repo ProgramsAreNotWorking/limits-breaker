@@ -3,7 +3,6 @@ extends Control
 ## Iconografía de equipo cargada desde los PNG definidos en AssetManifest.
 
 const MediaManifest = preload("res://src/core/asset_manifest.gd")
-const ToonArt = preload("res://src/ui/toon_art.gd")
 
 const INK := Color("#101218")
 const OUTLINE := Color("#08090c")
@@ -18,7 +17,6 @@ var icon_texture: Texture2D
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
-	ToonArt.apply(self, 10.0, 0.16, 2.0, 1.06)
 	_load_icon()
 	queue_redraw()
 

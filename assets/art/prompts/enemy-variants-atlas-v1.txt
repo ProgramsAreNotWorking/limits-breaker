@@ -19,8 +19,8 @@ CELL ORDER, TOP-LEFT TO BOTTOM-RIGHT
 9. assets/art/characters/rift_sentinel.png — a sturdy armored sentinel with a large asymmetrical shield and one narrow dim-violet rift through its breastplate; distinct from the cinder guardian, no orange fire.
 
 STYLE LOCK
-Dark storybook cartoon for Limits Breaker: premium hand-painted dark-fantasy RPG art; bold readable silhouettes; serious, worn characters with slightly stylized proportions, larger hands, boots, and weapons; chunky simplified forms; two or three value steps per material; subtle dark ink contour; controlled saturation; charcoal, steel, worn leather, muted burgundy, restrained arcane violet and warm amber; soft directional light; matte finish. Keep the original silhouette and identity of each cell distinct.
+Painterly dark fantasy for Limits Breaker: richly textured 2D RPG illustration with natural anatomy, detailed materials, layered painted values, controlled edges, cinematic warm amber light against cool charcoal fill, and restrained steel, burgundy, violet and gold. Preserve each enemy's distinct identity and silhouette.
 
-Use the attached player and colossus PNGs only as references for the game's palette, silhouette readability, and material language. Do not copy their poses, anatomy, armor, or bright background colors.
+Match the original player and colossus portraits' palette, silhouette readability and material rendering as described in ART_DIRECTION.md. Keep every enemy's pose and equipment distinct.
 
 NEGATIVE: anime, manga, chibi, cute mascot, flat vector, hard cel shading, thick uniform outlines, neon, rainbow, pastel, bright white wash, glossy plastic, photorealistic skin, pores, 3D render, blur, muddy low contrast, excessive micro-detail, gore, blood, duplicated limbs, fused hands, duplicate weapons, extra people, extra heads outside the single specified character, text, letters, numbers, equations, readable runes, pseudo-writing, interface, buttons, frame, border, logo, watermark, scenery, floor, cast shadow outside the character.

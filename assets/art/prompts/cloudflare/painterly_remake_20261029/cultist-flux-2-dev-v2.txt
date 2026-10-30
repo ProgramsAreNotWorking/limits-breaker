@@ -1,0 +1,9 @@
+Create one full-body production enemy portrait for Limits Breaker, a painterly 2D dark-fantasy RPG. Square 1024 x 1024; one complete adult figure centered, head, hands, weapon and both boots visible with margin; three-quarter view and poised narrow stance.
+
+Subject: the Crimson Cultist. A lean human ritualist wearing layered charcoal robes, a dark hood, a restrained burgundy inner garment and thin burgundy cords crossing the chest. Keep the angular dark-iron half-mask that hides the upper face. Ash-stained gloves, small ritual knife at the belt, and one open hand holding a small faceted violet crystal focus. The crystal is solid and dim, with no aura or light spill. The other hand rests near the belt. The figure is solemn, weathered and physically grounded; no theatrical pose and no legible ritual writing.
+
+Visual finish: crisp hand-painted dark-fantasy illustration with natural anatomy and realistic volume. Fine, varied brushwork in cloth and iron; tactile matte materials; charcoal shadows, muted slate, steel and burgundy, one restrained amber light from upper left with cool shadow fill. Carefully resolved face mask, hands, belt and fabric folds. Sharp focus and readable detail at 512 px. The contour is defined by painted value and light, not by a black ink stroke. Keep the image subdued and painterly, with soft transitions only where light falls across form.
+
+Background: edge-to-edge perfectly flat uniform chroma green #00FF00, separate from the figure. No floor, cast shadow, scenery, frame, border, text, watermark, extra characters, cropped limbs or props touching the canvas.
+
+Avoid: anime, manga, caricature, cartoon, graphic-novel inking, heavy black outlines, uniform contour, cel shading, smooth plastic, glossy 3D, photorealistic pores, blur, low detail, neon rim, orange outline, glowing violet aura, bright purple wash, extra limbs, fused fingers, duplicate props, readable runes, letters, numbers or equations.

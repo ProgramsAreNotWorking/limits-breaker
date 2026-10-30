@@ -1,0 +1,22 @@
+{
+  "schema": "generate2dsprite.master_spec.v1",
+  "name": "oath_acolyte",
+  "subject": "a frail skeletal oath acolyte, full body",
+  "identity": "Cracked warm-ivory skeleton, narrow charcoal hood and threadbare dark robe, one burgundy oath ribbon, a single short rusted dagger held low; weak-tier narrow silhouette.",
+  "pose": "Front three-quarter view, slight stoop; right hand holds one short dagger, left hand empty.",
+  "recap": "frail skeletal oath acolyte, full body (Cracked warm-ivory skeleton in a narrow charcoal hood and threadbare dark robe, one burgundy oath ribbon, single short rusted dagger; weak-tier narrow silhouette)",
+  "facing": "front",
+  "facing_parts": null,
+  "view": "front three-quarter view",
+  "class": "mob",
+  "finish": "hd",
+  "key": "#FF00FF",
+  "genre": "a dark fantasy 2D RPG",
+  "pronoun": "they",
+  "identity_ref": null,
+  "style_ref": null,
+  "allowed_text": null,
+  "extra_bans": [],
+  "opaque_parts": null,
+  "extra": null
+}

@@ -10,6 +10,7 @@ var current_hp := 1
 var maximum_hp := 1
 var art_size := Vector2(170, 210)
 var incoming_intent := ""
+var incoming_intent_color := UIKit.STEEL
 var selected_for_action := false
 
 var portrait: FantasyPortrait
@@ -21,13 +22,14 @@ var name_label: Label
 var intent_label: Label
 
 
-func configure(index: int, data: Dictionary, hp: int, max_hp: int, intent: String, selected: bool, portrait_size: Vector2 = Vector2(170, 210)) -> void:
+func configure(index: int, data: Dictionary, hp: int, max_hp: int, intent: String, selected: bool, portrait_size: Vector2 = Vector2(170, 210), intent_color: Color = UIKit.STEEL) -> void:
 	enemy_index = index
 	enemy_data = data
 	current_hp = hp
 	maximum_hp = maxi(1, max_hp)
 	art_size = portrait_size
 	incoming_intent = intent
+	incoming_intent_color = intent_color
 	selected_for_action = selected
 	if is_inside_tree() and portrait == null:
 		_build_view()
@@ -113,6 +115,8 @@ func _build_view() -> void:
 	stack.add_child(name_label)
 	intent_label = UIKit.inline_label("", 10, UIKit.STEEL)
 	intent_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	intent_label.clip_text = true
+	intent_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	intent_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	stack.add_child(intent_label)
 	_refresh_style()
@@ -131,14 +135,21 @@ func _refresh_view() -> void:
 	name_label.text = String(enemy_data.get("name", "Enemigo"))
 	intent_label.text = incoming_intent
 	name_label.add_theme_color_override("font_color", Color("#f0d28b") if selected_for_action else UIKit.TEXT)
-	intent_label.add_theme_color_override("font_color", UIKit.GOLD if selected_for_action else UIKit.STEEL)
+	var intent_color := incoming_intent_color
+	if selected_for_action:
+		intent_color = intent_color.lightened(0.12)
+	if current_hp <= 0:
+		intent_color = UIKit.STEEL_DARK
+	intent_label.add_theme_color_override("font_color", intent_color)
 	var enemy_id := String(enemy_data.get("id", "skeleton"))
 	var portrait_id := MediaManifest.enemy(enemy_id)
 	portrait.configure(portrait_id if portrait_id != "" else "skeleton")
 	var tint := String(enemy_data.get("tint", ""))
-	portrait.modulate = Color(tint) if tint != "" else Color.WHITE
+	var has_dedicated_art := portrait_id == enemy_id
+	portrait.modulate = Color.WHITE
+	if not has_dedicated_art and tint != "":
+		portrait.modulate = Color(tint)
 	var accent := _enemy_accent()
-	portrait.set_battle_readability(accent)
 	_set_glow_texture(accent)
 	disabled = current_hp <= 0
 	modulate = Color(0.42, 0.42, 0.46, 0.7) if disabled else Color.WHITE

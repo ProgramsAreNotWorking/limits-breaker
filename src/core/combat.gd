@@ -10,12 +10,15 @@ const MAX_PLAYER_LEVEL := 10
 
 # Cada técnica combina tipo de daño, potencia, penetración, objetivos y una
 # inclinación de dificultad. El resultado matemático se sortea al prepararla.
-const ATTACK_IDS := ["piercing_strike", "sweeping_cut", "arcane_lance", "arcane_nova"]
+const ATTACK_IDS := [
+	"piercing_strike", "sweeping_cut", "arcane_lance",
+	"arcane_nova", "ward_sigil", "vital_breath",
+]
 const PLAYER_ATTACKS := {
 	"piercing_strike": {
 		"name": "Tajo perforante", "type": "physical", "power": 1.0,
 		"targets": 1, "penetration": 2, "difficulty_shift": 1,
-		"description": "Golpe físico preciso. Atraviesa 2 puntos de armadura.",
+		"description": "Golpe físico preciso. Atraviesa 2 puntos de armadura y castiga a los enemigos débiles a lo físico.",
 	},
 	"sweeping_cut": {
 		"name": "Barrido", "type": "physical", "power": 0.78,
@@ -23,14 +26,27 @@ const PLAYER_ATTACKS := {
 		"description": "Ataque físico amplio: alcanza hasta 2 enemigos.",
 	},
 	"arcane_lance": {
-		"name": "Lanza arcana", "type": "magic", "power": 1.1,
-		"targets": 1, "penetration": 1, "difficulty_shift": 2,
-		"description": "Daño mágico concentrado; atraviesa 1 punto de resistencia mágica.",
+		"name": "Lanza arcana", "type": "magic", "power": 1.0,
+		"targets": 1, "penetration": 1, "difficulty_shift": 1,
+		"description": "Daño mágico concentrado. Atraviesa 1 punto de resistencia mágica y castiga a los enemigos débiles a lo mágico.",
 	},
 	"arcane_nova": {
 		"name": "Nova astral", "type": "magic", "power": 0.54,
 		"targets": MAX_ENEMIES_PER_ENCOUNTER, "penetration": 0, "difficulty_shift": -1,
-		"description": "Daño mágico de área; alcanza a todos los enemigos vivos.",
+		"fragile": 2, "fragile_turns": 2,
+		"description": "Daño mágico de área; alcanza a todos los enemigos vivos y les aplica Frágil +2 durante 2 turnos.",
+	},
+	"ward_sigil": {
+		"name": "Sello de guarda", "type": "defense", "power": 0.0,
+		"targets": 0, "penetration": 0, "difficulty_shift": 0,
+		"shield": [12, 18, 26, 34],
+		"description": "No hace daño: traza un sello que absorbe los ataques enemigos; el escudo restante dura hasta 2 turnos más.",
+	},
+	"vital_breath": {
+		"name": "Aliento vital", "type": "heal", "power": 0.0,
+		"targets": 0, "penetration": 0, "difficulty_shift": 0,
+		"heal": [7, 10, 13, 16],
+		"description": "No hace daño: recupera una pequeña cantidad de HP para aguantar el turno.",
 	},
 }
 
@@ -57,15 +73,15 @@ const WORLDS := [
 		"short": "Cripta", "subtitle": "Ecos de un juramento que nadie recuerda.",
 		"environment": "dungeon", "accent": "#8c78d6", "tint": "#c8bfd8", "glow": 0.58,
 		"min_encounter": 1, "max_encounter": 3,
-		"pool": ["skeleton", "oath_acolyte", "bone_pilgrim", "brigand"],
-		"elite_pool": [],
+		"pool": ["skeleton", "oath_acolyte", "bone_pilgrim", "brigand", "lead_bound"],
+		"elite_pool": ["cultist"],
 	},
 	{
 		"id": "ash", "index": 2, "name": "Galerías de Ceniza",
 		"short": "Ceniza", "subtitle": "La fragua sigue caliente aunque nadie la alimente.",
 		"environment": "forge", "accent": "#d8ad60", "tint": "#e0b48f", "glow": 0.62,
 		"min_encounter": 4, "max_encounter": 6,
-		"pool": ["ash_brigand", "cinder_warden", "warden"],
+		"pool": ["ash_brigand", "cinder_warden", "warden", "slag_hound"],
 		"elite_pool": ["slag_priest"],
 	},
 	{
@@ -73,11 +89,11 @@ const WORLDS := [
 		"short": "Campana", "subtitle": "Alguien tocó la campana y el silencio respondió.",
 		"environment": "angel", "accent": "#8fb4cf", "tint": "#a9c2dc", "glow": 0.50,
 		"min_encounter": 7, "max_encounter": 9,
-		"pool": ["hollow_choir", "rift_sentinel", "bone_pilgrim"],
+		"pool": ["hollow_choir", "rift_sentinel", "bone_pilgrim", "chalk_moth"],
 		"elite_pool": ["bell_keeper", "mirror_scholar"],
 	},
 	{
-		"id": "throne", "index": 4, "name": "Trono del Innombrable",
+		"id": "throne", "index": 4, "name": "Trono de Limitless",
 		"short": "Trono", "subtitle": "El pasillo termina donde empieza su forma.",
 		"environment": "boss_arena", "accent": "#c34d64", "tint": "#d0a2ae", "glow": 0.48,
 		"min_encounter": 10, "max_encounter": 999,
@@ -92,36 +108,81 @@ const ENEMIES := [
 		"hp": 15, "attack": 6, "armor": 0, "tier_label": "Débil",
 		"weaknesses": {"magic": 1.25},
 		"desc": "Huesos viejos sostenidos por rencor. Frágil, pero no perdona un error.",
+		"abilities": [
+			{"name": "Filo de costilla", "kind": "attack", "damage": 6},
+			{"name": "Guardia de hueso", "kind": "defend", "value": 4,
+				"text": "Gana 4 de guardia hasta el próximo golpe recibido."},
+		],
 	},
 	{
 		"id": "brigand", "name": "Bandido de la Marca", "tier": "ordinary",
 		"hp": 30, "attack": 9, "armor": 0, "tier_label": "Ordinario",
 		"weaknesses": {"magic": 1.15},
 		"desc": "Acero oxidado y una sonrisa torcida. Vive de lo que arranca a los caídos.",
+		"abilities": [
+			{"name": "Cuchillada", "kind": "attack", "damage": 9},
+			{"name": "Cubrirse", "kind": "defend", "value": 6,
+				"text": "Gana 6 de guardia hasta el próximo golpe recibido."},
+		],
 	},
 	{
 		"id": "warden", "name": "Guardián de Hierro", "tier": "strong",
 		"hp": 45, "attack": 12, "armor": 2, "tier_label": "Fuerte",
 		"weaknesses": {"magic": 1.25},
 		"desc": "Una armadura vacía que sigue cumpliendo una orden olvidada.",
+		"abilities": [
+			{"name": "Mazazo", "kind": "attack", "damage": 12},
+			{"name": "Muro de hierro", "kind": "defend", "value": 9,
+				"text": "Gana 9 de guardia hasta el próximo golpe recibido."},
+			{"name": "Embestida", "kind": "attack", "damage": 8, "effect": "pierce",
+				"text": "Ignora la defensa del jugador."},
+		],
 	},
 	{
 		"id": "cultist", "name": "Cultista Carmesí", "tier": "elite",
 		"hp": 48, "attack": 15, "armor": 1, "tier_label": "Élite",
 		"magic_resist": 2, "weaknesses": {"physical": 1.2},
 		"desc": "Dibuja símbolos con ceniza. Su dios no responde, pero algo sí.",
+		"abilities": [
+			{"name": "Filo carmesí", "kind": "attack", "damage": 15},
+			{"name": "Círculo de ceniza", "kind": "defend", "value": 8,
+				"text": "Gana 8 de guardia hasta el próximo golpe recibido."},
+			{"name": "Llamado carmesí", "kind": "summon", "enemy": "skeleton",
+				"summon_name": "Esqueleto de Cripta",
+				"text": "Invoca un Esqueleto de Cripta si hay espacio en el grupo."},
+		],
 	},
 	{
 		"id": "colossus", "name": "Coloso de Hueso", "tier": "miniboss",
 		"hp": 90, "attack": 18, "armor": 3, "tier_label": "Miniboss",
 		"weaknesses": {"magic": 1.25},
 		"desc": "Se alza despacio, como si el pasillo entero se pusiera de pie.",
+		"abilities": [
+			{"name": "Pisotón", "kind": "attack", "damage": 18},
+			{"name": "Osamenta", "kind": "defend", "value": 12,
+				"text": "Gana 12 de guardia hasta el próximo golpe recibido."},
+			{"name": "Rugido", "kind": "buff", "value": 4, "turns": 3,
+				"text": "+4 de daño durante 3 turnos."},
+			{"name": "Marea de huesos", "kind": "attack", "damage": 12,
+				"effect": "vulnerable", "value": 3, "turns": 2,
+				"text": "Marca al jugador: +3 de daño recibido durante 2 turnos."},
+		],
 	},
 	{
-		"id": "limitless", "name": "El Innombrable", "tier": "boss",
+		"id": "limitless", "name": "Limitless", "tier": "boss",
 		"hp": 150, "attack": 22, "armor": 4, "tier_label": "Jefe",
 		"magic_resist": 1,
 		"desc": "No tiene forma fija. Cada vez que lo miras, se parece un poco más a ti.",
+		"abilities": [
+			{"name": "Toque sin nombre", "kind": "attack", "damage": 22},
+			{"name": "Velo", "kind": "defend", "value": 15,
+				"text": "Gana 15 de guardia hasta el próximo golpe recibido."},
+			{"name": "Susurro del límite", "kind": "debuff", "effect": "weaken",
+				"value": 30, "turns": 2,
+				"text": "Reduce un 30% el daño del jugador durante 2 turnos."},
+			{"name": "Aniquilación", "kind": "attack", "damage": 26, "effect": "pierce",
+				"text": "Ignora la defensa del jugador."},
+		],
 	},
 	# Umbral I · Cripta de los Juramentos
 	{
@@ -129,12 +190,25 @@ const ENEMIES := [
 		"hp": 18, "attack": 7, "armor": 0, "tier_label": "Débil",
 		"tint": "#d8c79a", "weaknesses": {"physical": 1.15},
 		"desc": "Canta una promesa que la cripta contesta con polvo.",
+		"abilities": [
+			{"name": "Golpe ritual", "kind": "attack", "damage": 7},
+			{"name": "Plegaria de polvo", "kind": "defend", "value": 5,
+				"text": "Gana 5 de guardia hasta el próximo golpe recibido."},
+			{"name": "Aliento de juramento", "kind": "attack", "damage": 4,
+				"effect": "drain", "value": 0.5,
+				"text": "Se cura la mitad del daño infligido."},
+		],
 	},
 	{
 		"id": "bone_pilgrim", "name": "Peregrino de Hueso", "tier": "ordinary",
 		"hp": 28, "attack": 8, "armor": 0, "tier_label": "Ordinario",
 		"tint": "#b9c9a8", "weaknesses": {"magic": 1.2},
 		"desc": "Camina hacia una reliquia que ya no está en ninguna parte.",
+		"abilities": [
+			{"name": "Bastón de hueso", "kind": "attack", "damage": 8},
+			{"name": "Carga de reliquia", "kind": "defend", "value": 5,
+				"text": "Gana 5 de guardia hasta el próximo golpe recibido."},
+		],
 	},
 	# Umbral II · Galerías de Ceniza
 	{
@@ -142,18 +216,41 @@ const ENEMIES := [
 		"hp": 34, "attack": 10, "armor": 0, "tier_label": "Ordinario",
 		"tint": "#d9a07e", "weaknesses": {"magic": 1.15},
 		"desc": "Robó una brasa y desde entonces la brasa lo sigue.",
+		"abilities": [
+			{"name": "Filo ardiente", "kind": "attack", "damage": 10},
+			{"name": "Ceniza en los ojos", "kind": "defend", "value": 6,
+				"text": "Gana 6 de guardia hasta el próximo golpe recibido."},
+			{"name": "Brasa viva", "kind": "attack", "damage": 6,
+				"effect": "vulnerable", "value": 2, "turns": 2,
+				"text": "Marca al jugador: +2 de daño recibido durante 2 turnos."},
+		],
 	},
 	{
 		"id": "cinder_warden", "name": "Guardián de Brasas", "tier": "strong",
 		"hp": 50, "attack": 13, "armor": 2, "tier_label": "Fuerte",
 		"tint": "#e09a6c", "weaknesses": {"magic": 1.3},
 		"desc": "Su armadura conserva el calor de una fragua muerta.",
+		"abilities": [
+			{"name": "Yunque", "kind": "attack", "damage": 13},
+			{"name": "Coraza templada", "kind": "defend", "value": 9,
+				"text": "Gana 9 de guardia hasta el próximo golpe recibido."},
+			{"name": "Fragua viva", "kind": "buff", "value": 3, "turns": 2,
+				"text": "+3 de daño durante 2 turnos."},
+		],
 	},
 	{
 		"id": "slag_priest", "name": "Sacerdote de Escoria", "tier": "elite",
 		"hp": 56, "attack": 16, "armor": 1, "tier_label": "Élite",
 		"tint": "#e7b07a", "magic_resist": 2, "weaknesses": {"physical": 1.2},
 		"desc": "Predica desde el horno. Nadie sabe a quién escucha.",
+		"abilities": [
+			{"name": "Sermón de escoria", "kind": "attack", "damage": 16},
+			{"name": "Horno protector", "kind": "defend", "value": 10,
+				"text": "Gana 10 de guardia hasta el próximo golpe recibido."},
+			{"name": "Sacrificio de brasa", "kind": "attack", "damage": 8,
+				"effect": "drain", "value": 0.75,
+				"text": "Se cura el 75% del daño infligido."},
+		],
 	},
 	# Umbral III · Santuario de la Campana Rota
 	{
@@ -161,24 +258,97 @@ const ENEMIES := [
 		"hp": 32, "attack": 9, "armor": 0, "tier_label": "Ordinario",
 		"tint": "#c9c1d8", "weaknesses": {"magic": 1.25},
 		"desc": "No tiene bocas, pero repite el nombre de la campana.",
+		"abilities": [
+			{"name": "Canto hueco", "kind": "attack", "damage": 9},
+			{"name": "Salmo de guarda", "kind": "defend", "value": 6,
+				"text": "Gana 6 de guardia hasta el próximo golpe recibido."},
+			{"name": "Coro sanador", "kind": "heal", "value": 8,
+				"text": "Restaura 8 HP al aliado más herido."},
+		],
 	},
 	{
 		"id": "bell_keeper", "name": "Guardiana de la Campana", "tier": "elite",
 		"hp": 58, "attack": 16, "armor": 2, "tier_label": "Élite",
 		"tint": "#d8c48e", "magic_resist": 1, "weaknesses": {"physical": 1.15},
 		"desc": "No toca la campana. Solo escucha lo que responde.",
+		"abilities": [
+			{"name": "Toque de campana", "kind": "attack", "damage": 16},
+			{"name": "Sello de bronce", "kind": "defend", "value": 11,
+				"text": "Gana 11 de guardia hasta el próximo golpe recibido."},
+			{"name": "Doble tañido", "kind": "attack", "damage": 8,
+				"effect": "multi", "hits": 2,
+				"text": "Golpea dos veces con 8 de daño base cada golpe."},
+		],
 	},
 	{
 		"id": "mirror_scholar", "name": "Erudito del Espejo", "tier": "elite",
 		"hp": 54, "attack": 15, "armor": 2, "tier_label": "Élite",
 		"tint": "#a9c9e6", "magic_resist": 2, "weaknesses": {"physical": 1.25},
 		"desc": "Aprendió a repetir cada límite que alguien rompe.",
+		"abilities": [
+			{"name": "Copia exacta", "kind": "attack", "damage": 15},
+			{"name": "Reflejo", "kind": "defend", "value": 10,
+				"text": "Gana 10 de guardia hasta el próximo golpe recibido."},
+			{"name": "Espejismo", "kind": "debuff", "effect": "weaken",
+				"value": 25, "turns": 2,
+				"text": "Reduce un 25% el daño del jugador durante 2 turnos."},
+		],
 	},
 	{
 		"id": "rift_sentinel", "name": "Centinela de la Grieta", "tier": "strong",
 		"hp": 52, "attack": 14, "armor": 3, "tier_label": "Fuerte",
 		"tint": "#b9a6e8", "weaknesses": {"magic": 1.2},
 		"desc": "Vigila una grieta que no debería existir.",
+		"abilities": [
+			{"name": "Lanza de grieta", "kind": "attack", "damage": 14},
+			{"name": "Velo de vacío", "kind": "defend", "value": 9,
+				"text": "Gana 9 de guardia hasta el próximo golpe recibido."},
+			{"name": "Desgarro", "kind": "attack", "damage": 9, "effect": "pierce",
+				"text": "Ignora la defensa del jugador."},
+		],
+	},
+	# Tres nuevos encuentros ordinarios amplían los pools sin alterar la ruta.
+	{
+		"id": "lead_bound", "name": "Encadenado de Plomo", "tier": "ordinary",
+		"hp": 31, "attack": 9, "armor": 1, "tier_label": "Ordinario",
+		"weaknesses": {"magic": 1.15},
+		"desc": "La cadena sigue arrastrándose cuando el cuerpo se detiene.",
+		"abilities": [
+			{"name": "Golpe de plomo", "kind": "attack", "damage": 9},
+			{"name": "Guardia encadenada", "kind": "defend", "value": 7,
+				"text": "Gana 7 de guardia hasta el próximo golpe recibido."},
+			{"name": "Cadena de retorno", "kind": "attack", "damage": 5,
+				"effect": "vulnerable", "value": 2, "turns": 2,
+				"text": "Marca al jugador: +2 de daño recibido durante 2 turnos."},
+		],
+	},
+	{
+		"id": "slag_hound", "name": "Sabueso de Escoria", "tier": "ordinary",
+		"hp": 36, "attack": 10, "armor": 1, "tier_label": "Ordinario",
+		"weaknesses": {"magic": 1.2},
+		"desc": "No deja huellas. La piedra se enfría detrás de él.",
+		"abilities": [
+			{"name": "Mordida de horno", "kind": "attack", "damage": 10},
+			{"name": "Lomo vitrificado", "kind": "defend", "value": 7,
+				"text": "Gana 7 de guardia hasta el próximo golpe recibido."},
+			{"name": "Tirón de escoria", "kind": "attack", "damage": 5,
+				"effect": "multi", "hits": 2,
+				"text": "Golpea dos veces con 5 de daño base cada golpe."},
+		],
+	},
+	{
+		"id": "chalk_moth", "name": "Polilla de Cal", "tier": "ordinary",
+		"hp": 28, "attack": 8, "armor": 0, "tier_label": "Ordinario",
+		"weaknesses": {"magic": 1.25},
+		"desc": "Sus alas tiemblan; el sonido llega a otra parte.",
+		"abilities": [
+			{"name": "Ala de cal", "kind": "attack", "damage": 8},
+			{"name": "Polvo sin eco", "kind": "debuff", "effect": "weaken",
+				"value": 20, "turns": 2,
+				"text": "Reduce un 20% el daño del jugador durante 2 turnos."},
+			{"name": "Alas cerradas", "kind": "defend", "value": 5,
+				"text": "Gana 5 de guardia hasta el próximo golpe recibido."},
+		],
 	},
 ]
 
@@ -214,10 +384,12 @@ const ITEMS := {
 	"void_sigil": {
 		"name": "Sigilo del Vacío", "slot": "relic", "rarity": "rare",
 		"defense": 2, "desc": "+2 de defensa.",
+		"lore": "La tinta rodea un hueco que no cubre.",
 	},
 	"pilgrim_relic": {
 		"name": "Reliquia del Peregrino", "slot": "relic", "rarity": "common",
 		"max_hp": 10, "desc": "+10 HP máximo.",
+		"lore": "No señala un destino. Nadie la soltó.",
 	},
 	"healing_draught": {
 		"name": "Bremaje Curativo", "slot": "consumable", "rarity": "common",
@@ -227,52 +399,61 @@ const ITEMS := {
 		"name": "Bremaje Mayor", "slot": "consumable", "rarity": "rare",
 		"heal": 60, "desc": "Restaura 60 HP. Se consume.",
 	},
-	# Objetos de los nuevos umbrales. Comparten maestros PNG existentes y se
-	# distinguen con un tinte de runtime; no se añaden imágenes nuevas.
+	# Objetos de los umbrales existentes. Sus variantes comparten maestros PNG
+	# y usan tinte de runtime; los cuatro objetos nuevos tienen iconos propios.
 	"oathbrand": {
 		"name": "Filo del Juramento", "slot": "weapon", "rarity": "rare",
 		"damage": 3, "spell": 2, "tint": "#d9c48c",
 		"desc": "+3 de daño; +2 extra en Avanzado y Superdifícil.",
+		"lore": "El juramento sigue; el nombre fue raspado.",
 	},
 	"cinder_maul": {
 		"name": "Mazo de Ceniza", "slot": "weapon", "rarity": "rare",
 		"damage": 5, "tint": "#d9a06c",
-		"desc": "+5 de daño. El mango todavía está tibio.",
+		"desc": "+5 de daño.",
+		"lore": "El mango aún quema. La fragua está fría.",
 	},
 	"mirror_needle": {
 		"name": "Aguja de Espejo", "slot": "weapon", "rarity": "rare",
 		"damage": 1, "spell": 5, "tint": "#a9c9e6",
 		"desc": "+1 de daño; +5 extra en Avanzado y Superdifícil.",
+		"lore": "En el espejo, la punta llega primero.",
 	},
 	"ash_mantle": {
 		"name": "Manto de Ceniza", "slot": "armor", "rarity": "rare",
 		"max_hp": 18, "defense": 1, "tint": "#d9a06c",
 		"desc": "+18 HP máximo y +1 de defensa.",
+		"lore": "Ceniza por dentro. Limpio por fuera.",
 	},
 	"mirror_scale": {
 		"name": "Escama de Espejo", "slot": "armor", "rarity": "rare",
 		"max_hp": 12, "defense": 1, "tint": "#a9c9e6",
 		"desc": "+12 HP máximo y +1 de defensa.",
+		"lore": "El reflejo guarda una forma perdida.",
 	},
 	"choir_plate": {
 		"name": "Placa del Coro", "slot": "armor", "rarity": "rare",
 		"max_hp": 22, "defense": 1, "tint": "#c9c1d8",
 		"desc": "+22 HP máximo y +1 de defensa.",
+		"lore": "Varias letras empiezan la misma palabra.",
 	},
 	"bell_fragment": {
 		"name": "Fragmento de Campana", "slot": "relic", "rarity": "rare",
 		"max_hp": 15, "damage": 1, "tint": "#d8c48e",
 		"desc": "+15 HP máximo y +1 de daño.",
+		"lore": "No suena. A lo lejos, alguien calla.",
 	},
 	"rift_ember": {
 		"name": "Brasa de la Grieta", "slot": "relic", "rarity": "rare",
 		"damage": 3, "tint": "#b9a6e8",
-		"desc": "+3 de daño. No ilumina, pero calienta los dedos.",
+		"desc": "+3 de daño.",
+		"lore": "No alumbra. La ceniza cae hacia arriba.",
 	},
 	"hollow_eye": {
 		"name": "Ojo Hueco", "slot": "relic", "rarity": "rare",
 		"max_hp": 8, "defense": 2, "tint": "#a9c9e6",
 		"desc": "+8 HP máximo y +2 de defensa.",
+		"lore": "La pupila está vacía. El reflejo, no.",
 	},
 	"ash_salve": {
 		"name": "Ungüento de Ceniza", "slot": "consumable", "rarity": "common",
@@ -281,19 +462,46 @@ const ITEMS := {
 	"fading_elixir": {
 		"name": "Elixir Evanescente", "slot": "consumable", "rarity": "rare",
 		"heal": 75, "tint": "#b9a6e8", "desc": "Restaura 75 HP. Se consume.",
+		"lore": "Tres fechas en la etiqueta. Las tres, ilegibles.",
+	},
+	"threshold_spike": {
+		"name": "Clavo del Umbral", "slot": "weapon", "rarity": "rare",
+		"damage": 3, "spell": 1,
+		"desc": "+3 de daño; +1 extra en Avanzado y Superdifícil.",
+		"lore": "La pared no recuerda qué había al otro lado.",
+	},
+	"slag_fang": {
+		"name": "Colmillo de Escoria", "slot": "relic", "rarity": "rare",
+		"damage": 2, "defense": 1,
+		"desc": "+2 de daño y +1 de defensa.",
+		"lore": "No parece arrancado. Aún conserva el calor.",
+	},
+	"silent_shroud": {
+		"name": "Manto sin Eco", "slot": "armor", "rarity": "rare",
+		"max_hp": 18, "defense": 1,
+		"desc": "+18 HP máximo y +1 de defensa.",
+		"lore": "El polvo no se posa donde debería.",
+	},
+	"chalk_tonic": {
+		"name": "Tónico de Cal", "slot": "consumable", "rarity": "common",
+		"heal": 40, "desc": "Restaura 40 HP. Se consume.",
+		"lore": "Hay algo blanco en el fondo. No cae.",
 	},
 }
 
 const LOOT_BY_TIER := {
 	"weak": ["rusted_blade", "healing_draught", "pilgrim_relic", "ash_salve"],
-	"ordinary": ["iron_cuirass", "oak_shield", "healing_draught", "ember_charm", "ash_salve"],
+	"ordinary": [
+		"iron_cuirass", "oak_shield", "healing_draught", "ember_charm", "ash_salve",
+		"threshold_spike", "slag_fang", "chalk_tonic",
+	],
 	"strong": [
-		"ashen_edge", "warden_plate", "void_sigil", "greater_draught",
+		"ashen_edge", "warden_plate", "void_sigil", "greater_draught", "silent_shroud",
 		"oathbrand", "cinder_maul", "ash_mantle", "mirror_scale", "fading_elixir",
 	],
 	"elite": [
 		"arcane_staff", "warden_plate", "ember_charm", "greater_draught",
-		"mirror_needle", "choir_plate", "bell_fragment", "fading_elixir",
+		"mirror_needle", "choir_plate", "bell_fragment", "fading_elixir", "silent_shroud", "chalk_tonic",
 	],
 	"miniboss": [
 		"ashen_edge", "arcane_staff", "void_sigil", "greater_draught",
@@ -307,9 +515,9 @@ const LOOT_BY_TIER := {
 
 # Botín temático de cada umbral. Se sortea antes de caer al botín por tier.
 const WORLD_LOOT := {
-	"crypt": ["oathbrand", "ash_salve", "pilgrim_relic", "healing_draught"],
-	"ash": ["cinder_maul", "ash_mantle", "ash_salve", "ember_charm", "greater_draught"],
-	"bell": ["mirror_needle", "mirror_scale", "bell_fragment", "fading_elixir", "hollow_eye"],
+	"crypt": ["oathbrand", "threshold_spike", "ash_salve", "pilgrim_relic", "healing_draught"],
+	"ash": ["cinder_maul", "slag_fang", "ash_mantle", "ash_salve", "ember_charm", "greater_draught"],
+	"bell": ["mirror_needle", "mirror_scale", "bell_fragment", "fading_elixir", "hollow_eye", "silent_shroud", "chalk_tonic"],
 	"throne": ["rift_ember", "choir_plate", "hollow_eye", "void_sigil", "ashen_edge"],
 }
 
@@ -337,6 +545,167 @@ static func enemy_by_id(id: String) -> Dictionary:
 
 static func enemy_tint(enemy: Dictionary) -> String:
 	return String(enemy.get("tint", ""))
+
+
+static func is_defense_attack(attack_id: String) -> bool:
+	var profile: Dictionary = PLAYER_ATTACKS.get(attack_id, {})
+	return String(profile.get("type", "")) == "defense"
+
+
+static func is_healing_attack(attack_id: String) -> bool:
+	var profile: Dictionary = PLAYER_ATTACKS.get(attack_id, {})
+	return String(profile.get("type", "")) == "heal"
+
+
+static func is_support_attack(attack_id: String) -> bool:
+	return is_defense_attack(attack_id) or is_healing_attack(attack_id)
+
+
+static func player_shield(difficulty: int, defense_value: int, attack_id: String = "ward_sigil") -> int:
+	var profile: Dictionary = PLAYER_ATTACKS.get(attack_id, PLAYER_ATTACKS["ward_sigil"])
+	var table: Array = profile.get("shield", [0, 0, 0, 0])
+	if table.is_empty():
+		return 0
+	var base := int(table[clampi(difficulty, 0, table.size() - 1)])
+	return maxi(0, base + maxi(0, defense_value) * 2)
+
+
+static func player_heal(difficulty: int, attack_id: String = "vital_breath") -> int:
+	var profile: Dictionary = PLAYER_ATTACKS.get(attack_id, PLAYER_ATTACKS["vital_breath"])
+	var table: Array = profile.get("heal", [0, 0, 0, 0])
+	if table.is_empty():
+		return 0
+	return maxi(0, int(table[clampi(difficulty, 0, table.size() - 1)]))
+
+
+static func enemy_abilities(enemy: Dictionary) -> Array:
+	return enemy.get("abilities", [])
+
+
+static func enemy_basic_attack(enemy: Dictionary) -> Dictionary:
+	for ability in enemy_abilities(enemy):
+		if String(ability.get("kind", "attack")) == "attack" and String(ability.get("effect", "")) == "":
+			return ability
+	for ability in enemy_abilities(enemy):
+		if String(ability.get("kind", "attack")) == "attack":
+			return ability
+	return {"name": "Ataque", "kind": "attack", "damage": int(enemy.get("attack", 1))}
+
+
+static func choose_enemy_ability(enemy: Dictionary, rng: RandomNumberGenerator, last_name: String = "", last_kind: String = "") -> Dictionary:
+	var abilities := enemy_abilities(enemy)
+	if abilities.is_empty():
+		return enemy_basic_attack(enemy)
+	var weights: Array[float] = []
+	var total := 0.0
+	for ability in abilities:
+		var kind := String(ability.get("kind", "attack"))
+		var weight := float(ability.get("weight", 0.0))
+		if weight <= 0.0:
+			match kind:
+				"attack":
+					weight = 1.5
+				"defend":
+					weight = 1.0
+				"summon":
+					weight = 0.75
+				_:
+					weight = 0.9
+		if String(ability.get("name", "")) == last_name:
+			weight *= 0.2
+		if kind == "defend" and last_kind == "defend":
+			weight = 0.0
+		weight = maxf(0.0, weight)
+		weights.append(weight)
+		total += weight
+	if total <= 0.0:
+		return abilities[rng.randi_range(0, abilities.size() - 1)]
+	var roll := rng.randf() * total
+	for i in range(abilities.size()):
+		roll -= weights[i]
+		if roll <= 0.0:
+			return abilities[i]
+	return abilities[abilities.size() - 1]
+
+
+static func ability_indicator(ability: Dictionary) -> String:
+	var kind := String(ability.get("kind", "attack"))
+	var effect := String(ability.get("effect", ""))
+	match kind:
+		"attack":
+			match effect:
+				"vulnerable":
+					return "ATAQUE · MARCA"
+				"drain":
+					return "ATAQUE · DRENAJE"
+				"pierce":
+					return "ATAQUE · PERFORA"
+			if int(ability.get("hits", 1)) > 1:
+				return "ATAQUE · MÚLTIPLE"
+			return "ATAQUE"
+		"defend":
+			return "DEFENSA"
+		"heal":
+			return "CURA"
+		"buff":
+			return "POTENCIA"
+		"debuff":
+			return "MALDICIÓN"
+		"summon":
+			return "INVOCACIÓN"
+		"idle":
+			return "APARECE"
+	return "HABILIDAD"
+
+
+static func ability_intent_text(ability: Dictionary, damage: int = -1) -> String:
+	var kind := String(ability.get("kind", "attack"))
+	var ability_name := String(ability.get("name", "Ataque"))
+	match kind:
+		"attack":
+			var hits := maxi(1, int(ability.get("hits", 1)))
+			var shown := maxi(0, damage)
+			if hits > 1:
+				return "%s · %d×%d" % [ability_name, hits, shown]
+			return "%s · %d" % [ability_name, shown]
+		"defend":
+			return "%s · +%d" % [ability_name, int(ability.get("value", 0))]
+		"heal":
+			return "%s · +%d HP" % [ability_name, int(ability.get("value", 0))]
+		"buff":
+			return "%s · +%d" % [ability_name, int(ability.get("value", 0))]
+		"debuff":
+			return "%s · −%d%%" % [ability_name, int(ability.get("value", 0))]
+		"summon":
+			var summon_name := String(ability.get("summon_name", ""))
+			if summon_name == "":
+				summon_name = String(ability.get("enemy", "un aliado"))
+			return "%s · invoca %s" % [ability_name, summon_name]
+		"idle":
+			return "Se incorpora"
+	return ability_name
+
+
+static func ability_effect_text(ability: Dictionary) -> String:
+	var text := String(ability.get("text", ""))
+	if text.strip_edges() != "":
+		return text
+	match String(ability.get("kind", "attack")):
+		"attack":
+			return "Sin efecto"
+		"defend":
+			return "Gana %d de guardia hasta el próximo golpe recibido." % int(ability.get("value", 0))
+		"heal":
+			return "Restaura %d HP al aliado más herido." % int(ability.get("value", 0))
+		"buff":
+			return "+%d de daño durante %d turnos." % [int(ability.get("value", 0)), maxi(1, int(ability.get("turns", 1)))]
+		"debuff":
+			return "Reduce un %d%% el daño del jugador durante %d turnos." % [int(ability.get("value", 0)), maxi(1, int(ability.get("turns", 1)))]
+		"summon":
+			return "Invoca un aliado si el grupo tiene espacio."
+		"idle":
+			return "Se incorpora al combate; actuará desde el próximo turno."
+	return "Sin efecto"
 
 
 static func selection_time_for(enemy: Dictionary, rng: RandomNumberGenerator) -> float:
@@ -428,6 +797,10 @@ static func attack_difficulty_range(player_level: int, mastery_max: int, attack_
 
 
 static func attack_effectiveness_label(attack_id: String, enemy: Dictionary) -> String:
+	if is_defense_attack(attack_id):
+		return "Protección para este turno"
+	if is_healing_attack(attack_id):
+		return "Curación para este turno"
 	var profile: Dictionary = PLAYER_ATTACKS.get(attack_id, PLAYER_ATTACKS["piercing_strike"])
 	var damage_type := String(profile.get("type", "physical"))
 	var weaknesses: Dictionary = enemy.get("weaknesses", {})
@@ -441,6 +814,8 @@ static func attack_effectiveness_label(attack_id: String, enemy: Dictionary) -> 
 
 
 static func player_attack(difficulty: int, equipped: Dictionary, attack_id: String = "") -> int:
+	if attack_id != "" and is_support_attack(attack_id):
+		return 0
 	if attack_id != "":
 		var profile: Dictionary = PLAYER_ATTACKS.get(attack_id, PLAYER_ATTACKS["piercing_strike"])
 		var damage_type := String(profile.get("type", "physical"))
@@ -451,7 +826,9 @@ static func player_attack(difficulty: int, equipped: Dictionary, attack_id: Stri
 			if damage_type == "physical":
 				typed_bonus += int(typed_weapon.get("damage", 0))
 			else:
-				typed_bonus += int(typed_weapon.get("spell", 0)) + int(floor(float(int(typed_weapon.get("damage", 0))) / 2.0))
+				if difficulty >= 2:
+					typed_bonus += int(typed_weapon.get("spell", 0))
+				typed_bonus += int(floor(float(int(typed_weapon.get("damage", 0))) / 2.0))
 		var typed_relic: Dictionary = item(equipped.get("relic", ""))
 		if not typed_relic.is_empty():
 			typed_bonus += int(typed_relic.get("damage", 0))
@@ -470,6 +847,8 @@ static func player_attack(difficulty: int, equipped: Dictionary, attack_id: Stri
 
 
 static func damage_for_attack(raw_damage: int, attack_id: String, enemy: Dictionary) -> int:
+	if is_support_attack(attack_id):
+		return 0
 	var profile: Dictionary = PLAYER_ATTACKS.get(attack_id, PLAYER_ATTACKS["piercing_strike"])
 	var damage_type := String(profile.get("type", "physical"))
 	var resistance := int(enemy.get("armor", 0)) if damage_type == "physical" else int(enemy.get("magic_resist", 0))

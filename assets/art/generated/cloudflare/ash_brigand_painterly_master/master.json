@@ -1,0 +1,174 @@
+{
+  "schema": "generate2dsprite.master.v1",
+  "tool": {
+    "name": "master_still",
+    "version": "0.4.0"
+  },
+  "created": "2026-10-29T06:55:34.580Z",
+  "name": "ash_brigand",
+  "subject": "a lean human ash raider, full body",
+  "identity_recap": "lean human ash raider, full body (Lean masked human in soot-dark leather and uneven shoulder armor, a chipped curved blade and one muted ember-orange cloth accent)",
+  "facing": "left",
+  "view": "side view (profile to three-quarter)",
+  "finish": "hd",
+  "class": "mob",
+  "framing": {
+    "canvas": [
+      1024,
+      1024
+    ],
+    "subject_height_px": 471,
+    "top_margin_px": 406,
+    "lead_px": 100,
+    "preset": "mob",
+    "subject_bbox": [
+      467,
+      406,
+      757,
+      877
+    ],
+    "anchor": [
+      604.0,
+      877.0
+    ],
+    "opaque_area_px": 58819,
+    "width_limited": false
+  },
+  "key": "#FF00FF",
+  "files": {
+    "master": {
+      "path": "master.png",
+      "sha256": "b3cbf6c5d630173faa0ba9b2837cc18236b10c941a3918494dd3e1ba661d2953",
+      "bytes": 130060,
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    "cutout": {
+      "path": "master_rgba.png",
+      "sha256": "1aafac3802055752132d6c1262757313f2a34086036b5837b1d5fffe6cfbe138",
+      "bytes": 150057,
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    "source": {
+      "path": "source.png",
+      "sha256": "e3e343c1f9d5c6e23c28715ad0863f2f5df4419615142b3512460c782b59a193",
+      "bytes": 461093,
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    "spec": {
+      "path": "spec.json",
+      "sha256": "2ba5cbc686322d7ae32ca512b309d63790347bf0f52f8c1ac6cf0a80adc0a42d",
+      "bytes": 819
+    },
+    "prompt": {
+      "path": "prompt.txt",
+      "sha256": "5385faf159ca3f7712f67e4c4635edd3a2f13d465ddf85883d5c5da53c1d0092",
+      "bytes": 2162
+    }
+  },
+  "references": [],
+  "transform": {
+    "mapping": "master = scale * source + offset (continuous pixel coordinates: pixel i spans [i, i + 1))",
+    "source_size": [
+      1024,
+      1024
+    ],
+    "source_subject_bbox": [
+      297,
+      47,
+      881,
+      994
+    ],
+    "crop_box": [
+      291,
+      41,
+      887,
+      1000
+    ],
+    "crop_margin_px": 6,
+    "scale": 0.49736008447729674,
+    "offset": [
+      319.0549102428722,
+      382.62407602956705
+    ],
+    "canvas": [
+      1024,
+      1024
+    ],
+    "resampler": "box",
+    "premultiplied": true,
+    "alpha_floor_px": 0,
+    "subject_parts": 1,
+    "ignored_parts": 0,
+    "ignored_px": 0,
+    "source_touches": [],
+    "key_rgb": [
+      255,
+      0,
+      255
+    ]
+  },
+  "route": "cloudflare-mcp-workers-ai-flux-2-klein-4b",
+  "provenance": {
+    "command": "external",
+    "run": null,
+    "take": null,
+    "source_name": "ash_brigand_painterly_cutout.png",
+    "source_sha256": "e3e343c1f9d5c6e23c28715ad0863f2f5df4419615142b3512460c782b59a193",
+    "media": null,
+    "media_cli_source": null,
+    "edit": null
+  },
+  "matte": {
+    "requested": "soft",
+    "key_estimate": {
+      "key": [
+        255.0,
+        0.0,
+        255.0
+      ],
+      "source": "native_alpha",
+      "valid": false,
+      "ring_share": 0.0,
+      "coverage": 0.0,
+      "distance_from_declared": 0.0
+    },
+    "quality": "native_alpha",
+    "qa": {
+      "key": [
+        255.0,
+        0.0,
+        255.0
+      ],
+      "opaque_key_px": 0,
+      "outer_ring_spill_fraction": 0.2229681131623112,
+      "semitransparent_fraction": 0.002499862992331786,
+      "enclosed_key_pockets": 0,
+      "key_hued_px": 0,
+      "visible_px": 237213,
+      "outer_ring_px": 4171,
+      "thresholds": {
+        "key_tolerance": 48.0,
+        "spill_threshold": 20.0,
+        "min_pocket_area": 16,
+        "opaque_alpha": 128,
+        "spill_hue_balance": 0.5
+      },
+      "method": "forge_matte.matte_qa v1: straight-colour key distance and dominance on the keyed image; two-channel keys count spill only where the key channels are balanced"
+    },
+    "key_choice": {
+      "status": "ok",
+      "overlap_share": 0.0,
+      "rule": "reject a key when more than 0.5% of subject pixels have key dominance >= 40; first acceptable candidate wins"
+    }
+  },
+  "warnings": []
+}

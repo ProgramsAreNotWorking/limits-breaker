@@ -1,0 +1,174 @@
+{
+  "schema": "generate2dsprite.master.v1",
+  "tool": {
+    "name": "master_still",
+    "version": "0.4.0"
+  },
+  "created": "2026-10-29T06:01:33.094Z",
+  "name": "bell_keeper",
+  "subject": "a resolute sanctuary bell guardian with a handbell and hammer, full body",
+  "identity_recap": "resolute sanctuary bell guardian with a handbell and hammer, full body (Female guardian with dark steel chest and arm plates over blue-grey robes, shoulder-length black hair, practical boots, one cracked bronze handbell and a short hammer)",
+  "facing": "right",
+  "view": "side view (profile to three-quarter)",
+  "finish": "hd",
+  "class": "mob",
+  "framing": {
+    "canvas": [
+      1024,
+      1024
+    ],
+    "subject_height_px": 900,
+    "top_margin_px": 60,
+    "lead_px": 0,
+    "preset": "custom",
+    "subject_bbox": [
+      305,
+      60,
+      719,
+      960
+    ],
+    "anchor": [
+      532.5,
+      960.0
+    ],
+    "opaque_area_px": 204955,
+    "width_limited": false
+  },
+  "key": "#FF00FF",
+  "files": {
+    "master": {
+      "path": "master.png",
+      "sha256": "291dc8c0ecc09f7020a6d9bdad9c2602bc58a5a09cb1e574cafcb2438a52b0fa",
+      "bytes": 353679,
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    "cutout": {
+      "path": "master_rgba.png",
+      "sha256": "307bd90ec264f7e33bf1ecd00b76f10a850109e8c76ca12e9bc594a2179f5601",
+      "bytes": 403959,
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    "source": {
+      "path": "source.png",
+      "sha256": "d1fea63f56740f37741507a7f48d1d188021e809937ba7be7bb9bab0c8cb536c",
+      "bytes": 403124,
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    "spec": {
+      "path": "spec.json",
+      "sha256": "fe81a680922dd17f993c36dd41776782a2c3e564d6f9d175e45e9c8486f3eba0",
+      "bytes": 941
+    },
+    "prompt": {
+      "path": "prompt.txt",
+      "sha256": "e9f8b87170ac16e9a7183ab35dad94a40687ac4fe57f8f635f1e1abd20064057",
+      "bytes": 2199
+    }
+  },
+  "references": [],
+  "transform": {
+    "mapping": "master = scale * source + offset (continuous pixel coordinates: pixel i spans [i, i + 1))",
+    "source_size": [
+      1024,
+      1024
+    ],
+    "source_subject_bbox": [
+      276,
+      44,
+      711,
+      991
+    ],
+    "crop_box": [
+      270,
+      38,
+      717,
+      997
+    ],
+    "crop_margin_px": 6,
+    "scale": 0.9503695881731784,
+    "offset": [
+      42.992608236536455,
+      18.18373812038015
+    ],
+    "canvas": [
+      1024,
+      1024
+    ],
+    "resampler": "lanczos",
+    "premultiplied": true,
+    "alpha_floor_px": 2311,
+    "subject_parts": 1,
+    "ignored_parts": 0,
+    "ignored_px": 0,
+    "source_touches": [],
+    "key_rgb": [
+      255,
+      0,
+      255
+    ]
+  },
+  "route": "cloudflare-mcp-workers-ai-flux-2-klein-4b",
+  "provenance": {
+    "command": "external",
+    "run": null,
+    "take": null,
+    "source_name": "bell_keeper_cutout.png",
+    "source_sha256": "d1fea63f56740f37741507a7f48d1d188021e809937ba7be7bb9bab0c8cb536c",
+    "media": null,
+    "media_cli_source": null,
+    "edit": null
+  },
+  "matte": {
+    "requested": "soft",
+    "key_estimate": {
+      "key": [
+        255.0,
+        0.0,
+        255.0
+      ],
+      "source": "native_alpha",
+      "valid": false,
+      "ring_share": 0.0,
+      "coverage": 0.0,
+      "distance_from_declared": 0.0
+    },
+    "quality": "native_alpha",
+    "qa": {
+      "key": [
+        255.0,
+        0.0,
+        255.0
+      ],
+      "opaque_key_px": 0,
+      "outer_ring_spill_fraction": 0.00025075225677031093,
+      "semitransparent_fraction": 0.028821637913662133,
+      "enclosed_key_pockets": 0,
+      "key_hued_px": 0,
+      "visible_px": 228266,
+      "outer_ring_px": 3988,
+      "thresholds": {
+        "key_tolerance": 48.0,
+        "spill_threshold": 20.0,
+        "min_pocket_area": 16,
+        "opaque_alpha": 128,
+        "spill_hue_balance": 0.5
+      },
+      "method": "forge_matte.matte_qa v1: straight-colour key distance and dominance on the keyed image; two-channel keys count spill only where the key channels are balanced"
+    },
+    "key_choice": {
+      "status": "ok",
+      "overlap_share": 0.0,
+      "rule": "reject a key when more than 0.5% of subject pixels have key dominance >= 40; first acceptable candidate wins"
+    }
+  },
+  "warnings": []
+}

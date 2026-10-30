@@ -4,7 +4,6 @@ extends Control
 
 const MediaManifest = preload("res://src/core/asset_manifest.gd")
 const VFXTexturesLib = preload("res://src/ui/vfx_textures.gd")
-const ToonArt = preload("res://src/ui/toon_art.gd")
 
 var glow := 0.55
 var accent := UIKit.VIOLET
@@ -24,7 +23,6 @@ func _ready() -> void:
 	artwork.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
 	artwork.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	artwork.modulate = Color(1, 1, 1, 0.42)
-	ToonArt.apply(artwork, 10.0, 0.16, 2.0, 1.04)
 	add_child(artwork)
 	_setup_embers()
 	resized.connect(_sync_embers)

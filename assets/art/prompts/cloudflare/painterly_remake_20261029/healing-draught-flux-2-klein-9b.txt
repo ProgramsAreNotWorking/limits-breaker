@@ -1,0 +1,9 @@
+Painterly dark-fantasy inventory icon for Limits Breaker. Create exactly one healing draught: a small upright clear-glass vial with a narrow neck, dark cork stopper, worn bronze wire around the neck and deep muted carmine-red restorative liquid filling the lower half. The glass is aged and slightly cloudy; simple readable shape, no label or writing.
+
+Style: hand-painted 2D RPG item illustration, natural material rendering, dimensional glass and liquid, fine brush-textured highlights, matte aged metal and charcoal shadows. Same solemn, weathered fantasy finish as the game's character portraits. Restrained palette, warm amber highlight from upper left and cool shadow fill, no black outline, no flat cel shading, no glossy plastic. Clear silhouette and strong value separation at 32 pixels.
+
+Composition: one object only, centered and upright in a square 1024 x 1024 canvas; occupy about 64 percent of the image height and leave equal transparent-ready margin on all sides. Front three-quarter view, no hands, person, stand or other objects.
+
+Background: perfectly uniform flat pure magenta #FF00FF across the whole canvas, no gradient, floor, cast shadow, vignette, halo or scenery. No frame, card, text, label, logo, watermark or symbols.
+
+Avoid cartoon, anime, thick line art, comic style, neon, excessive glow, extra bottles, floating parts, ornate unreadable writing, blur, photoreal product photography, 3D render, colored or textured background.

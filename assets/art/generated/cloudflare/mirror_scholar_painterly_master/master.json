@@ -1,0 +1,174 @@
+{
+  "schema": "generate2dsprite.master.v1",
+  "tool": {
+    "name": "master_still",
+    "version": "0.4.0"
+  },
+  "created": "2026-10-29T06:55:38.297Z",
+  "name": "mirror_scholar",
+  "subject": "a slender scholar with a faceted cracked mirror mask, full body",
+  "identity_recap": "slender scholar with a faceted cracked mirror mask, full body (Narrow scholar in layered charcoal robes, a single faceted and cracked silver mirror mask, small reflective shoulder plates, dark leather boots, no bright magic)",
+  "facing": "front",
+  "view": "front view",
+  "finish": "hd",
+  "class": "mob",
+  "framing": {
+    "canvas": [
+      1024,
+      1024
+    ],
+    "subject_height_px": 471,
+    "top_margin_px": 406,
+    "lead_px": 100,
+    "preset": "mob",
+    "subject_bbox": [
+      415,
+      406,
+      609,
+      877
+    ],
+    "anchor": [
+      515.0,
+      877.0
+    ],
+    "opaque_area_px": 53855,
+    "width_limited": false
+  },
+  "key": "#FF00FF",
+  "files": {
+    "master": {
+      "path": "master.png",
+      "sha256": "2694f782cb65c3470f74d0e0cd52017683f81d9567db4137d73c48821a6ccfa0",
+      "bytes": 99978,
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    "cutout": {
+      "path": "master_rgba.png",
+      "sha256": "832a8f7645a81b5fa814c044ba7e80130c38fc095f1f0429282b883287f7f86e",
+      "bytes": 115343,
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    "source": {
+      "path": "source.png",
+      "sha256": "27049a0448cb3095939816f915bf9049b971ec1d4631e1b260401ef4c4437bc1",
+      "bytes": 349637,
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    "spec": {
+      "path": "spec.json",
+      "sha256": "0b15870f7ceea105c2819ed3e020ae32bc721c8a4975727751d04c64ce89fabb",
+      "bytes": 917
+    },
+    "prompt": {
+      "path": "prompt.txt",
+      "sha256": "7c4fb3edac10d3be9dfa9ec8f96d09353ac28f75f94c782a74cbf335ab862747",
+      "bytes": 2148
+    }
+  },
+  "references": [],
+  "transform": {
+    "mapping": "master = scale * source + offset (continuous pixel coordinates: pixel i spans [i, i + 1))",
+    "source_size": [
+      1024,
+      1024
+    ],
+    "source_subject_bbox": [
+      349,
+      48,
+      738,
+      991
+    ],
+    "crop_box": [
+      343,
+      42,
+      744,
+      997
+    ],
+    "crop_margin_px": 6,
+    "scale": 0.49946977730646874,
+    "offset": [
+      240.53817603393423,
+      382.0254506892895
+    ],
+    "canvas": [
+      1024,
+      1024
+    ],
+    "resampler": "box",
+    "premultiplied": true,
+    "alpha_floor_px": 0,
+    "subject_parts": 1,
+    "ignored_parts": 3,
+    "ignored_px": 3,
+    "source_touches": [],
+    "key_rgb": [
+      255,
+      0,
+      255
+    ]
+  },
+  "route": "cloudflare-mcp-workers-ai-flux-2-klein-4b",
+  "provenance": {
+    "command": "external",
+    "run": null,
+    "take": null,
+    "source_name": "mirror_scholar_painterly_cutout.png",
+    "source_sha256": "27049a0448cb3095939816f915bf9049b971ec1d4631e1b260401ef4c4437bc1",
+    "media": null,
+    "media_cli_source": null,
+    "edit": null
+  },
+  "matte": {
+    "requested": "soft",
+    "key_estimate": {
+      "key": [
+        255.0,
+        0.0,
+        255.0
+      ],
+      "source": "native_alpha",
+      "valid": false,
+      "ring_share": 0.0,
+      "coverage": 0.0,
+      "distance_from_declared": 0.0
+    },
+    "quality": "native_alpha",
+    "qa": {
+      "key": [
+        255.0,
+        0.0,
+        255.0
+      ],
+      "opaque_key_px": 0,
+      "outer_ring_spill_fraction": 0.1792128391287734,
+      "semitransparent_fraction": 0.003370833275534409,
+      "enclosed_key_pockets": 0,
+      "key_hued_px": 0,
+      "visible_px": 216267,
+      "outer_ring_px": 2617,
+      "thresholds": {
+        "key_tolerance": 48.0,
+        "spill_threshold": 20.0,
+        "min_pocket_area": 16,
+        "opaque_alpha": 128,
+        "spill_hue_balance": 0.5
+      },
+      "method": "forge_matte.matte_qa v1: straight-colour key distance and dominance on the keyed image; two-channel keys count spill only where the key channels are balanced"
+    },
+    "key_choice": {
+      "status": "ok",
+      "overlap_share": 0.0,
+      "rule": "reject a key when more than 0.5% of subject pixels have key dominance >= 40; first acceptable candidate wins"
+    }
+  },
+  "warnings": []
+}

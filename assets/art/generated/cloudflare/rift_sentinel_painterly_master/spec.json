@@ -1,0 +1,22 @@
+{
+  "schema": "generate2dsprite.master_spec.v1",
+  "name": "rift_sentinel",
+  "subject": "a defensive armored sentinel with a narrow violet chest rift and asymmetrical shield, full body",
+  "identity": "Sturdy sentinel in aged dark steel plate, one large asymmetrical weathered shield, narrow dim violet seam through the breastplate, no fire.",
+  "pose": "Three-quarter view, feet planted and shoulders squared.",
+  "recap": "defensive armored sentinel with a narrow violet chest rift and asymmetrical shield, full body (Sturdy sentinel in aged dark steel plate, one large asymmetrical weathered shield, narrow dim violet seam through the breastplate, no fire)",
+  "facing": "front",
+  "facing_parts": null,
+  "view": null,
+  "class": "mob",
+  "finish": "hd",
+  "key": "#00FF00",
+  "genre": null,
+  "pronoun": "they",
+  "identity_ref": null,
+  "style_ref": null,
+  "allowed_text": null,
+  "extra_bans": [],
+  "opaque_parts": null,
+  "extra": null
+}

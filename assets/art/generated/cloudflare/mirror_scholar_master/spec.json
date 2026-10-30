@@ -1,0 +1,22 @@
+{
+  "schema": "generate2dsprite.master_spec.v1",
+  "name": "mirror_scholar",
+  "subject": "a slender scholar with a faceted cracked mirror mask, full body",
+  "identity": "Narrow scholar in layered charcoal robes, a single faceted and cracked silver mirror mask, small reflective shoulder plates, dark leather boots, no bright magic.",
+  "pose": "Three-quarter view, quiet guarded posture.",
+  "recap": "slender scholar with a faceted cracked mirror mask, full body (Narrow scholar in layered charcoal robes, a single faceted and cracked silver mirror mask, small reflective shoulder plates, dark leather boots, no bright magic)",
+  "facing": "right",
+  "facing_parts": null,
+  "view": null,
+  "class": "mob",
+  "finish": "hd",
+  "key": "#FF00FF",
+  "genre": null,
+  "pronoun": "they",
+  "identity_ref": null,
+  "style_ref": null,
+  "allowed_text": null,
+  "extra_bans": [],
+  "opaque_parts": null,
+  "extra": null
+}

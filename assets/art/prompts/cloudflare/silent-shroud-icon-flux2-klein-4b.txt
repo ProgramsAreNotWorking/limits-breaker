@@ -1,0 +1,8 @@
+PAINTERLY DARK FANTASY — LIMITS BREAKER STYLE LOCK
+Premium painterly 2D dark-fantasy inventory illustration matching the existing Limits Breaker equipment icons. One compact dimensional object with a crisp but fine edge, layered material shading and restrained directional highlights. Matte iron, leather, cloth, glass and stone; charcoal shadows, muted steel, burgundy, contained violet and warm amber. Clear at 32 px with generous transparent padding; natural material rendering, not flat or glossy.
+
+Create one isolated armor icon: a folded, heavy slate blue-grey shroud with a high collar and broad overlapping cloth planes, held by one small tarnished bronze clasp. The fabric looks protective and worn, not ghostly or transparent. Center the folded garment in a square canvas, show its full outline, occupy about 60 percent of the image and leave generous empty margin. No wearer, mannequin or hanger.
+
+Use an edge-to-edge flat solid RGB #FF00FF matte background, with no ground, gradient, cast shadow, frame or scenery. Do not use magenta on the object; the matte will be removed to transparency during asset preparation. If native alpha is supported, preserve true transparency instead.
+
+NEGATIVE: person, body, face, mannequin, hanger, multiple garments, text, letters, numbers, equations, runes, labels, UI, card, frame, border, logo, watermark, signature, floor, shadow, scenery, broad magic aura, neon, rainbow, glossy plastic, photorealism, 3D render, blur, magenta object details, colored or textured background.

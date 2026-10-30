@@ -1,0 +1,22 @@
+{
+  "schema": "generate2dsprite.master_spec.v1",
+  "name": "bell_keeper",
+  "subject": "a resolute sanctuary bell guardian with a handbell and hammer, full body",
+  "identity": "Female guardian with dark steel chest and arm plates over blue-grey robes, shoulder-length black hair, practical boots, one cracked bronze handbell and a short hammer.",
+  "pose": "Three-quarter view, upright and braced.",
+  "recap": "resolute sanctuary bell guardian with a handbell and hammer, full body (Female guardian with dark steel chest and arm plates over blue-grey robes, shoulder-length black hair, practical boots, one cracked bronze handbell and a short hammer)",
+  "facing": "front",
+  "facing_parts": null,
+  "view": null,
+  "class": "mob",
+  "finish": "hd",
+  "key": "#FF00FF",
+  "genre": null,
+  "pronoun": "they",
+  "identity_ref": null,
+  "style_ref": null,
+  "allowed_text": null,
+  "extra_bans": [],
+  "opaque_parts": null,
+  "extra": null
+}

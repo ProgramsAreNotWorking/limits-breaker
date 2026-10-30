@@ -14,7 +14,7 @@ const LABEL_BG := Color(0.04, 0.045, 0.055, 0.92)
 
 func setup(d: Dictionary) -> void:
 	data = d
-	custom_minimum_size = Vector2(460, 230)
+	custom_minimum_size = Vector2(500, 200)
 	queue_redraw()
 
 
@@ -42,8 +42,14 @@ func _draw() -> void:
 		var middle := (ymin + ymax) * 0.5
 		ymin = middle - 2.0
 		ymax = middle + 2.0
-	var pad := 30.0
-	var plot := Rect2(pad, pad, w - pad * 2.0, h - pad * 2.0)
+	# Deja espacio real para los valores de ambos ejes: el eje Y necesita
+	# margen izquierdo para números negativos y el X necesita una franja
+	# inferior para las marcas y la etiqueta de x = a.
+	var pad_left := clampf(w * 0.10, 38.0, 52.0)
+	var pad_right := clampf(w * 0.04, 16.0, 24.0)
+	var pad_top := clampf(h * 0.10, 18.0, 26.0)
+	var pad_bottom := clampf(h * 0.17, 30.0, 42.0)
+	var plot := Rect2(pad_left, pad_top, w - pad_left - pad_right, h - pad_top - pad_bottom)
 
 	# Rejilla
 	for i in range(9):
@@ -91,7 +97,44 @@ func _draw() -> void:
 		# La rama derecha sí lo incluye: punto cerrado en f(a).
 		_dot(left_px, BACKGROUND, line_color)
 		_dot(right_px, line_color, line_color)
-	_tag(font, "x = %s" % _fmt(a), Vector2(ax + 6.0, plot.end.y + 17.0), false, UIKit.MUTED)
+	_draw_axis_values(font, plot, xmin, xmax, ymin, ymax, a)
+	_tag(font, "x = %s" % _fmt(a), Vector2(ax + 6.0, plot.end.y + 31.0), false, UIKit.MUTED)
+
+
+func _draw_axis_values(font: Font, plot: Rect2, xmin: float, xmax: float, ymin: float, ymax: float, a: float) -> void:
+	var axis_y := clampf(_to_px_y(0.0, plot, ymin, ymax), plot.position.y, plot.end.y)
+	var axis_x := clampf(_to_px_x(0.0, plot, xmin, xmax), plot.position.x, plot.end.x)
+	var tick_color := Color(0.70, 0.75, 0.82, 0.95)
+	var tick_font_size := 12
+
+	# Valores del eje X. El punto x = a ya lleva su etiqueta inferior.
+	for x in range(int(ceil(xmin)), int(floor(xmax)) + 1):
+		if is_equal_approx(float(x), a):
+			continue
+		var px := _to_px_x(float(x), plot, xmin, xmax)
+		draw_line(Vector2(px, axis_y - 4.0), Vector2(px, axis_y + 4.0), axis_color, 1.0)
+		var label := str(x)
+		var text_size := font.get_string_size(label, HORIZONTAL_ALIGNMENT_LEFT, -1, tick_font_size)
+		var label_y := axis_y + size.y * 0.075
+		if label_y > size.y - 4.0:
+			label_y = axis_y - 6.0
+		var label_x := clampf(px - text_size.x * 0.5, 2.0, size.x - text_size.x - 2.0)
+		draw_string(font, Vector2(label_x, label_y), label, HORIZONTAL_ALIGNMENT_LEFT, -1, tick_font_size, tick_color)
+
+	# Valores del eje Y, con un paso que evita amontonar etiquetas.
+	var y_span := maxf(1.0, ymax - ymin)
+	var y_step := maxi(1, int(ceil(y_span / 6.0)))
+	var first_y := int(ceil(ymin / float(y_step))) * y_step
+	for y in range(first_y, int(floor(ymax)) + 1, y_step):
+		var py := _to_px_y(float(y), plot, ymin, ymax)
+		draw_line(Vector2(axis_x - 4.0, py), Vector2(axis_x + 4.0, py), axis_color, 1.0)
+		var label := str(y)
+		var text_size := font.get_string_size(label, HORIZONTAL_ALIGNMENT_LEFT, -1, tick_font_size)
+		var label_x := axis_x - text_size.x - 6.0
+		if label_x < 2.0:
+			label_x = axis_x + 6.0
+		var label_y := clampf(py + 4.0, text_size.y + 2.0, size.y - 2.0)
+		draw_string(font, Vector2(label_x, label_y), label, HORIZONTAL_ALIGNMENT_LEFT, -1, tick_font_size, tick_color)
 
 
 func _to_px_x(x: float, plot: Rect2, xmin: float, xmax: float) -> float:
@@ -103,8 +146,8 @@ func _to_px_y(y: float, plot: Rect2, ymin: float, ymax: float) -> float:
 
 
 func _dot(p: Vector2, fill: Color, border: Color) -> void:
-	draw_circle(p, 5.5, border)
-	draw_circle(p, 3.7, fill)
+	draw_circle(p, 6.5, border)
+	draw_circle(p, 4.4, fill)
 
 
 func _tag(font: Font, text: String, pos: Vector2, align_right: bool, color: Color) -> void:

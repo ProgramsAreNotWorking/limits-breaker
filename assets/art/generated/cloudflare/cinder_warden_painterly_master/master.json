@@ -1,0 +1,174 @@
+{
+  "schema": "generate2dsprite.master.v1",
+  "tool": {
+    "name": "master_still",
+    "version": "0.4.0"
+  },
+  "created": "2026-10-29T06:55:35.373Z",
+  "name": "cinder_warden",
+  "subject": "a broad iron cinder warden, full body",
+  "identity_recap": "broad iron cinder warden, full body (Broad guardian in cracked charcoal plate armor, sealed dark helmet, heavy gauntlets, small iron forearm shield, thin contained amber cinder seams)",
+  "facing": "front",
+  "view": "front view",
+  "finish": "hd",
+  "class": "mob",
+  "framing": {
+    "canvas": [
+      1024,
+      1024
+    ],
+    "subject_height_px": 471,
+    "top_margin_px": 406,
+    "lead_px": 100,
+    "preset": "mob",
+    "subject_bbox": [
+      370,
+      406,
+      652,
+      877
+    ],
+    "anchor": [
+      529.5,
+      877.0
+    ],
+    "opaque_area_px": 71420,
+    "width_limited": false
+  },
+  "key": "#FF00FF",
+  "files": {
+    "master": {
+      "path": "master.png",
+      "sha256": "9ab94173dcd5dfedb8cf2e179af6cd0d7f485f61a1d701698da4f350553c28b7",
+      "bytes": 149067,
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    "cutout": {
+      "path": "master_rgba.png",
+      "sha256": "43bbd39eec334807cbee4f98a70e6c689e196620eb447078f465f9080c46c076",
+      "bytes": 173339,
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    "source": {
+      "path": "source.png",
+      "sha256": "f76b80129795efad685d413a34a4f82351a9c818da73be1351b2b8c15128de97",
+      "bytes": 481557,
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    "spec": {
+      "path": "spec.json",
+      "sha256": "a7ba89a53eac7bdf154d0a92188294967dd3856d2ea9b248fa893a2b43205855",
+      "bytes": 878
+    },
+    "prompt": {
+      "path": "prompt.txt",
+      "sha256": "c514df00d7158c18964b8c49a3817e977a69627c21b09977998a344fa35b574f",
+      "bytes": 2652
+    }
+  },
+  "references": [],
+  "transform": {
+    "mapping": "master = scale * source + offset (continuous pixel coordinates: pixel i spans [i, i + 1))",
+    "source_size": [
+      1024,
+      1024
+    ],
+    "source_subject_bbox": [
+      198,
+      50,
+      748,
+      979
+    ],
+    "crop_box": [
+      192,
+      44,
+      754,
+      985
+    ],
+    "crop_margin_px": 6,
+    "scale": 0.5069967707212056,
+    "offset": [
+      272.1905274488697,
+      380.6501614639397
+    ],
+    "canvas": [
+      1024,
+      1024
+    ],
+    "resampler": "lanczos",
+    "premultiplied": true,
+    "alpha_floor_px": 1376,
+    "subject_parts": 1,
+    "ignored_parts": 57,
+    "ignored_px": 126,
+    "source_touches": [],
+    "key_rgb": [
+      255,
+      0,
+      255
+    ]
+  },
+  "route": "cloudflare-mcp-workers-ai-flux-2-klein-4b",
+  "provenance": {
+    "command": "external",
+    "run": null,
+    "take": null,
+    "source_name": "cinder_warden_painterly_cutout.png",
+    "source_sha256": "f76b80129795efad685d413a34a4f82351a9c818da73be1351b2b8c15128de97",
+    "media": null,
+    "media_cli_source": null,
+    "edit": null
+  },
+  "matte": {
+    "requested": "soft",
+    "key_estimate": {
+      "key": [
+        255.0,
+        0.0,
+        255.0
+      ],
+      "source": "native_alpha",
+      "valid": false,
+      "ring_share": 0.0,
+      "coverage": 0.0,
+      "distance_from_declared": 0.0
+    },
+    "quality": "native_alpha",
+    "qa": {
+      "key": [
+        255.0,
+        0.0,
+        255.0
+      ],
+      "opaque_key_px": 0,
+      "outer_ring_spill_fraction": 0.19687906371911573,
+      "semitransparent_fraction": 0.006331524668511265,
+      "enclosed_key_pockets": 0,
+      "key_hued_px": 0,
+      "visible_px": 278290,
+      "outer_ring_px": 3845,
+      "thresholds": {
+        "key_tolerance": 48.0,
+        "spill_threshold": 20.0,
+        "min_pocket_area": 16,
+        "opaque_alpha": 128,
+        "spill_hue_balance": 0.5
+      },
+      "method": "forge_matte.matte_qa v1: straight-colour key distance and dominance on the keyed image; two-channel keys count spill only where the key channels are balanced"
+    },
+    "key_choice": {
+      "status": "ok",
+      "overlap_share": 0.0,
+      "rule": "reject a key when more than 0.5% of subject pixels have key dominance >= 40; first acceptable candidate wins"
+    }
+  },
+  "warnings": []
+}

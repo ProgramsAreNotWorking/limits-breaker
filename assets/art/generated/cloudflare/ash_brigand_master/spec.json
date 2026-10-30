@@ -1,0 +1,22 @@
+{
+  "schema": "generate2dsprite.master_spec.v1",
+  "name": "ash_brigand",
+  "subject": "a lean human ash raider, full body",
+  "identity": "Lean masked human in soot-dark leather and uneven shoulder armor, a chipped curved blade and one muted ember-orange cloth accent.",
+  "pose": "Three-quarter view, guarded stance, blade held low.",
+  "recap": "lean human ash raider, full body (Lean masked human in soot-dark leather and uneven shoulder armor, a chipped curved blade and one muted ember-orange cloth accent)",
+  "facing": "right",
+  "facing_parts": null,
+  "view": null,
+  "class": "mob",
+  "finish": "hd",
+  "key": "#FF00FF",
+  "genre": "a dark fantasy 2D RPG",
+  "pronoun": "they",
+  "identity_ref": null,
+  "style_ref": null,
+  "allowed_text": null,
+  "extra_bans": [],
+  "opaque_parts": null,
+  "extra": null
+}

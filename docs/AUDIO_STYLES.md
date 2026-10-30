@@ -100,9 +100,9 @@ Una primera tanda razonable es **`crypt`, `ash`, `bell`, `throne` y `victory`**.
 - **Prompt de producción:** `instrumental sacred dark chamber, 72 BPM, 3/4, A minor with flat fifth, slightly detuned tubular bells, string quartet sul tasto, low organ, distant wordless choir, reversed cymbal swells, soft timpani downbeats, ritual and broken, no lyrics, seamless 80-second loop`.
 - **Prioridad:** alta.
 
-### `throne` — El Innombrable
+### `throne` — Limitless
 
-- **Uso:** encuentro 10, Trono del Innombrable, jefe final.
+- **Uso:** encuentro 10, Trono de Limitless, jefe final.
 - **Estilo:** ritual orquestal apocalíptico / orquestal oscuro con percusión de guerra.
 - **Tempo y métrica:** 112 BPM, 4/4.
 - **Centro tonal:** Do♯ menor con segundo grado bemol (Do♯–Re–Mi–Fa♯–Sol♯–La–Si). La tensión Do♯–Re es la presencia del Trono.

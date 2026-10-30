@@ -1,0 +1,176 @@
+{
+  "schema": "generate2dsprite.master.v1",
+  "tool": {
+    "name": "master_still",
+    "version": "0.4.0"
+  },
+  "created": "2026-10-29T06:55:39.086Z",
+  "name": "rift_sentinel",
+  "subject": "a defensive armored sentinel with a narrow violet chest rift and asymmetrical shield, full body",
+  "identity_recap": "defensive armored sentinel with a narrow violet chest rift and asymmetrical shield, full body (Sturdy sentinel in aged dark steel plate, one large asymmetrical weathered shield, narrow dim violet seam through the breastplate, no fire)",
+  "facing": "front",
+  "view": "front view",
+  "finish": "hd",
+  "class": "mob",
+  "framing": {
+    "canvas": [
+      1024,
+      1024
+    ],
+    "subject_height_px": 471,
+    "top_margin_px": 406,
+    "lead_px": 100,
+    "preset": "mob",
+    "subject_bbox": [
+      342,
+      406,
+      682,
+      877
+    ],
+    "anchor": [
+      587.0,
+      877.0
+    ],
+    "opaque_area_px": 77742,
+    "width_limited": false
+  },
+  "key": "#FF00FF",
+  "files": {
+    "master": {
+      "path": "master.png",
+      "sha256": "be29ce78ebb362a921a2918a06c2143d94e79d515cb6a822191044042d9704e7",
+      "bytes": 154674,
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    "cutout": {
+      "path": "master_rgba.png",
+      "sha256": "5079ef4dc2f5f77f5f9bc641eb26a7f355b528b3ce226d9dc515be89946e4e19",
+      "bytes": 180613,
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    "source": {
+      "path": "source.png",
+      "sha256": "b6c40010f31a4ab33a98361141930fb62287df236aca7cf5e0ea37a71be65c5b",
+      "bytes": 520074,
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    "spec": {
+      "path": "spec.json",
+      "sha256": "3c39d4e441725f21be74f5019e1535ff38e6b3720cbad5ceb9783acd2ee19d9a",
+      "bytes": 949
+    },
+    "prompt": {
+      "path": "prompt.txt",
+      "sha256": "7e55e508fdbc6f1184db7b241fbec6d1c7d55d72c41134968884dea897aa64af",
+      "bytes": 2220
+    }
+  },
+  "references": [],
+  "transform": {
+    "mapping": "master = scale * source + offset (continuous pixel coordinates: pixel i spans [i, i + 1))",
+    "source_size": [
+      1024,
+      1024
+    ],
+    "source_subject_bbox": [
+      100,
+      57,
+      769,
+      989
+    ],
+    "crop_box": [
+      94,
+      51,
+      775,
+      995
+    ],
+    "crop_margin_px": 6,
+    "scale": 0.5053648068669528,
+    "offset": [
+      292.418991416309,
+      377.1942060085837
+    ],
+    "canvas": [
+      1024,
+      1024
+    ],
+    "resampler": "lanczos",
+    "premultiplied": true,
+    "alpha_floor_px": 1324,
+    "subject_parts": 1,
+    "ignored_parts": 3,
+    "ignored_px": 4,
+    "source_touches": [],
+    "key_rgb": [
+      255,
+      0,
+      255
+    ]
+  },
+  "route": "cloudflare-mcp-workers-ai-flux-2-klein-4b",
+  "provenance": {
+    "command": "external",
+    "run": null,
+    "take": null,
+    "source_name": "rift_sentinel_painterly_cutout.png",
+    "source_sha256": "b6c40010f31a4ab33a98361141930fb62287df236aca7cf5e0ea37a71be65c5b",
+    "media": null,
+    "media_cli_source": null,
+    "edit": null
+  },
+  "matte": {
+    "requested": "soft",
+    "key_estimate": {
+      "key": [
+        255.0,
+        0.0,
+        255.0
+      ],
+      "source": "native_alpha",
+      "valid": false,
+      "ring_share": 0.0,
+      "coverage": 0.0,
+      "distance_from_declared": 0.0
+    },
+    "quality": "native_alpha",
+    "qa": {
+      "key": [
+        255.0,
+        0.0,
+        255.0
+      ],
+      "opaque_key_px": 0,
+      "outer_ring_spill_fraction": 0.0423572744014733,
+      "semitransparent_fraction": 0.004161798106841366,
+      "enclosed_key_pockets": 0,
+      "key_hued_px": 338,
+      "visible_px": 304676,
+      "outer_ring_px": 3258,
+      "thresholds": {
+        "key_tolerance": 48.0,
+        "spill_threshold": 20.0,
+        "min_pocket_area": 16,
+        "opaque_alpha": 128,
+        "spill_hue_balance": 0.5
+      },
+      "method": "forge_matte.matte_qa v1: straight-colour key distance and dominance on the keyed image; two-channel keys count spill only where the key channels are balanced"
+    },
+    "key_choice": {
+      "status": "conflict",
+      "overlap_share": 0.00728,
+      "rule": "reject a key when more than 0.5% of subject pixels have key dominance >= 40; first acceptable candidate wins"
+    }
+  },
+  "warnings": [
+    "0.7% of the subject's colours lean to the key #FF00FF (more than 0.5%): check that those parts survive keying; for purple or pink designs use --key green or blue"
+  ]
+}

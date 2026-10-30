@@ -1,0 +1,22 @@
+{
+  "schema": "generate2dsprite.master_spec.v1",
+  "name": "lead_bound",
+  "subject": "the Lead-Bound, full body",
+  "identity": "Gaunt adult figure in a worn slate funeral coat, bald with a severe tired face, one rusted iron chain crossed across the chest and exactly one plain heavy lead seal at the sternum; bare feet.",
+  "pose": "Standing squarely, shoulders drawn inward, hands at sides.",
+  "recap": "Lead-Bound, full body (Gaunt adult figure in a worn slate funeral coat, bald with a severe tired face, one rusted iron chain crossed across the chest and exactly one plain heavy lead seal at the sternum; bare feet)",
+  "facing": "front",
+  "facing_parts": null,
+  "view": null,
+  "class": "mob",
+  "finish": "hd",
+  "key": "#FF00FF",
+  "genre": null,
+  "pronoun": "they",
+  "identity_ref": null,
+  "style_ref": null,
+  "allowed_text": null,
+  "extra_bans": [],
+  "opaque_parts": null,
+  "extra": null
+}

@@ -305,7 +305,17 @@ func consume_berserk_charge() -> bool:
 
 
 func attack_damage(difficulty: int, attack_id: String = "") -> int:
+	if Combat.is_support_attack(attack_id):
+		return 0
 	return Combat.player_attack(difficulty, run["equipped"], attack_id) + int(run.get("upgrade_damage", 0))
+
+
+func attack_shield(difficulty: int, attack_id: String = "ward_sigil") -> int:
+	return Combat.player_shield(difficulty, defense(), attack_id)
+
+
+func attack_heal(difficulty: int, attack_id: String = "vital_breath") -> int:
+	return Combat.player_heal(difficulty, attack_id)
 
 
 func defense() -> int:
@@ -313,8 +323,21 @@ func defense() -> int:
 
 
 func enemy_damage(enemy: Dictionary, living_enemy_count: int = 1) -> int:
+	return enemy_ability_damage({"damage": int(enemy.get("attack", 1))}, living_enemy_count)
+
+
+func enemy_ability_damage(ability: Dictionary, living_enemy_count: int = 1, bonus: int = 0, vulnerable: int = 0) -> int:
+	var raw := int(ability.get("damage", 0))
+	if raw <= 0:
+		return 0
 	var ratio := float(hp()) / float(max_hp()) if max_hp() > 0 else 1.0
-	var base := maxi(1, int(enemy.get("attack", 1)) + (2 if ratio <= 0.5 else 0) - defense())
+	var base := raw
+	if ratio <= 0.5:
+		base += 2
+	base += maxi(0, bonus)
+	if String(ability.get("effect", "")) != "pierce":
+		base = maxi(1, base - defense())
+	base += maxi(0, vulnerable)
 	var group_scale := float(maxi(1, living_enemy_count))
 	return maxi(1, int(roundf(float(base) / group_scale)))
 

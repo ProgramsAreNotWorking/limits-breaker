@@ -1,0 +1,9 @@
+Create one full-body production character portrait for the existing game Limits Breaker, a painterly 2D dark-fantasy RPG.
+
+One complete adult cultist, centered in a square 1024 x 1024 canvas, head, hands and both boots visible with clear margin. Three-quarter view, poised narrow stance. A lean human ritualist from the crypt wearing layered charcoal robes, a dark hood and a restrained burgundy inner garment. Ash-stained gloves, small ritual knife at the belt, one hand raised around a tiny dim violet ember. Suggest ash marks only as smudges, never as readable symbols. The figure should feel solemn, physically grounded and weathered, with a strong robed silhouette.
+
+Art direction: richly textured but crisp hand-painted RPG illustration, with natural anatomy, painterly soft transitions, varied edge softness, matte cloth and iron, charcoal shadows, muted slate and steel, restrained burgundy, contained violet magic and a tiny warm amber light from upper left against cool charcoal fill. Tactile material detail and realistic painted volume. The image should read like a carefully brushed dark-fantasy book illustration; describe form with paint, light and shadow rather than black ink lines. No cel shading, no comic-book inking, no cartoon finish. Maintain readable detail at 512 px.
+
+Background is edge-to-edge perfectly flat uniform chroma green #00FF00, separate from the figure. No ground, cast shadow, scenery, frame, border, text, watermark, other characters, cropped limbs or props touching the canvas.
+
+Avoid anime, manga, caricature, exaggerated proportions, thick black outlines, uniform contour lines, graphic-novel panels, neon rim light, glowing contour, vivid purple, glossy plastic, photorealistic skin, visible pores, extra limbs, fused fingers, duplicate props, readable writing, runes, numerals, equations.

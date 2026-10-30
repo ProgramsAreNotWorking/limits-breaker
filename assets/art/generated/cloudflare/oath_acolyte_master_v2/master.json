@@ -1,0 +1,174 @@
+{
+  "schema": "generate2dsprite.master.v1",
+  "tool": {
+    "name": "master_still",
+    "version": "0.4.0"
+  },
+  "created": "2026-10-29T05:42:14.407Z",
+  "name": "oath_acolyte",
+  "subject": "a frail skeletal oath acolyte, full body",
+  "identity_recap": "frail skeletal oath acolyte, full body (Cracked warm-ivory skeleton, narrow charcoal hood and threadbare dark robe, one burgundy oath ribbon, thin rusted ritual blade held low; weak-tier narrow silhouette)",
+  "facing": "right",
+  "view": "side view (profile to three-quarter)",
+  "finish": "hd",
+  "class": "mob",
+  "framing": {
+    "canvas": [
+      1024,
+      1024
+    ],
+    "subject_height_px": 900,
+    "top_margin_px": 60,
+    "lead_px": 0,
+    "preset": "custom",
+    "subject_bbox": [
+      264,
+      60,
+      760,
+      960
+    ],
+    "anchor": [
+      658.5,
+      960.0
+    ],
+    "opaque_area_px": 190520,
+    "width_limited": false
+  },
+  "key": "#FF00FF",
+  "files": {
+    "master": {
+      "path": "master.png",
+      "sha256": "ec5b8f1debed2183e6438e61ead6714dc025fa2c62bda62cdc98fe90c877dfcc",
+      "bytes": 383476,
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    "cutout": {
+      "path": "master_rgba.png",
+      "sha256": "a84cec6c95fd6e362026cc9b8f75656f549b5258f37d8ba089f25c5257276f3b",
+      "bytes": 457999,
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    "source": {
+      "path": "source.png",
+      "sha256": "1ce60f0b244ce2c2fb75c3b0a6e265af3cc33794a2618ce93472b77a7aa8808a",
+      "bytes": 435575,
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    "spec": {
+      "path": "spec.json",
+      "sha256": "49137cd57151b0f39f9eb7927ef0551649a00b1c814370e77e4ccd35c2a746b9",
+      "bytes": 917
+    },
+    "prompt": {
+      "path": "prompt.txt",
+      "sha256": "2df312bcf31f655984eec64d371ab5427686bcc20ac4cbfc477e4a04584c0ce8",
+      "bytes": 2119
+    }
+  },
+  "references": [],
+  "transform": {
+    "mapping": "master = scale * source + offset (continuous pixel coordinates: pixel i spans [i, i + 1))",
+    "source_size": [
+      1024,
+      1024
+    ],
+    "source_subject_bbox": [
+      190,
+      56,
+      701,
+      983
+    ],
+    "crop_box": [
+      184,
+      50,
+      707,
+      989
+    ],
+    "crop_margin_px": 6,
+    "scale": 0.970873786407767,
+    "offset": [
+      79.47572815533982,
+      5.631067961165044
+    ],
+    "canvas": [
+      1024,
+      1024
+    ],
+    "resampler": "lanczos",
+    "premultiplied": true,
+    "alpha_floor_px": 3559,
+    "subject_parts": 2,
+    "ignored_parts": 49,
+    "ignored_px": 131,
+    "source_touches": [],
+    "key_rgb": [
+      255,
+      0,
+      255
+    ]
+  },
+  "route": "cloudflare-mcp-workers-ai-flux-2-klein-4b",
+  "provenance": {
+    "command": "external",
+    "run": null,
+    "take": null,
+    "source_name": "oath_acolyte_cutout.png",
+    "source_sha256": "1ce60f0b244ce2c2fb75c3b0a6e265af3cc33794a2618ce93472b77a7aa8808a",
+    "media": null,
+    "media_cli_source": null,
+    "edit": null
+  },
+  "matte": {
+    "requested": "soft",
+    "key_estimate": {
+      "key": [
+        255.0,
+        0.0,
+        255.0
+      ],
+      "source": "native_alpha",
+      "valid": false,
+      "ring_share": 0.0,
+      "coverage": 0.0,
+      "distance_from_declared": 0.0
+    },
+    "quality": "native_alpha",
+    "qa": {
+      "key": [
+        255.0,
+        0.0,
+        255.0
+      ],
+      "opaque_key_px": 0,
+      "outer_ring_spill_fraction": 0.00014791805339841728,
+      "semitransparent_fraction": 0.058221891664600685,
+      "enclosed_key_pockets": 0,
+      "key_hued_px": 0,
+      "visible_px": 205713,
+      "outer_ring_px": 13521,
+      "thresholds": {
+        "key_tolerance": 48.0,
+        "spill_threshold": 20.0,
+        "min_pocket_area": 16,
+        "opaque_alpha": 128,
+        "spill_hue_balance": 0.5
+      },
+      "method": "forge_matte.matte_qa v1: straight-colour key distance and dominance on the keyed image; two-channel keys count spill only where the key channels are balanced"
+    },
+    "key_choice": {
+      "status": "ok",
+      "overlap_share": 0.0,
+      "rule": "reject a key when more than 0.5% of subject pixels have key dominance >= 40; first acceptable candidate wins"
+    }
+  },
+  "warnings": []
+}

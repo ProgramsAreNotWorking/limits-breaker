@@ -1,0 +1,174 @@
+{
+  "schema": "generate2dsprite.master.v1",
+  "tool": {
+    "name": "master_still",
+    "version": "0.4.0"
+  },
+  "created": "2026-10-29T05:56:12.615Z",
+  "name": "slag_priest",
+  "subject": "a severe forge priest with a slag collar and enclosed coal censer, full body",
+  "identity_recap": "severe forge priest with a slag collar and enclosed coal censer, full body (Dark-robed, close-cropped bearded forge priest with a broad collar of vitrified slag, iron staff topped by a closed perforated censer, small amber coal visible only through its holes)",
+  "facing": "right",
+  "view": "side view (profile to three-quarter)",
+  "finish": "hd",
+  "class": "mob",
+  "framing": {
+    "canvas": [
+      1024,
+      1024
+    ],
+    "subject_height_px": 900,
+    "top_margin_px": 60,
+    "lead_px": 0,
+    "preset": "custom",
+    "subject_bbox": [
+      252,
+      60,
+      772,
+      960
+    ],
+    "anchor": [
+      552.0,
+      960.0
+    ],
+    "opaque_area_px": 259484,
+    "width_limited": false
+  },
+  "key": "#FF00FF",
+  "files": {
+    "master": {
+      "path": "master.png",
+      "sha256": "a5e63971f17afbf4c27ee631832bc68d39c30a994037383189f6e79f535b797d",
+      "bytes": 436318,
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    "cutout": {
+      "path": "master_rgba.png",
+      "sha256": "6b002dc551b915b345d6a29a0fcec787ca18889e04e86bd9151d73b008fc424b",
+      "bytes": 507278,
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    "source": {
+      "path": "source.png",
+      "sha256": "4e745ad8db52f3c03592b796dd3cbc9a9aa8d692440c8afca134abe068349cf3",
+      "bytes": 482121,
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    "spec": {
+      "path": "spec.json",
+      "sha256": "ef3d6fd9845b9c0d6d60961d9eb2d977eb93f37101202681996c5095bc52bfcb",
+      "bytes": 1014
+    },
+    "prompt": {
+      "path": "prompt.txt",
+      "sha256": "071a7181583f9e3f101531fc29917e64e468d6208ff54030543c37b7bd7404e9",
+      "bytes": 2397
+    }
+  },
+  "references": [],
+  "transform": {
+    "mapping": "master = scale * source + offset (continuous pixel coordinates: pixel i spans [i, i + 1))",
+    "source_size": [
+      1024,
+      1024
+    ],
+    "source_subject_bbox": [
+      212,
+      60,
+      746,
+      985
+    ],
+    "crop_box": [
+      206,
+      54,
+      752,
+      991
+    ],
+    "crop_margin_px": 6,
+    "scale": 0.972972972972973,
+    "offset": [
+      45.94594594594594,
+      1.621621621621621
+    ],
+    "canvas": [
+      1024,
+      1024
+    ],
+    "resampler": "lanczos",
+    "premultiplied": true,
+    "alpha_floor_px": 3469,
+    "subject_parts": 5,
+    "ignored_parts": 28,
+    "ignored_px": 79,
+    "source_touches": [],
+    "key_rgb": [
+      255,
+      0,
+      255
+    ]
+  },
+  "route": "cloudflare-mcp-workers-ai-flux-2-klein-4b",
+  "provenance": {
+    "command": "external",
+    "run": null,
+    "take": null,
+    "source_name": "slag_priest_cutout.png",
+    "source_sha256": "4e745ad8db52f3c03592b796dd3cbc9a9aa8d692440c8afca134abe068349cf3",
+    "media": null,
+    "media_cli_source": null,
+    "edit": null
+  },
+  "matte": {
+    "requested": "soft",
+    "key_estimate": {
+      "key": [
+        255.0,
+        0.0,
+        255.0
+      ],
+      "source": "native_alpha",
+      "valid": false,
+      "ring_share": 0.0,
+      "coverage": 0.0,
+      "distance_from_declared": 0.0
+    },
+    "quality": "native_alpha",
+    "qa": {
+      "key": [
+        255.0,
+        0.0,
+        255.0
+      ],
+      "opaque_key_px": 0,
+      "outer_ring_spill_fraction": 0.0,
+      "semitransparent_fraction": 0.05471644343117697,
+      "enclosed_key_pockets": 0,
+      "key_hued_px": 0,
+      "visible_px": 277211,
+      "outer_ring_px": 10458,
+      "thresholds": {
+        "key_tolerance": 48.0,
+        "spill_threshold": 20.0,
+        "min_pocket_area": 16,
+        "opaque_alpha": 128,
+        "spill_hue_balance": 0.5
+      },
+      "method": "forge_matte.matte_qa v1: straight-colour key distance and dominance on the keyed image; two-channel keys count spill only where the key channels are balanced"
+    },
+    "key_choice": {
+      "status": "ok",
+      "overlap_share": 0.0,
+      "rule": "reject a key when more than 0.5% of subject pixels have key dominance >= 40; first acceptable candidate wins"
+    }
+  },
+  "warnings": []
+}

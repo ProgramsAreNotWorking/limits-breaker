@@ -1,0 +1,174 @@
+{
+  "schema": "generate2dsprite.master.v1",
+  "tool": {
+    "name": "master_still",
+    "version": "0.4.0"
+  },
+  "created": "2026-10-29T05:48:40.516Z",
+  "name": "bone_pilgrim",
+  "subject": "a stooped bone pilgrim, full body",
+  "identity_recap": "stooped bone pilgrim, full body (Uneven warm-ivory skeleton in a weathered slate travel cloak, carrying a simple empty reliquary cage on a long walking staff; muted sage-green cloth accent)",
+  "facing": "right",
+  "view": "side view (profile to three-quarter)",
+  "finish": "hd",
+  "class": "mob",
+  "framing": {
+    "canvas": [
+      1024,
+      1024
+    ],
+    "subject_height_px": 860,
+    "top_margin_px": 80,
+    "lead_px": 0,
+    "preset": "custom",
+    "subject_bbox": [
+      199,
+      80,
+      825,
+      940
+    ],
+    "anchor": [
+      557.5,
+      940.0
+    ],
+    "opaque_area_px": 212748,
+    "width_limited": false
+  },
+  "key": "#FF00FF",
+  "files": {
+    "master": {
+      "path": "master.png",
+      "sha256": "7459cee1c86d3fc914f24d6b57d9fb9f2a84301a3d722c160721baa9663933a6",
+      "bytes": 520958,
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    "cutout": {
+      "path": "master_rgba.png",
+      "sha256": "673da4cec27cd7f5e9041733183d42346fdb8f51ecdfedd58979873768d2ba3b",
+      "bytes": 635442,
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    "source": {
+      "path": "source.png",
+      "sha256": "63bd6bc44570e6503ccc0a20da051962a7168179bf8d750d245b7f78d51f2205",
+      "bytes": 532086,
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    "spec": {
+      "path": "spec.json",
+      "sha256": "c31610d37f7140d0f65dee1877e8f311d06de9e2f9e380f88147de699e7bfdba",
+      "bytes": 875
+    },
+    "prompt": {
+      "path": "prompt.txt",
+      "sha256": "637680547093601ffa915407aa6bd4d8a139153a209a343f5221317c7782354e",
+      "bytes": 2128
+    }
+  },
+  "references": [],
+  "transform": {
+    "mapping": "master = scale * source + offset (continuous pixel coordinates: pixel i spans [i, i + 1))",
+    "source_size": [
+      1024,
+      1024
+    ],
+    "source_subject_bbox": [
+      192,
+      100,
+      820,
+      963
+    ],
+    "crop_box": [
+      186,
+      94,
+      826,
+      969
+    ],
+    "crop_margin_px": 6,
+    "scale": 0.996523754345307,
+    "offset": [
+      7.758980301274619,
+      -19.65237543453071
+    ],
+    "canvas": [
+      1024,
+      1024
+    ],
+    "resampler": "lanczos",
+    "premultiplied": true,
+    "alpha_floor_px": 9269,
+    "subject_parts": 15,
+    "ignored_parts": 152,
+    "ignored_px": 346,
+    "source_touches": [],
+    "key_rgb": [
+      255,
+      0,
+      255
+    ]
+  },
+  "route": "cloudflare-mcp-workers-ai-flux-2-klein-4b",
+  "provenance": {
+    "command": "external",
+    "run": null,
+    "take": null,
+    "source_name": "bone_pilgrim_cutout.png",
+    "source_sha256": "63bd6bc44570e6503ccc0a20da051962a7168179bf8d750d245b7f78d51f2205",
+    "media": null,
+    "media_cli_source": null,
+    "edit": null
+  },
+  "matte": {
+    "requested": "soft",
+    "key_estimate": {
+      "key": [
+        255.0,
+        0.0,
+        255.0
+      ],
+      "source": "native_alpha",
+      "valid": false,
+      "ring_share": 0.0,
+      "coverage": 0.0,
+      "distance_from_declared": 0.0
+    },
+    "quality": "native_alpha",
+    "qa": {
+      "key": [
+        255.0,
+        0.0,
+        255.0
+      ],
+      "opaque_key_px": 0,
+      "outer_ring_spill_fraction": 7.941234862021044e-05,
+      "semitransparent_fraction": 0.11846568709375804,
+      "enclosed_key_pockets": 0,
+      "key_hued_px": 0,
+      "visible_px": 221389,
+      "outer_ring_px": 25185,
+      "thresholds": {
+        "key_tolerance": 48.0,
+        "spill_threshold": 20.0,
+        "min_pocket_area": 16,
+        "opaque_alpha": 128,
+        "spill_hue_balance": 0.5
+      },
+      "method": "forge_matte.matte_qa v1: straight-colour key distance and dominance on the keyed image; two-channel keys count spill only where the key channels are balanced"
+    },
+    "key_choice": {
+      "status": "ok",
+      "overlap_share": 0.0,
+      "rule": "reject a key when more than 0.5% of subject pixels have key dominance >= 40; first acceptable candidate wins"
+    }
+  },
+  "warnings": []
+}

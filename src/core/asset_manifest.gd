@@ -44,8 +44,8 @@ const ITEM_ART := {
 	"pilgrim_relic": "res://assets/art/icons/items/pilgrim_relic.png",
 	"healing_draught": "res://assets/art/icons/items/healing_draught.png",
 	"greater_draught": "res://assets/art/icons/items/greater_draught.png",
-	# Los objetos de la ampliación reutilizan los maestros de icono existentes
-	# y se distinguen con el tinte de runtime definido en Combat.ITEMS.
+	# Las variantes existentes reutilizan maestros con tintes; estos objetos
+	# añadidos usan iconos propios.
 	"oathbrand": "res://assets/art/icons/items/rusted_blade.png",
 	"cinder_maul": "res://assets/art/icons/items/ashen_edge.png",
 	"mirror_needle": "res://assets/art/icons/items/arcane_staff.png",
@@ -57,6 +57,10 @@ const ITEM_ART := {
 	"hollow_eye": "res://assets/art/icons/items/void_sigil.png",
 	"ash_salve": "res://assets/art/icons/items/healing_draught.png",
 	"fading_elixir": "res://assets/art/icons/items/greater_draught.png",
+	"threshold_spike": "res://assets/art/icons/items/threshold_spike.png",
+	"slag_fang": "res://assets/art/icons/items/slag_fang.png",
+	"silent_shroud": "res://assets/art/icons/items/silent_shroud.png",
+	"chalk_tonic": "res://assets/art/icons/items/chalk_tonic.png",
 }
 
 const ENVIRONMENTS := {
@@ -78,6 +82,18 @@ const CHARACTER_ART := {
 	"limitless": "res://assets/art/characters/limitless.png",
 	"blacksmith": "res://assets/art/characters/blacksmith.png",
 	"angel": "res://assets/art/characters/angel.png",
+	"oath_acolyte": "res://assets/art/characters/oath_acolyte.png",
+	"bone_pilgrim": "res://assets/art/characters/bone_pilgrim.png",
+	"ash_brigand": "res://assets/art/characters/ash_brigand.png",
+	"cinder_warden": "res://assets/art/characters/cinder_warden.png",
+	"slag_priest": "res://assets/art/characters/slag_priest.png",
+	"hollow_choir": "res://assets/art/characters/hollow_choir.png",
+	"bell_keeper": "res://assets/art/characters/bell_keeper.png",
+	"mirror_scholar": "res://assets/art/characters/mirror_scholar.png",
+	"rift_sentinel": "res://assets/art/characters/rift_sentinel.png",
+	"lead_bound": "res://assets/art/characters/lead_bound.png",
+	"slag_hound": "res://assets/art/characters/slag_hound.png",
+	"chalk_moth": "res://assets/art/characters/chalk_moth.png",
 }
 
 const CUTOUT_CHARACTER_ART: Array[String] = [
@@ -90,6 +106,18 @@ const CUTOUT_CHARACTER_ART: Array[String] = [
 	"limitless",
 	"blacksmith",
 	"angel",
+	"oath_acolyte",
+	"bone_pilgrim",
+	"ash_brigand",
+	"cinder_warden",
+	"slag_priest",
+	"hollow_choir",
+	"bell_keeper",
+	"mirror_scholar",
+	"rift_sentinel",
+	"lead_bound",
+	"slag_hound",
+	"chalk_moth",
 ]
 
 const EFFECT_ART := {
@@ -118,17 +146,20 @@ const ENEMIES := {
 	"cultist": "cultist",
 	"colossus": "colossus",
 	"limitless": "limitless",
-	# Ampliación: cada enemigo usa un maestro PNG existente y un tinte de
-	# runtime distinto, sin sprites animados ni imágenes nuevas.
-	"oath_acolyte": "cultist",
-	"bone_pilgrim": "skeleton",
-	"ash_brigand": "brigand",
-	"cinder_warden": "warden",
-	"slag_priest": "cultist",
-	"hollow_choir": "cultist",
-	"bell_keeper": "cultist",
-	"mirror_scholar": "angel",
-	"rift_sentinel": "warden",
+	# Variantes de la ampliación con retratos propios; el tinte de combate
+	# conserva su función de acento para el halo.
+	"oath_acolyte": "oath_acolyte",
+	"bone_pilgrim": "bone_pilgrim",
+	"ash_brigand": "ash_brigand",
+	"cinder_warden": "cinder_warden",
+	"slag_priest": "slag_priest",
+	"hollow_choir": "hollow_choir",
+	"bell_keeper": "bell_keeper",
+	"mirror_scholar": "mirror_scholar",
+	"rift_sentinel": "rift_sentinel",
+	"lead_bound": "lead_bound",
+	"slag_hound": "slag_hound",
+	"chalk_moth": "chalk_moth",
 }
 
 

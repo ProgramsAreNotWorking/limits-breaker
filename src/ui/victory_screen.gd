@@ -26,7 +26,7 @@ func _ready() -> void:
 	var t := UIKit.title("EL LÍMITE SE HA ROTO", 46, UIKit.GOLD)
 	t.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	root.add_child(t)
-	var sub := UIKit.label("El Innombrable cae. Por primera vez, el pasillo termina.", 17, UIKit.TEXT)
+	var sub := UIKit.label("Limitless cae. Por primera vez, el pasillo termina.", 17, UIKit.TEXT)
 	sub.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	root.add_child(sub)
 

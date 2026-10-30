@@ -1,0 +1,176 @@
+{
+  "schema": "generate2dsprite.master.v1",
+  "tool": {
+    "name": "master_still",
+    "version": "0.4.0"
+  },
+  "created": "2026-10-29T05:58:49.566Z",
+  "name": "hollow_choir",
+  "subject": "a singular hollow wraith with three collar masks, full body",
+  "identity_recap": "singular hollow wraith with three collar masks, full body (Tall, narrow wraith in charcoal and burgundy vestments; one deep hood cavity glows muted violet; exactly three small ivory masks with empty eyes form one collar; two long dark hands and one continuous robe)",
+  "facing": "right",
+  "view": "side view (profile to three-quarter)",
+  "finish": "hd",
+  "class": "mob",
+  "framing": {
+    "canvas": [
+      1024,
+      1024
+    ],
+    "subject_height_px": 860,
+    "top_margin_px": 80,
+    "lead_px": 0,
+    "preset": "custom",
+    "subject_bbox": [
+      307,
+      80,
+      717,
+      940
+    ],
+    "anchor": [
+      484.0,
+      940.0
+    ],
+    "opaque_area_px": 209243,
+    "width_limited": false
+  },
+  "key": "#FF00FF",
+  "files": {
+    "master": {
+      "path": "master.png",
+      "sha256": "e3ac787fa8268d5168d088d0a7dc60952cb14d818ab71b08a964dbe1e5d7af2c",
+      "bytes": 320032,
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    "cutout": {
+      "path": "master_rgba.png",
+      "sha256": "2067cda2fa02d11b3b6d640af1425549b0d467b88a5bafdd06e48e3d1abf4615",
+      "bytes": 371852,
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    "source": {
+      "path": "source.png",
+      "sha256": "932ff80950bd95a2f14e618db3cf1cb4f35cc407aad8da0ff5df2c4d940d6dbb",
+      "bytes": 362881,
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    "spec": {
+      "path": "spec.json",
+      "sha256": "6b3c9eb2d789dcbbb01e40682dfd27191e016f385761c081310819a5966adfbf",
+      "bytes": 1016
+    },
+    "prompt": {
+      "path": "prompt.txt",
+      "sha256": "5805dc79f447bd92d29fc72a9910f4c4d08c57f7408e2c316e06d658e160d02c",
+      "bytes": 2199
+    }
+  },
+  "references": [],
+  "transform": {
+    "mapping": "master = scale * source + offset (continuous pixel coordinates: pixel i spans [i, i + 1))",
+    "source_size": [
+      1024,
+      1024
+    ],
+    "source_subject_bbox": [
+      322,
+      63,
+      758,
+      978
+    ],
+    "crop_box": [
+      316,
+      57,
+      764,
+      984
+    ],
+    "crop_margin_px": 6,
+    "scale": 0.9398907103825137,
+    "offset": [
+      4.459016393442596,
+      20.786885245901637
+    ],
+    "canvas": [
+      1024,
+      1024
+    ],
+    "resampler": "lanczos",
+    "premultiplied": true,
+    "alpha_floor_px": 1914,
+    "subject_parts": 1,
+    "ignored_parts": 11,
+    "ignored_px": 27,
+    "source_touches": [],
+    "key_rgb": [
+      255,
+      0,
+      255
+    ]
+  },
+  "route": "cloudflare-mcp-workers-ai-flux-2-klein-4b",
+  "provenance": {
+    "command": "external",
+    "run": null,
+    "take": null,
+    "source_name": "hollow_choir_cutout.png",
+    "source_sha256": "932ff80950bd95a2f14e618db3cf1cb4f35cc407aad8da0ff5df2c4d940d6dbb",
+    "media": null,
+    "media_cli_source": null,
+    "edit": null
+  },
+  "matte": {
+    "requested": "soft",
+    "key_estimate": {
+      "key": [
+        255.0,
+        0.0,
+        255.0
+      ],
+      "source": "native_alpha",
+      "valid": false,
+      "ring_share": 0.0,
+      "coverage": 0.0,
+      "distance_from_declared": 0.0
+    },
+    "quality": "native_alpha",
+    "qa": {
+      "key": [
+        255.0,
+        0.0,
+        255.0
+      ],
+      "opaque_key_px": 0,
+      "outer_ring_spill_fraction": 0.10421331162222675,
+      "semitransparent_fraction": 0.02062835326370318,
+      "enclosed_key_pockets": 0,
+      "key_hued_px": 0,
+      "visible_px": 237828,
+      "outer_ring_px": 4913,
+      "thresholds": {
+        "key_tolerance": 48.0,
+        "spill_threshold": 20.0,
+        "min_pocket_area": 16,
+        "opaque_alpha": 128,
+        "spill_hue_balance": 0.5
+      },
+      "method": "forge_matte.matte_qa v1: straight-colour key distance and dominance on the keyed image; two-channel keys count spill only where the key channels are balanced"
+    },
+    "key_choice": {
+      "status": "conflict",
+      "overlap_share": 0.005396,
+      "rule": "reject a key when more than 0.5% of subject pixels have key dominance >= 40; first acceptable candidate wins"
+    }
+  },
+  "warnings": [
+    "0.5% of the subject's colours lean to the key #FF00FF (more than 0.5%): check that those parts survive keying; for purple or pink designs use --key green or blue"
+  ]
+}

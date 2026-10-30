@@ -1,0 +1,8 @@
+PAINTERLY DARK FANTASY — LIMITS BREAKER STYLE LOCK
+Premium painterly 2D dark-fantasy inventory illustration matching the existing Limits Breaker equipment icons. One compact dimensional object with a crisp but fine edge, layered material shading and restrained directional highlights. Matte iron, leather, cloth, glass and stone; charcoal shadows, muted steel, burgundy, contained violet and warm amber. Clear at 32 px with generous transparent padding; natural material rendering, not flat or glossy.
+
+Create one isolated relic icon: a single short, irregular black slag fang with a blunt root and chipped curved tip. One narrow amber seam glows faintly inside the vitrified surface. A tarnished bronze loop circles the root without covering the tooth. Center the complete object diagonally in a square canvas, occupying about 60 percent of the image with generous empty margin. No creature, blood or bone anatomy; it is a small carved relic.
+
+Use an edge-to-edge flat solid RGB #FF00FF matte background, with no ground, gradient, cast shadow, frame or scenery. Do not use magenta on the object; the matte will be removed to transparency during asset preparation. If native alpha is supported, preserve true transparency instead.
+
+NEGATIVE: multiple teeth, jaw, skull, creature, hand, person, gore, blood, text, letters, numbers, equations, runes, labels, UI, card, frame, border, logo, watermark, signature, floor, shadow, scenery, flame, smoke, broad aura, neon, rainbow, photorealism, 3D render, blur, magenta object details, colored or textured background.

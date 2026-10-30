@@ -1,0 +1,22 @@
+{
+  "schema": "generate2dsprite.master_spec.v1",
+  "name": "cinder_warden",
+  "subject": "a broad iron cinder warden, full body",
+  "identity": "Broad guardian in cracked charcoal plate armor, sealed dark helmet, heavy gauntlets, small iron forearm shield, thin contained amber cinder seams.",
+  "pose": "Three-quarter view, feet firmly planted, shield close to the torso.",
+  "recap": "broad iron cinder warden, full body (Broad guardian in cracked charcoal plate armor, sealed dark helmet, heavy gauntlets, small iron forearm shield, thin contained amber cinder seams)",
+  "facing": "right",
+  "facing_parts": null,
+  "view": null,
+  "class": "mob",
+  "finish": "hd",
+  "key": "#FF00FF",
+  "genre": "a dark fantasy 2D RPG",
+  "pronoun": "they",
+  "identity_ref": null,
+  "style_ref": null,
+  "allowed_text": null,
+  "extra_bans": [],
+  "opaque_parts": null,
+  "extra": null
+}

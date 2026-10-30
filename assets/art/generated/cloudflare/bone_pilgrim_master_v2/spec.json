@@ -1,0 +1,22 @@
+{
+  "schema": "generate2dsprite.master_spec.v1",
+  "name": "bone_pilgrim",
+  "subject": "a stooped bone pilgrim, full body",
+  "identity": "Uneven warm-ivory skeleton in a weathered slate travel cloak, carrying a simple empty reliquary cage on a long walking staff; muted sage-green cloth accent.",
+  "pose": "Three-quarter view, leaning on the staff, head bowed.",
+  "recap": "stooped bone pilgrim, full body (Uneven warm-ivory skeleton in a weathered slate travel cloak, carrying a simple empty reliquary cage on a long walking staff; muted sage-green cloth accent)",
+  "facing": "right",
+  "facing_parts": null,
+  "view": null,
+  "class": "mob",
+  "finish": "hd",
+  "key": "#FF00FF",
+  "genre": "a dark fantasy 2D RPG",
+  "pronoun": "they",
+  "identity_ref": null,
+  "style_ref": null,
+  "allowed_text": null,
+  "extra_bans": [],
+  "opaque_parts": null,
+  "extra": null
+}

@@ -1,0 +1,22 @@
+{
+  "schema": "generate2dsprite.master_spec.v1",
+  "name": "hollow_choir",
+  "subject": "a singular hollow wraith with three collar masks, full body",
+  "identity": "Tall, narrow wraith in charcoal and burgundy vestments; one deep hood cavity glows muted violet; exactly three small ivory masks with empty eyes form one collar; two long dark hands and one continuous robe.",
+  "pose": "Three-quarter view, leaning slightly forward as if listening.",
+  "recap": "singular hollow wraith with three collar masks, full body (Tall, narrow wraith in charcoal and burgundy vestments; one deep hood cavity glows muted violet; exactly three small ivory masks with empty eyes form one collar; two long dark hands and one continuous robe)",
+  "facing": "right",
+  "facing_parts": null,
+  "view": null,
+  "class": "mob",
+  "finish": "hd",
+  "key": "#FF00FF",
+  "genre": null,
+  "pronoun": "they",
+  "identity_ref": null,
+  "style_ref": null,
+  "allowed_text": null,
+  "extra_bans": [],
+  "opaque_parts": null,
+  "extra": null
+}

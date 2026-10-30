@@ -11,6 +11,23 @@ var enemy: Dictionary = {}
 var enemies: Array[Dictionary] = []
 var enemy_hps: Array[int] = []
 var enemy_max_hps: Array[int] = []
+var enemy_intents: Array[Dictionary] = []
+var enemy_guards: Array[int] = []
+var enemy_bonus_damage: Array[int] = []
+var enemy_bonus_turns: Array[int] = []
+var enemy_fragile_bonus: Array[int] = []
+var enemy_fragile_turns: Array[int] = []
+var enemy_death_turns: Array[int] = []
+var enemy_last_ability: Array[String] = []
+var enemy_last_kind: Array[String] = []
+var turn_number := 0
+var player_shield := 0
+var player_shield_expires_turn := 0
+var player_shield_grace_eligible := false
+var player_weaken_pct := 0
+var player_weaken_turns := 0
+var player_vulnerable_bonus := 0
+var player_vulnerable_turns := 0
 var enemy_actors: Array[EnemyBattleActor] = []
 var selected_enemy_index := 0
 var enemy_layout_portrait_size := Vector2.ZERO
@@ -50,6 +67,7 @@ var timer_bar: ProgressBar
 var encounter_label: Label
 var stats_label: Label
 var level_label: Label
+var status_label: Label
 var phase_scroll: ScrollContainer
 var player_hp_bar: ProgressBar
 var player_hp_label: Label
@@ -69,6 +87,8 @@ var focus_enemy_label: Label
 var focus_player_bar: ProgressBar
 var focus_enemy_bar: ProgressBar
 var enemy_actor_grid: GridContainer
+var enemy_formation_margin: MarginContainer
+var player_battle_hud: PanelContainer
 var enemy_count_label: Label
 var selected_target_label: Label
 var berserk_button: Button
@@ -87,6 +107,15 @@ func _ready() -> void:
 		var maximum := maxi(1, int(data.get("hp", 1)))
 		enemy_max_hps.append(maximum)
 		enemy_hps.append(maximum)
+		enemy_intents.append({})
+		enemy_guards.append(0)
+		enemy_bonus_damage.append(0)
+		enemy_bonus_turns.append(0)
+		enemy_fragile_bonus.append(0)
+		enemy_fragile_turns.append(0)
+		enemy_death_turns.append(-1)
+		enemy_last_ability.append("")
+		enemy_last_kind.append("")
 	selected_enemy_index = 0
 	_sync_selected_enemy()
 	var boss_encounter := _contains_tier("boss") or _contains_tier("miniboss")
@@ -256,44 +285,33 @@ func _build() -> void:
 	enemy_group_center.alignment = BoxContainer.ALIGNMENT_BEGIN
 	enemy_group_center.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	ev.add_child(enemy_group_center)
+	enemy_formation_margin = MarginContainer.new()
+	enemy_formation_margin.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	enemy_formation_margin.add_theme_constant_override("margin_left", 0)
+	enemy_group_center.add_child(enemy_formation_margin)
 	enemy_actor_grid = GridContainer.new()
-	enemy_actor_grid.columns = maxi(1, enemies.size())
 	enemy_actor_grid.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	enemy_actor_grid.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 	enemy_actor_grid.add_theme_constant_override("h_separation", 7)
 	enemy_actor_grid.add_theme_constant_override("v_separation", 4)
-	enemy_group_center.add_child(enemy_actor_grid)
-	for i in range(enemies.size()):
-		var actor := EnemyActorScript.new() as EnemyBattleActor
-		var portrait_size := _enemy_portrait_size(enemies.size())
-		actor.custom_minimum_size = Vector2(_enemy_actor_width(enemies.size()), _enemy_actor_height(enemies.size()))
-		actor.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-		actor.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-		actor.configure(i, enemies[i], enemy_hps[i], enemy_max_hps[i], _enemy_intent_text(i), i == selected_enemy_index, portrait_size)
-		actor.pressed.connect(_select_target.bind(i))
-		enemy_actors.append(actor)
-		var actor_slot := CenterContainer.new()
-		actor_slot.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		actor_slot.size_flags_vertical = Control.SIZE_EXPAND_FILL
-		actor_slot.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		enemy_actor_grid.add_child(actor_slot)
-		actor_slot.add_child(actor)
+	enemy_formation_margin.add_child(enemy_actor_grid)
+	_rebuild_enemy_actors()
 
-	var player_hud_panel := UIKit.panel(Color(0.045, 0.055, 0.07, 0.9), Color("#353e4a"), false, UIKit.GOLD_SOFT)
-	player_hud_panel.name = "PlayerBattleHUD"
-	player_hud_panel.anchor_left = 0.0
-	player_hud_panel.anchor_top = 1.0
-	player_hud_panel.anchor_right = 0.0
-	player_hud_panel.anchor_bottom = 1.0
-	player_hud_panel.offset_left = 12.0
-	player_hud_panel.offset_top = -74.0
-	player_hud_panel.offset_right = 384.0
-	player_hud_panel.offset_bottom = -8.0
-	player_hud_panel.z_index = 12
-	stage_root.add_child(player_hud_panel)
+	player_battle_hud = UIKit.panel(Color(0.045, 0.055, 0.07, 0.9), Color("#353e4a"), false, UIKit.GOLD_SOFT)
+	player_battle_hud.name = "PlayerBattleHUD"
+	player_battle_hud.anchor_left = 0.0
+	player_battle_hud.anchor_top = 1.0
+	player_battle_hud.anchor_right = 0.0
+	player_battle_hud.anchor_bottom = 1.0
+	player_battle_hud.offset_left = 12.0
+	player_battle_hud.offset_top = -74.0
+	player_battle_hud.offset_right = 384.0
+	player_battle_hud.offset_bottom = -8.0
+	player_battle_hud.z_index = 12
+	stage_root.add_child(player_battle_hud)
 	var player_status := UIKit.hbox(7)
 	player_status.custom_minimum_size = Vector2(310, 0)
-	player_hud_panel.add_child(player_status)
+	player_battle_hud.add_child(player_status)
 	player_portrait = UIKit.add_portrait(player_status, MediaManifest.character("player"), Vector2(38, 38))
 	var player_vitals := UIKit.vbox(2)
 	player_vitals.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -311,6 +329,10 @@ func _build() -> void:
 	var player_stats := UIKit.inline_label("Ataque: %d · Defensa: %d" % [Game.attack_damage(1), Game.defense()], 9, UIKit.STEEL)
 	player_stats.name = "PlayerStats"
 	player_vitals.add_child(player_stats)
+	status_label = UIKit.inline_label("", 9, UIKit.VIOLET, 600)
+	status_label.name = "PlayerStatus"
+	status_label.visible = false
+	player_vitals.add_child(status_label)
 	var gear_strip := UIKit.hbox(2)
 	gear_strip.custom_minimum_size = Vector2(78, 0)
 	gear_strip.alignment = BoxContainer.ALIGNMENT_CENTER
@@ -321,7 +343,7 @@ func _build() -> void:
 		var icon := UIKit.add_item_icon(gear_strip, item_id, Vector2(22, 22), _item_tint(item_id))
 		icon.tooltip_text = "%s · %s" % [String(EQUIPMENT_SLOT_LABELS[slot]), _equipment_name(item_id)]
 		equipment_icons.append(icon)
-	_set_subtree_mouse_passthrough(player_hud_panel)
+	_set_subtree_mouse_passthrough(player_battle_hud)
 	_sync_selected_enemy()
 	resized.connect(_schedule_enemy_formation_fit)
 	call_deferred("_fit_enemy_formation")
@@ -368,6 +390,37 @@ func _build() -> void:
 	phase_content.add_child(phase_footer)
 	_refresh_hud()
 	_set_combat_backdrop()
+
+
+func _rebuild_enemy_actors() -> void:
+	if enemy_actor_grid == null or not is_instance_valid(enemy_actor_grid):
+		return
+	for child in enemy_actor_grid.get_children():
+		enemy_actor_grid.remove_child(child)
+		child.queue_free()
+	enemy_actors.clear()
+	enemy_actor_grid.columns = maxi(1, enemies.size())
+	var portrait_size := _enemy_portrait_size(maxi(1, enemies.size()))
+	for i in range(enemies.size()):
+		var actor := EnemyActorScript.new() as EnemyBattleActor
+		actor.custom_minimum_size = Vector2(_enemy_actor_width(maxi(1, enemies.size())), _enemy_actor_height(maxi(1, enemies.size())))
+		actor.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+		actor.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+		actor.configure(
+			i, enemies[i], enemy_hps[i], enemy_max_hps[i],
+			_enemy_intent_text(i), i == selected_enemy_index, portrait_size,
+			_enemy_intent_color(i)
+		)
+		actor.pressed.connect(_select_target.bind(i))
+		enemy_actors.append(actor)
+		var actor_slot := CenterContainer.new()
+		actor_slot.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		actor_slot.size_flags_vertical = Control.SIZE_EXPAND_FILL
+		actor_slot.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		enemy_actor_grid.add_child(actor_slot)
+		actor_slot.add_child(actor)
+	if phase_panel != null and is_instance_valid(phase_panel):
+		_schedule_enemy_formation_fit()
 
 
 func _progress_text() -> String:
@@ -431,7 +484,9 @@ func _schedule_enemy_formation_fit() -> void:
 func _fit_enemy_formation() -> void:
 	if enemy_actor_grid == null or not is_instance_valid(enemy_actor_grid) or enemy_actors.is_empty():
 		return
-	var formation_area := enemy_actor_grid.get_parent() as Control
+	if enemy_formation_margin == null or not is_instance_valid(enemy_formation_margin):
+		return
+	var formation_area := enemy_formation_margin.get_parent() as Control
 	if formation_area == null or formation_area.size.x <= 0.0 or formation_area.size.y <= 0.0:
 		return
 	if phase_panel == null or not is_instance_valid(phase_panel):
@@ -446,7 +501,11 @@ func _fit_enemy_formation() -> void:
 	var available_actor_height := maxf(72.0, available_actor_bottom - formation_area.global_position.y)
 	var fitted_actor_height := minf(base_actor_height, available_actor_height)
 	var fitted_portrait_height := clampf(fitted_actor_height - actor_chrome_height, 24.0, base_portrait_size.y)
-	var available_actor_width := maxf(96.0, (formation_area.size.x - 7.0 * float(enemy_count - 1)) / float(enemy_count))
+	var hud_clearance := 0.0
+	if enemy_count > 1 and player_battle_hud != null and is_instance_valid(player_battle_hud):
+		hud_clearance = maxf(0.0, player_battle_hud.get_global_rect().end.x - formation_area.global_position.x + 8.0)
+	enemy_formation_margin.add_theme_constant_override("margin_left", int(round(hud_clearance)))
+	var available_actor_width := maxf(96.0, (formation_area.size.x - hud_clearance - 8.0 - 7.0 * float(enemy_count - 1)) / float(enemy_count))
 	var fitted_actor_width := minf(base_actor_width, available_actor_width)
 	var portrait_scale := minf(fitted_portrait_height / base_portrait_size.y, fitted_actor_width / base_actor_width)
 	enemy_layout_portrait_size = base_portrait_size * clampf(portrait_scale, 0.1, 1.0)
@@ -462,7 +521,8 @@ func _fit_enemy_formation() -> void:
 			enemy_max_hps[i],
 			_enemy_intent_text(i),
 			i == selected_enemy_index,
-			enemy_layout_portrait_size
+			enemy_layout_portrait_size,
+			_enemy_intent_color(i)
 		)
 
 
@@ -572,15 +632,219 @@ func _living_enemy_indices() -> Array[int]:
 	return alive
 
 
+func _remove_enemy_at(index: int) -> void:
+	if index < 0 or index >= enemies.size():
+		return
+	enemies.remove_at(index)
+	enemy_hps.remove_at(index)
+	enemy_max_hps.remove_at(index)
+	enemy_intents.remove_at(index)
+	enemy_guards.remove_at(index)
+	enemy_bonus_damage.remove_at(index)
+	enemy_bonus_turns.remove_at(index)
+	enemy_fragile_bonus.remove_at(index)
+	enemy_fragile_turns.remove_at(index)
+	enemy_death_turns.remove_at(index)
+	enemy_last_ability.remove_at(index)
+	enemy_last_kind.remove_at(index)
+
+
+func _purge_expired_enemy_corpses() -> void:
+	# Los derrotados permanecen en escena durante el turno de su muerte y los
+	# dos turnos siguientes; al comenzar el tercer turno posterior se retiran.
+	var expired: Array[int] = []
+	for i in range(mini(enemies.size(), enemy_death_turns.size())):
+		if enemy_hps[i] <= 0 and enemy_death_turns[i] >= 0 and turn_number - enemy_death_turns[i] >= 3:
+			expired.append(i)
+	if expired.is_empty():
+		return
+	var selected := selected_enemy_index
+	for idx in range(expired.size() - 1, -1, -1):
+		var index := expired[idx]
+		if selected == index:
+			selected = -1
+		elif index < selected:
+			selected -= 1
+		_remove_enemy_at(index)
+	selected_enemy_index = selected
+	var alive := _living_enemy_indices()
+	if selected_enemy_index < 0 or selected_enemy_index >= enemy_hps.size() or enemy_hps[selected_enemy_index] <= 0:
+		selected_enemy_index = alive[0] if not alive.is_empty() else 0
+	attack_target_indices.clear()
+	_rebuild_enemy_actors()
+	_sync_selected_enemy()
+	_refresh_battlefield()
+
+
 func living_enemy_count() -> int:
 	_ingest_legacy_target_state()
 	return _living_enemy_indices().size()
 
 
+func _choose_enemy_intents() -> void:
+	while enemy_death_turns.size() < enemies.size():
+		enemy_death_turns.append(-1)
+	for i in range(enemies.size()):
+		if i >= enemy_intents.size():
+			enemy_intents.append({})
+			enemy_guards.append(0)
+			enemy_bonus_damage.append(0)
+			enemy_bonus_turns.append(0)
+			enemy_fragile_bonus.append(0)
+			enemy_fragile_turns.append(0)
+			enemy_last_ability.append("")
+			enemy_last_kind.append("")
+		if enemy_hps[i] <= 0:
+			enemy_intents[i] = {}
+			continue
+		var ability: Dictionary
+		if turn_number <= 1:
+			ability = Combat.enemy_basic_attack(enemies[i])
+		else:
+			ability = Combat.choose_enemy_ability(enemies[i], rng, enemy_last_ability[i], enemy_last_kind[i])
+		if String(ability.get("kind", "")) == "summon" and enemies.size() >= Combat.MAX_ENEMIES_PER_ENCOUNTER:
+			ability = Combat.enemy_basic_attack(enemies[i])
+		enemy_intents[i] = ability
+		enemy_last_ability[i] = String(ability.get("name", ""))
+		enemy_last_kind[i] = String(ability.get("kind", "attack"))
+		if String(ability.get("kind", "")) == "defend":
+			enemy_guards[i] = maxi(enemy_guards[i], int(ability.get("value", 0)))
+
+
+func _enemy_intent_for(index: int) -> Dictionary:
+	if index >= 0 and index < enemy_intents.size() and not enemy_intents[index].is_empty():
+		return enemy_intents[index]
+	if index >= 0 and index < enemies.size():
+		return Combat.enemy_basic_attack(enemies[index])
+	return {}
+
+
 func _enemy_intent_text(index: int) -> String:
 	if index < 0 or index >= enemies.size() or enemy_hps[index] <= 0:
 		return "Derrotado"
-	return "Ataca · %d" % Game.enemy_damage(enemies[index], maxi(1, _living_enemy_indices().size()))
+	var ability := _enemy_intent_for(index)
+	var kind := String(ability.get("kind", "attack"))
+	var damage := 0
+	if kind == "attack":
+		var bonus := enemy_bonus_damage[index] if index < enemy_bonus_damage.size() else 0
+		damage = Game.enemy_ability_damage(ability, maxi(1, _living_enemy_indices().size()), bonus, player_vulnerable_bonus)
+	var text := Combat.ability_intent_text(ability, damage)
+	var guard := enemy_guards[index] if index < enemy_guards.size() else 0
+	if kind == "defend":
+		text = "%s · %d" % [String(ability.get("name", "Guardia")), guard]
+	elif guard > 0:
+		text = "Guardia %d · %s" % [guard, text]
+	return "%s · %s" % [Combat.ability_indicator(ability), text]
+
+
+func _enemy_intent_short_text(index: int) -> String:
+	if index < 0 or index >= enemies.size() or enemy_hps[index] <= 0:
+		return "Derrotado"
+	var ability := _enemy_intent_for(index)
+	var kind := String(ability.get("kind", "attack"))
+	var indicator := Combat.ability_indicator(ability)
+	match kind:
+		"attack":
+			var bonus := enemy_bonus_damage[index] if index < enemy_bonus_damage.size() else 0
+			var damage := Game.enemy_ability_damage(ability, maxi(1, _living_enemy_indices().size()), bonus, player_vulnerable_bonus)
+			var hits := maxi(1, int(ability.get("hits", 1)))
+			if hits > 1:
+				return "%s %d×%d" % [indicator, hits, damage]
+			return "%s %d" % [indicator, damage]
+		"defend":
+			var guard := enemy_guards[index] if index < enemy_guards.size() else int(ability.get("value", 0))
+			return "%s %d" % [indicator, guard]
+		"heal":
+			return "%s +%d HP" % [indicator, int(ability.get("value", 0))]
+		"buff":
+			return "%s +%d" % [indicator, int(ability.get("value", 0))]
+		"debuff":
+			return "%s −%d%%" % [indicator, int(ability.get("value", 0))]
+		"summon":
+			return indicator
+		"idle":
+			return "Se incorpora"
+	return indicator
+
+
+func _render_enemy_intent_strip() -> Control:
+	var row := UIKit.hbox(8)
+	row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row.add_child(UIKit.eyebrow("ACCIONES ENEMIGAS", UIKit.DANGER))
+	for index in _living_enemy_indices():
+		var enemy_name := String(enemies[index].get("name", "Enemigo"))
+		if enemy_name.length() > 17:
+			enemy_name = enemy_name.substr(0, 16) + "…"
+		var chip := UIKit.inline_label("%s · %s" % [enemy_name, _enemy_intent_short_text(index)], 10, _enemy_intent_color(index), 500)
+		chip.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		chip.clip_text = true
+		chip.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+		chip.tooltip_text = _enemy_intent_text(index)
+		row.add_child(chip)
+	return row
+
+
+func _enemy_intent_color(index: int) -> Color:
+	var kind := String(_enemy_intent_for(index).get("kind", "attack"))
+	match kind:
+		"attack":
+			return Color("#e08a70")
+		"defend":
+			return Color("#8ab7d4")
+		"heal":
+			return UIKit.OK
+		"buff":
+			return UIKit.GOLD
+		"debuff":
+			return UIKit.VIOLET
+		"summon":
+			return Color("#df6179")
+		"idle":
+			return UIKit.STEEL_DARK
+	return UIKit.STEEL
+
+
+func _enemy_tooltip(index: int) -> String:
+	if index < 0 or index >= enemies.size():
+		return ""
+	var data: Dictionary = enemies[index]
+	var ability := _enemy_intent_for(index)
+	var lines: Array[String] = [String(data.get("name", "Enemigo"))]
+	if not ability.is_empty():
+		lines.append("Tipo: %s" % Combat.ability_indicator(ability))
+		lines.append("Intención: %s" % String(ability.get("name", "")))
+		lines.append(Combat.ability_effect_text(ability))
+	lines.append("HP %d / %d · Armadura %d · Resistencia mágica %d" % [
+		enemy_hps[index], enemy_max_hps[index],
+		int(data.get("armor", 0)), int(data.get("magic_resist", 0)),
+	])
+	var weaknesses: Dictionary = data.get("weaknesses", {})
+	var weak_parts: Array[String] = []
+	for damage_kind in weaknesses:
+		if float(weaknesses[damage_kind]) > 1.01:
+			weak_parts.append("%s ×%.2f" % ["física" if damage_kind == "physical" else "mágica", float(weaknesses[damage_kind])])
+	if not weak_parts.is_empty():
+		lines.append("Débil a: " + ", ".join(weak_parts))
+	if index < enemy_guards.size() and enemy_guards[index] > 0:
+		lines.append("Guardia: %d" % enemy_guards[index])
+	if index < enemy_bonus_damage.size() and enemy_bonus_damage[index] > 0:
+		lines.append("Furia: +%d de daño (%d turnos)" % [enemy_bonus_damage[index], enemy_bonus_turns[index]])
+	if index < enemy_fragile_turns.size() and enemy_fragile_turns[index] > 0:
+		lines.append("Frágil: +%d de daño recibido (%d turnos)" % [enemy_fragile_bonus[index], enemy_fragile_turns[index]])
+	return "\n".join(lines)
+
+
+func _most_wounded_enemy() -> int:
+	var best := -1
+	var best_ratio := 2.0
+	for i in range(enemies.size()):
+		if enemy_hps[i] <= 0:
+			continue
+		var ratio := float(enemy_hps[i]) / float(maxi(1, enemy_max_hps[i]))
+		if ratio < best_ratio:
+			best_ratio = ratio
+			best = i
+	return best
 
 
 func _refresh_battlefield() -> void:
@@ -601,7 +865,10 @@ func _refresh_battlefield() -> void:
 		var selected_data: Dictionary = enemies[selected_enemy_index]
 		if selected_target_label != null:
 			var target_text := "Objetivo: %s" % String(selected_data.get("name", "Enemigo"))
-			if phase == "select" and chosen_attack_id == "":
+			if chosen_attack_id != "" and Combat.is_support_attack(chosen_attack_id):
+				var support_name := String(Combat.PLAYER_ATTACKS.get(chosen_attack_id, {}).get("name", "Técnica"))
+				target_text = "%s · sin objetivo" % support_name
+			elif phase == "select" and chosen_attack_id == "":
 				target_text += " · elige una técnica para ver su efecto"
 			elif not attack_target_indices.is_empty():
 				target_text = "Objetivos: " + _target_names(attack_target_indices)
@@ -609,9 +876,13 @@ func _refresh_battlefield() -> void:
 	for i in range(mini(enemy_actors.size(), enemies.size())):
 		var selected := i == selected_enemy_index
 		var portrait_size := enemy_layout_portrait_size if enemy_layout_portrait_size != Vector2.ZERO else _enemy_portrait_size(enemies.size())
-		enemy_actors[i].configure(i, enemies[i], enemy_hps[i], enemy_max_hps[i], _enemy_intent_text(i), selected, portrait_size)
+		enemy_actors[i].configure(
+			i, enemies[i], enemy_hps[i], enemy_max_hps[i],
+			_enemy_intent_text(i), selected, portrait_size, _enemy_intent_color(i)
+		)
 		enemy_actors[i].set_selected_for_action(selected)
 		enemy_actors[i].set_targetable(phase == "select")
+		enemy_actors[i].tooltip_text = _enemy_tooltip(i)
 	if selected_enemy_index < enemy_actors.size():
 		_sync_selected_enemy()
 
@@ -653,6 +924,20 @@ func _refresh_hud() -> void:
 	var stats_node := find_child("PlayerStats", true, false)
 	if stats_node is Label:
 		stats_node.text = "Ataque: %d  ·  Defensa: %d" % [Game.attack_damage(1), Game.defense()]
+	if status_label != null and is_instance_valid(status_label):
+		var status_parts: Array[String] = []
+		if player_weaken_turns > 0:
+			status_parts.append("Maldito −%d%% (%d)" % [player_weaken_pct, player_weaken_turns])
+		if player_vulnerable_turns > 0:
+			status_parts.append("Marcado +%d daño (%d)" % [player_vulnerable_bonus, player_vulnerable_turns])
+		if player_shield > 0:
+			var shield_extra := maxi(0, player_shield_expires_turn - turn_number - 1)
+			if shield_extra > 0:
+				status_parts.append("Escudo %d · %d turno%s extra" % [player_shield, shield_extra, "" if shield_extra == 1 else "s"])
+			else:
+				status_parts.append("Escudo %d" % player_shield)
+		status_label.text = " · ".join(status_parts)
+		status_label.visible = not status_parts.is_empty()
 	var equipped: Dictionary = Game.run.get("equipped", {})
 	for i in range(mini(equipment_icons.size(), EQUIPMENT_SLOTS.size())):
 		var item_id := String(equipped.get(EQUIPMENT_SLOTS[i], ""))
@@ -671,6 +956,10 @@ func _set_focus(enabled: bool) -> void:
 	mid.visible = true
 	phase_panel.custom_minimum_size = Vector2(0, 250 if enabled else 276)
 	phase_panel.size_flags_vertical = Control.SIZE_SHRINK_END
+	# El panel cambia de alto al pasar de elegir técnica a resolver o feedback.
+	# Reajusta la formación para que nombres e intenciones enemigas no queden
+	# debajo del panel cuando se toma la decisión.
+	_schedule_enemy_formation_fit()
 
 
 func _clear_phase() -> void:
@@ -692,9 +981,20 @@ func _begin_turn() -> void:
 	if alive.is_empty():
 		_victory()
 		return
+	turn_number += 1
+	_purge_expired_enemy_corpses()
+	alive = _living_enemy_indices()
+	if alive.is_empty():
+		_victory()
+		return
 	if selected_enemy_index < 0 or selected_enemy_index >= enemy_hps.size() or enemy_hps[selected_enemy_index] <= 0:
 		selected_enemy_index = alive[0]
 	_sync_selected_enemy()
+	if player_shield <= 0 or turn_number >= player_shield_expires_turn:
+		player_shield = 0
+		player_shield_expires_turn = 0
+	player_shield_grace_eligible = false
+	_choose_enemy_intents()
 	phase = "select"
 	time_limit = 999.0
 	for index in alive:
@@ -724,7 +1024,7 @@ func _render_select() -> void:
 	phase_box.add_child(top)
 	var title_box := UIKit.vbox(1)
 	top.add_child(title_box)
-	title_box.add_child(UIKit.eyebrow("Elegí un ataque", UIKit.STEEL_DARK))
+	title_box.add_child(UIKit.eyebrow("Elegí una técnica", UIKit.STEEL_DARK))
 	var t := UIKit.display_label("Prueba de %s · nivel %d" % [String(MathEngine.TOPIC_LABELS.get(topic, topic)), Game.player_level()], 22, UIKit.TEXT, 600, 0)
 	title_box.add_child(t)
 	var sp := Control.new()
@@ -745,18 +1045,20 @@ func _render_select() -> void:
 	var row := GridContainer.new()
 	row.columns = Combat.ATTACK_IDS.size()
 	row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	row.add_theme_constant_override("h_separation", 9)
+	row.add_theme_constant_override("h_separation", 6)
 	row.add_theme_constant_override("v_separation", 6)
 	phase_box.add_child(row)
 	for attack_id in Combat.ATTACK_IDS:
 		var attack_profile: Dictionary = Combat.PLAYER_ATTACKS[attack_id]
 		var damage_type := String(attack_profile.get("type", "physical"))
-		var accent := Color("#bc8755") if damage_type == "physical" else UIKit.VIOLET
+		var is_defense := damage_type == "defense"
+		var is_heal := damage_type == "heal"
+		var accent := Color("#8ab7d4") if is_defense else (UIKit.OK if is_heal else (Color("#bc8755") if damage_type == "physical" else UIKit.VIOLET))
 		var card := Button.new()
 		card.flat = false
 		card.focus_mode = Control.FOCUS_ALL
 		card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		card.custom_minimum_size = Vector2(175, 116)
+		card.custom_minimum_size = Vector2(140, 116)
 		card.add_theme_stylebox_override("normal", UIKit.flat(Color("#11151c"), accent.darkened(0.38), 5))
 		card.add_theme_stylebox_override("hover", UIKit.flat(Color("#1b202a"), accent, 5))
 		card.add_theme_stylebox_override("pressed", UIKit.flat(Color("#27222a"), accent.lightened(0.2), 5))
@@ -775,35 +1077,66 @@ func _render_select() -> void:
 		cv.size_flags_vertical = Control.SIZE_EXPAND_FILL
 		cv.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		card_inner.add_child(cv)
-		cv.add_child(UIKit.eyebrow("FÍSICO" if damage_type == "physical" else "MÁGICO", accent))
-		var attack_name := UIKit.display_label(String(attack_profile.get("name", attack_id)), 16, UIKit.TEXT, 600, 0)
+		var kind_label := "DEFENSA" if is_defense else ("CURACIÓN" if is_heal else ("FÍSICO" if damage_type == "physical" else "MÁGICO"))
+		cv.add_child(UIKit.eyebrow(kind_label, accent))
+		var attack_name := UIKit.display_label(String(attack_profile.get("name", attack_id)), 14, UIKit.TEXT, 600, 0)
 		attack_name.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		cv.add_child(attack_name)
 		var diff_range := Combat.attack_difficulty_range(Game.player_level(), Game.unlocked_difficulty(topic), attack_id)
-		var low_damage := _damage_preview(attack_id, diff_range.x, enemy)
-		var high_damage := _damage_preview(attack_id, diff_range.y, enemy)
+		var low_damage := _attack_value_preview(attack_id, diff_range.x, enemy)
+		var high_damage := _attack_value_preview(attack_id, diff_range.y, enemy)
 		var range_text: String = String(MathEngine.DIFF_NAMES[diff_range.x])
 		if diff_range.y != diff_range.x:
 			range_text += "–" + MathEngine.DIFF_NAMES[diff_range.y]
 		var target_limit := mini(int(attack_profile.get("targets", 1)), Combat.MAX_ENEMIES_PER_ENCOUNTER)
-		var target_text := "1 objetivo" if target_limit == 1 else ("hasta %d obj." % target_limit if target_limit < enemies.size() else "todos · máx. %d" % target_limit)
-		var damage_text := "%d daño" % low_damage if low_damage == high_damage else "%d–%d daño" % [low_damage, high_damage]
-		var damage_copy := UIKit.inline_label("%s · %s" % [target_text, damage_text], 9, UIKit.GOLD_SOFT, 600)
+		var target_text := "propio" if (is_defense or is_heal) else ("1 objetivo" if target_limit == 1 else ("hasta %d obj." % target_limit if target_limit < enemies.size() else "todos"))
+		var value_text := ""
+		if is_defense:
+			value_text = "%d escudo" % low_damage if low_damage == high_damage else "%d–%d escudo" % [low_damage, high_damage]
+		elif is_heal:
+			value_text = "%d HP" % low_damage if low_damage == high_damage else "%d–%d HP" % [low_damage, high_damage]
+		else:
+			value_text = "%d daño" % low_damage if low_damage == high_damage else "%d–%d daño" % [low_damage, high_damage]
+		var damage_copy := UIKit.inline_label("%s · %s" % [target_text, value_text], 9, accent, 600)
 		damage_copy.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		damage_copy.clip_text = true
+		damage_copy.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 		cv.add_child(damage_copy)
-		var resistance_label := "armadura" if damage_type == "physical" else "resistencia mágica"
-		card.tooltip_text = ("%s\nPrueba aleatoria: %s\nPenetración %d de %s" % [
-			String(attack_profile.get("description", "")),
-		range_text,
-			int(attack_profile.get("penetration", 0)),
-			resistance_label,
-		]).strip_edges()
+		if is_defense:
+			card.tooltip_text = ("%s\nPrueba: %s\nEl escudo absorbe los ataques de este turno; el remanente protege hasta 2 turnos más. Suma 2 por punto de defensa." % [
+				String(attack_profile.get("description", "")),
+				range_text,
+			]).strip_edges()
+		elif is_heal:
+			card.tooltip_text = ("%s\nPrueba: %s\nCura %d–%d HP según la dificultad. Los enemigos siguen atacando este turno." % [
+				String(attack_profile.get("description", "")),
+				range_text,
+				mini(low_damage, high_damage),
+				maxi(low_damage, high_damage),
+			]).strip_edges()
+		else:
+			var resistance_label := "armadura" if damage_type == "physical" else "resistencia mágica"
+			card.tooltip_text = ("%s\nPrueba aleatoria: %s\nPenetración %d de %s" % [
+				String(attack_profile.get("description", "")),
+				range_text,
+				int(attack_profile.get("penetration", 0)),
+				resistance_label,
+			]).strip_edges()
 		var trial_label := UIKit.inline_label("Prueba %s" % range_text, 9, UIKit.STEEL)
 		trial_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		cv.add_child(trial_label)
 		var effectiveness := Combat.attack_effectiveness_label(attack_id, enemy)
 		var effectiveness_color := UIKit.OK if effectiveness == "Explotará su debilidad" else (UIKit.DANGER if effectiveness == "El enemigo resiste este tipo" else UIKit.STEEL_DARK)
 		var effectiveness_copy := "Debilidad" if effectiveness == "Explotará su debilidad" else ("Resistencia" if effectiveness == "El enemigo resiste este tipo" else "Efectividad normal")
+		if is_defense:
+			effectiveness_color = UIKit.OK
+			effectiveness_copy = "Protección"
+		elif is_heal:
+			effectiveness_color = UIKit.OK
+			effectiveness_copy = "Curación directa"
+		elif int(attack_profile.get("fragile", 0)) > 0:
+			effectiveness_color = UIKit.VIOLET
+			effectiveness_copy = "Área · Frágil +%d" % int(attack_profile.get("fragile", 0))
 		var effectiveness_label := UIKit.inline_label(effectiveness_copy, 9, effectiveness_color, 600)
 		effectiveness_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		cv.add_child(effectiveness_label)
@@ -834,6 +1167,14 @@ func _damage_preview(attack_id: String, difficulty: int, target: Dictionary) -> 
 	return Combat.damage_for_attack(raw, attack_id, target)
 
 
+func _attack_value_preview(attack_id: String, difficulty: int, target: Dictionary) -> int:
+	if Combat.is_defense_attack(attack_id):
+		return Game.attack_shield(difficulty, attack_id)
+	if Combat.is_healing_attack(attack_id):
+		return Game.attack_heal(difficulty, attack_id)
+	return _damage_preview(attack_id, difficulty, target)
+
+
 func _target_names(indices: Array[int]) -> String:
 	var names: Array[String] = []
 	for index in indices:
@@ -846,6 +1187,8 @@ func _targets_for_attack(attack_id: String) -> Array[int]:
 	var alive := _living_enemy_indices()
 	var targets: Array[int] = []
 	if alive.is_empty():
+		return targets
+	if Combat.is_support_attack(attack_id):
 		return targets
 	var anchor := selected_enemy_index if selected_enemy_index in alive else alive[0]
 	targets.append(anchor)
@@ -918,9 +1261,10 @@ func _difficulty_color(d: int) -> Color:
 
 func _render_solve() -> void:
 	_set_focus(true)
-	phase_panel.custom_minimum_size = Vector2(0, 288)
+	var graph_problem := chosen != null and chosen.topic == "graph"
+	phase_panel.custom_minimum_size = Vector2(0, 372 if graph_problem else 288)
 	_clear_phase()
-	phase_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	phase_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO if graph_problem else ScrollContainer.SCROLL_MODE_DISABLED
 	phase_box.add_theme_constant_override("separation", 4)
 	phase_box.alignment = BoxContainer.ALIGNMENT_CENTER
 	var head := UIKit.hbox(8)
@@ -933,7 +1277,10 @@ func _render_solve() -> void:
 	var heading := UIKit.display_label("%s  ·  %s" % [chosen.difficulty_label(), chosen.topic_label()], 18, UIKit.GOLD, 600, 0)
 	heading.autowrap_mode = TextServer.AUTOWRAP_OFF
 	head_copy.add_child(heading)
-	var targets_copy := UIKit.inline_label("Objetivo: " + _target_names(attack_target_indices), 10, UIKit.STEEL)
+	var is_defense := Combat.is_defense_attack(chosen_attack_id)
+	var is_heal := Combat.is_healing_attack(chosen_attack_id)
+	var is_support := is_defense or is_heal
+	var targets_copy := UIKit.inline_label("Objetivo: " + ("propio" if is_support else _target_names(attack_target_indices)), 10, UIKit.STEEL)
 	head_copy.add_child(targets_copy)
 	var sp := Control.new()
 	sp.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -941,18 +1288,34 @@ func _render_solve() -> void:
 	var damage_box := UIKit.vbox(1)
 	damage_box.alignment = BoxContainer.ALIGNMENT_CENTER
 	head.add_child(damage_box)
-	damage_box.add_child(UIKit.eyebrow("Daño potencial", UIKit.STEEL_DARK))
-	var raw_damage := Game.attack_damage(chosen_diff, chosen_attack_id)
-	if berserk_attack_active:
-		raw_damage = maxi(1, int(roundf(float(raw_damage) * Combat.BERSERK_HIT_MULTIPLIER)))
+	var value_header := "Curación potencial" if is_heal else ("Escudo potencial" if is_defense else "Daño potencial")
+	damage_box.add_child(UIKit.eyebrow(value_header, UIKit.STEEL_DARK))
 	var potential_damage := 0
-	for index in attack_target_indices:
-		if index >= 0 and index < enemies.size():
-			potential_damage += Combat.damage_for_attack(raw_damage, chosen_attack_id, enemies[index])
-	var damage_label := UIKit.display_label("%d" % potential_damage, 24, UIKit.OK, 600, 0)
+	if is_defense:
+		potential_damage = Game.attack_shield(chosen_diff, chosen_attack_id)
+		if berserk_attack_active:
+			potential_damage = maxi(0, int(roundf(float(potential_damage) * Combat.BERSERK_HIT_MULTIPLIER)))
+	elif is_heal:
+		potential_damage = Game.attack_heal(chosen_diff, chosen_attack_id)
+		if berserk_attack_active:
+			potential_damage = maxi(0, int(roundf(float(potential_damage) * Combat.BERSERK_HIT_MULTIPLIER)))
+	else:
+		var raw_damage := Game.attack_damage(chosen_diff, chosen_attack_id)
+		if berserk_attack_active:
+			raw_damage = maxi(1, int(roundf(float(raw_damage) * Combat.BERSERK_HIT_MULTIPLIER)))
+		for index in attack_target_indices:
+			if index >= 0 and index < enemies.size():
+				var fragile_bonus := enemy_fragile_bonus[index] if index < enemy_fragile_bonus.size() else 0
+				potential_damage += Combat.damage_for_attack(raw_damage, chosen_attack_id, enemies[index]) + fragile_bonus
+	var damage_label := UIKit.display_label("%d" % potential_damage, 24, UIKit.OK if is_support else UIKit.GOLD, 600, 0)
 	damage_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	damage_box.add_child(damage_label)
-	damage_box.add_child(UIKit.inline_label("a %d objetivo(s)" % attack_target_indices.size(), 10, UIKit.STEEL_DARK))
+	var value_sub := "HP recuperable" if is_heal else ("para este turno" if is_defense else "a %d objetivo(s)" % attack_target_indices.size())
+	damage_box.add_child(UIKit.inline_label(value_sub, 10, UIKit.STEEL_DARK))
+	# El panel de resolución puede crecer sobre las etiquetas de intención del
+	# escenario. Esta tira mantiene las acciones enemigas visibles durante la
+	# decisión, incluso en gráficas o ventanas bajas.
+	phase_box.add_child(_render_enemy_intent_strip())
 
 	var card := UIKit.panel(Color(0.055, 0.066, 0.082, 0.96), Color("#3d4652"), true, _difficulty_color(chosen_diff))
 	card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -998,9 +1361,9 @@ func _render_solve() -> void:
 		var gv := GraphView.new()
 		gv.setup(chosen.graph)
 		var gc := CenterContainer.new()
-		gc.custom_minimum_size = Vector2(380, 116)
+		gc.custom_minimum_size = Vector2(500, 200)
 		gc.size_flags_horizontal = Control.SIZE_SHRINK_END
-		gv.custom_minimum_size = Vector2(380, 116)
+		gv.custom_minimum_size = Vector2(500, 200)
 		gc.add_child(gv)
 		body_row.add_child(gc)
 	elif chosen.topic == "table" and not chosen.table.is_empty():
@@ -1025,7 +1388,8 @@ func _render_solve() -> void:
 	input.custom_minimum_size = Vector2(0, 38)
 	input.text_submitted.connect(func(_t: String) -> void: _submit(input.text))
 	row.add_child(input)
-	var submit := UIKit.button("Atacar", UIKit.BURGUNDY)
+	var submit_label := "Sellar" if is_defense else ("Curar" if is_heal else "Atacar")
+	var submit := UIKit.button(submit_label, UIKit.BURGUNDY)
 	submit.custom_minimum_size = Vector2(118, 38)
 	submit.pressed.connect(func() -> void: _submit(input.text))
 	row.add_child(submit)
@@ -1059,72 +1423,155 @@ func _resolve(correct: bool) -> void:
 		attack_target_indices = _targets_for_attack(chosen_attack_id)
 	phase = "feedback"
 	Game.record_answer(topic, chosen_diff, correct)
+	var weaken_at_start := player_weaken_turns
+	var vulnerable_at_start := player_vulnerable_turns
+	var enemy_fragile_before := enemy_fragile_turns.duplicate()
 	var result_parts: Array[String] = []
 	var level_messages: Array[String] = []
 	var used_berserk := berserk_attack_active
 	var attack_landed := correct or used_berserk
 	var total_player_damage := 0
+	var guard_absorbed := 0
+	var fragile_targets: Array[String] = []
 	var defeated_names: Array[String] = []
 	var attack_profile: Dictionary = Combat.PLAYER_ATTACKS[chosen_attack_id]
 	var damage_type := String(attack_profile.get("type", "physical"))
+	var is_defense := Combat.is_defense_attack(chosen_attack_id)
+	var is_heal := Combat.is_healing_attack(chosen_attack_id)
+	var is_support := is_defense or is_heal
 	if attack_landed:
 		if is_instance_valid(player_portrait):
 			player_portrait.play_effect("correct" if correct else "incorrect")
 		if is_instance_valid(focus_player_portrait):
 			focus_player_portrait.play_effect("correct" if correct else "incorrect")
-		var base_damage := Game.attack_damage(chosen_diff, chosen_attack_id)
 		var multiplier := 1.0
 		if used_berserk:
 			multiplier = Combat.BERSERK_HIT_MULTIPLIER if correct else Combat.BERSERK_MISS_MULTIPLIER
-		base_damage = maxi(1, int(roundf(float(base_damage) * multiplier)))
-		for index in attack_target_indices:
-			if index < 0 or index >= enemies.size() or enemy_hps[index] <= 0:
-				continue
-			var target: Dictionary = enemies[index]
-			var dealt := Combat.damage_for_attack(base_damage, chosen_attack_id, target)
-			var before_hp := enemy_hps[index]
-			enemy_hps[index] = maxi(0, before_hp - dealt)
-			total_player_damage += dealt
-			var target_name := String(target.get("name", "Enemigo"))
-			var actor_portrait: FantasyPortrait = enemy_actors[index].portrait if index < enemy_actors.size() else null
-			var hit_effect := "critical" if used_berserk and correct else ("arcane" if damage_type == "magic" else "slash")
-			if is_instance_valid(actor_portrait):
-				actor_portrait.play_effect(hit_effect)
+		if is_defense:
+			var shield := Game.attack_shield(chosen_diff, chosen_attack_id)
+			shield = maxi(0, int(roundf(float(shield) * multiplier)))
+			player_shield = shield
+			player_shield_expires_turn = turn_number + 1
+			player_shield_grace_eligible = shield > 0
 			if vfx != null:
-				var target_center := _portrait_center(actor_portrait)
 				var player_center := _portrait_center(_active_player_portrait())
-				vfx.burst(target_center, hit_effect, 1.12 if used_berserk else 1.0, (target_center - player_center).normalized())
-				vfx.pop_number(target_center, "-%d" % dealt, UIKit.GOLD, 30 if used_berserk else 26)
-			if enemy_hps[index] <= 0:
-				defeated_names.append(target_name)
-				Game.run["stats"]["enemies"] = int(Game.run["stats"].get("enemies", 0)) + 1
-				var levels_gained := Game.award_combat_xp(Combat.xp_for(target))
-				if levels_gained > 0:
-					level_messages.append("Subes a nivel %d" % Game.player_level())
-				if is_instance_valid(actor_portrait):
-					actor_portrait.play_effect("defeat")
-				if vfx != null:
-					vfx.burst(_portrait_center(actor_portrait), "defeat", 1.2)
-				Audio.play_sfx("enemy_death")
+				vfx.burst(player_center, "correct", 1.0)
+				vfx.pop_number(player_center, "+%d" % shield, UIKit.OK, 28, Vector2(0, -60))
+			Audio.play_sfx("correct" if correct else "incorrect")
+			Audio.play_sfx("arcane")
+			if correct:
+				result_parts.append("Acierto · %s (+%d escudo)" % [String(attack_profile.get("name", "Sello")), shield])
 			else:
-				Audio.play_sfx("enemy_hit")
-		_refresh_battlefield()
-		Audio.play_sfx("correct" if correct else "incorrect")
-		Audio.play_sfx("arcane" if damage_type == "magic" else "attack")
-		if correct:
-			result_parts.append("Acierto · %s" % String(attack_profile.get("name", "Ataque")))
+				result_parts.append("Berserk fallido · sello parcial (+%d escudo)" % shield)
+		elif is_heal:
+			var heal := Game.attack_heal(chosen_diff, chosen_attack_id)
+			heal = maxi(0, int(roundf(float(heal) * multiplier)))
+			var healed := Game.add_hp(heal)
+			if is_instance_valid(player_portrait):
+				player_portrait.play_effect("heal")
+			if is_instance_valid(focus_player_portrait):
+				focus_player_portrait.play_effect("heal")
+			if vfx != null:
+				var player_center := _portrait_center(_active_player_portrait())
+				vfx.burst(player_center, "heal", 1.0)
+				vfx.pop_number(player_center, "+%d" % healed, UIKit.OK, 28, Vector2(0, -60))
+			Audio.play_sfx("heal")
+			if correct:
+				if healed > 0:
+					result_parts.append("Acierto · %s (+%d HP)" % [String(attack_profile.get("name", "Aliento")), healed])
+				else:
+					result_parts.append("Acierto · %s (HP ya al máximo)" % String(attack_profile.get("name", "Aliento")))
+			else:
+				result_parts.append("Berserk fallido · aliento parcial (+%d HP)" % healed)
 		else:
-			result_parts.append("Berserk fallido · daño reducido")
-		if not defeated_names.is_empty():
-			result_parts.append("Derrotados: " + ", ".join(defeated_names))
-		result_parts.append_array(level_messages)
+			var base_damage := Game.attack_damage(chosen_diff, chosen_attack_id)
+			base_damage = maxi(1, int(roundf(float(base_damage) * multiplier)))
+			var weakened := player_weaken_turns > 0 and player_weaken_pct > 0
+			if weakened:
+				base_damage = maxi(1, int(roundf(float(base_damage) * (1.0 - float(player_weaken_pct) / 100.0))))
+			for index in attack_target_indices:
+				if index < 0 or index >= enemies.size() or enemy_hps[index] <= 0:
+					continue
+				var target: Dictionary = enemies[index]
+				var fragile_bonus := enemy_fragile_bonus[index] if index < enemy_fragile_bonus.size() else 0
+				var dealt := Combat.damage_for_attack(base_damage, chosen_attack_id, target) + fragile_bonus
+				var guard := enemy_guards[index] if index < enemy_guards.size() else 0
+				if guard > 0:
+					var blocked := mini(guard, dealt)
+					enemy_guards[index] = guard - blocked
+					dealt -= blocked
+					guard_absorbed += blocked
+				var before_hp := enemy_hps[index]
+				enemy_hps[index] = maxi(0, before_hp - dealt)
+				total_player_damage += dealt
+				var target_name := String(target.get("name", "Enemigo"))
+				var actor_portrait: FantasyPortrait = enemy_actors[index].portrait if index < enemy_actors.size() else null
+				var hit_effect := "critical" if used_berserk and correct else ("arcane" if damage_type == "magic" else "slash")
+				if is_instance_valid(actor_portrait):
+					actor_portrait.play_effect(hit_effect)
+				if vfx != null:
+					var target_center := _portrait_center(actor_portrait)
+					var player_center := _portrait_center(_active_player_portrait())
+					vfx.burst(target_center, hit_effect, 1.12 if used_berserk else 1.0, (target_center - player_center).normalized())
+					if dealt > 0:
+						vfx.pop_number(target_center, "-%d" % dealt, UIKit.GOLD, 30 if used_berserk else 26)
+					elif guard > 0:
+						vfx.pop_number(target_center, "0", UIKit.STEEL, 22)
+				if enemy_hps[index] <= 0:
+					enemy_fragile_bonus[index] = 0
+					enemy_fragile_turns[index] = 0
+					if index < enemy_death_turns.size() and enemy_death_turns[index] < 0:
+						enemy_death_turns[index] = turn_number
+					defeated_names.append(target_name)
+					Game.run["stats"]["enemies"] = int(Game.run["stats"].get("enemies", 0)) + 1
+					var levels_gained := Game.award_combat_xp(Combat.xp_for(target))
+					if levels_gained > 0:
+						level_messages.append("Subes a nivel %d" % Game.player_level())
+					if is_instance_valid(actor_portrait):
+						actor_portrait.play_effect("defeat")
+					if vfx != null:
+						vfx.burst(_portrait_center(actor_portrait), "defeat", 1.2)
+					Audio.play_sfx("enemy_death")
+				else:
+					var fragile_value := int(attack_profile.get("fragile", 0))
+					if fragile_value > 0:
+						var fragile_turns := maxi(1, int(attack_profile.get("fragile_turns", 1)))
+						enemy_fragile_bonus[index] = maxi(enemy_fragile_bonus[index], fragile_value)
+						enemy_fragile_turns[index] = maxi(enemy_fragile_turns[index], fragile_turns)
+						fragile_targets.append(target_name)
+					Audio.play_sfx("enemy_hit")
+			_refresh_battlefield()
+			Audio.play_sfx("correct" if correct else "incorrect")
+			Audio.play_sfx("arcane" if damage_type == "magic" else "attack")
+			if correct:
+				result_parts.append("Acierto · %s" % String(attack_profile.get("name", "Ataque")))
+			else:
+				result_parts.append("Berserk fallido · daño reducido")
+			if weakened:
+				result_parts.append("Maldición: −%d%% de daño" % player_weaken_pct)
+			if guard_absorbed > 0:
+				result_parts.append("Guardia enemiga absorbe %d" % guard_absorbed)
+			if not fragile_targets.is_empty():
+				result_parts.append("Frágil aplicado a %s: +%d de daño recibido durante %d turnos" % [
+					", ".join(fragile_targets),
+					int(attack_profile.get("fragile", 0)),
+					maxi(1, int(attack_profile.get("fragile_turns", 1))),
+				])
+			if not defeated_names.is_empty():
+				result_parts.append("Derrotados: " + ", ".join(defeated_names))
+			result_parts.append_array(level_messages)
 	else:
 		Audio.play_sfx("incorrect")
 		if is_instance_valid(player_portrait):
 			player_portrait.play_effect("incorrect")
 		if is_instance_valid(focus_player_portrait):
 			focus_player_portrait.play_effect("incorrect")
-		result_parts.append("Fallo · el ataque no llega a ningún enemigo")
+		if is_defense:
+			result_parts.append("Fallo · el sello se disipa antes de formarse")
+		elif is_heal:
+			result_parts.append("Fallo · el aliento se disipa sin curar")
+		else:
+			result_parts.append("Fallo · el ataque no llega a ningún enemigo")
 
 	var self_dmg := 0
 	if not correct:
@@ -1138,24 +1585,54 @@ func _resolve(correct: bool) -> void:
 
 	var enemy_attack_result := _apply_enemy_attacks()
 	var enemy_damage_total := int(enemy_attack_result.get("total", 0))
+	var absorbed_total := int(enemy_attack_result.get("absorbed", 0))
 	var enemy_summary := str(enemy_attack_result.get("summary", ""))
 	var reaction_parts: Array[String] = []
 	if self_dmg > 0:
 		reaction_parts.append("−%d HP de retroceso arcano" % self_dmg)
+	if absorbed_total > 0:
+		reaction_parts.append("Escudo absorbe %d" % absorbed_total)
 	if enemy_summary != "":
 		reaction_parts.append(enemy_summary)
 	elif enemy_damage_total > 0:
 		reaction_parts.append("Contraataque −%d HP" % enemy_damage_total)
+	if player_shield_grace_eligible and player_shield > 0:
+		player_shield_expires_turn = turn_number + 3
+		reaction_parts.append("Escudo restante: %d · hasta 2 turnos más" % player_shield)
+	player_shield_grace_eligible = false
 	if not reaction_parts.is_empty():
 		result_parts.append(" · ".join(reaction_parts))
+	_tick_player_statuses(weaken_at_start, vulnerable_at_start)
+	_tick_enemy_statuses(enemy_fragile_before)
 	Game.charge_berserk_turn()
 	berserk_attack_active = false
 	berserk_armed = false
-	if attack_landed:
+	if attack_landed and not is_support:
 		result_parts.insert(1, "Daño total: −%d" % total_player_damage)
 	last_message = "\n".join(result_parts)
 	_render_feedback(correct, last_message)
 	_refresh_hud()
+
+
+func _tick_player_statuses(weaken_before: int, vulnerable_before: int) -> void:
+	if weaken_before > 0:
+		player_weaken_turns = maxi(0, player_weaken_turns - 1)
+		if player_weaken_turns == 0:
+			player_weaken_pct = 0
+	if vulnerable_before > 0:
+		player_vulnerable_turns = maxi(0, player_vulnerable_turns - 1)
+		if player_vulnerable_turns == 0:
+			player_vulnerable_bonus = 0
+
+
+func _tick_enemy_statuses(fragile_before: Array) -> void:
+	for index in range(enemy_fragile_turns.size()):
+		var was_active := index < fragile_before.size() and int(fragile_before[index]) > 0
+		if not was_active:
+			continue
+		enemy_fragile_turns[index] = maxi(0, enemy_fragile_turns[index] - 1)
+		if enemy_fragile_turns[index] == 0:
+			enemy_fragile_bonus[index] = 0
 
 
 func _render_feedback(correct: bool, result: String) -> void:
@@ -1188,7 +1665,7 @@ func _render_feedback(correct: bool, result: String) -> void:
 	var head_copy := UIKit.vbox(1)
 	head_copy.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	head.add_child(head_copy)
-	head_copy.add_child(UIKit.eyebrow("Resultado del ataque", color))
+	head_copy.add_child(UIKit.eyebrow("Resultado de la técnica", color))
 	var result_label := UIKit.label(result, 14, color, 600)
 	result_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	result_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -1247,32 +1724,165 @@ func _play_enemy_attack(index: int) -> void:
 		vfx.burst(enemy_center, "slash", 0.85, attack_aim)
 
 
+func _play_enemy_support(index: int, effect: String) -> void:
+	if index < 0 or index >= enemy_actors.size():
+		return
+	var actor_portrait: FantasyPortrait = enemy_actors[index].portrait
+	if is_instance_valid(actor_portrait):
+		actor_portrait.play_effect(effect)
+	if vfx != null:
+		vfx.burst(_portrait_center(actor_portrait), effect, 0.8)
+
+
+func _summon_enemy(ability: Dictionary) -> String:
+	if enemies.size() >= Combat.MAX_ENEMIES_PER_ENCOUNTER:
+		return ""
+	var template := Combat.enemy_by_id(String(ability.get("enemy", "")))
+	if template.is_empty():
+		return ""
+	var data := template.duplicate(true)
+	var summon_name := String(ability.get("summon_name", ""))
+	if summon_name != "":
+		data["name"] = summon_name
+	var maximum := maxi(1, int(data.get("hp", 1)))
+	enemies.append(data)
+	enemy_hps.append(maximum)
+	enemy_max_hps.append(maximum)
+	enemy_intents.append({
+		"name": "Se incorpora",
+		"kind": "idle",
+		"text": "Se incorpora al combate; actuará desde el próximo turno.",
+	})
+	enemy_guards.append(0)
+	enemy_bonus_damage.append(0)
+	enemy_bonus_turns.append(0)
+	enemy_fragile_bonus.append(0)
+	enemy_fragile_turns.append(0)
+	enemy_death_turns.append(-1)
+	enemy_last_ability.append("")
+	enemy_last_kind.append("idle")
+	_rebuild_enemy_actors()
+	return String(data.get("name", "un aliado"))
+
+
 func _apply_enemy_attacks() -> Dictionary:
 	var attackers := _living_enemy_indices()
 	var attacker_count := attackers.size()
 	var total := 0
+	var absorbed := 0
+	var attacked := false
 	var summaries: Array[String] = []
+	var bonus_for_round := enemy_bonus_damage.duplicate()
+	var buff_turns_at_start := enemy_bonus_turns.duplicate()
+	var vulnerable_for_round := player_vulnerable_bonus
 	for index in attackers:
 		if Game.hp() <= 0:
 			break
+		var ability := _enemy_intent_for(index)
+		var kind := String(ability.get("kind", "attack"))
+		var enemy_name := String(enemies[index].get("name", "Enemigo"))
+		if kind == "idle":
+			summaries.append("%s se incorpora al combate" % enemy_name)
+			continue
+		if kind == "summon":
+			var summoned := _summon_enemy(ability)
+			if summoned != "":
+				summaries.append("%s invoca a %s" % [enemy_name, summoned])
+				_play_enemy_support(index, "arcane")
+			else:
+				summaries.append("%s intenta invocar, pero no hay espacio" % enemy_name)
+			continue
+		if kind == "defend":
+			summaries.append("%s se protege" % enemy_name)
+			continue
+		if kind == "heal":
+			var heal_target := _most_wounded_enemy()
+			if heal_target >= 0:
+				var healed := mini(int(ability.get("value", 0)), enemy_max_hps[heal_target] - enemy_hps[heal_target])
+				healed = maxi(0, healed)
+				enemy_hps[heal_target] = enemy_hps[heal_target] + healed
+				summaries.append("%s cura %d HP a %s" % [enemy_name, healed, String(enemies[heal_target].get("name", "un aliado"))])
+				_play_enemy_support(heal_target, "heal")
+			continue
+		if kind == "buff":
+			var buff := int(ability.get("value", 0))
+			enemy_bonus_damage[index] += buff
+			enemy_bonus_turns[index] = maxi(enemy_bonus_turns[index], maxi(1, int(ability.get("turns", 1))))
+			summaries.append("%s se enfurece (+%d daño)" % [enemy_name, buff])
+			_play_enemy_support(index, "correct")
+			continue
+		if kind == "debuff":
+			var debuff_value := int(ability.get("value", 0))
+			var debuff_turns := maxi(1, int(ability.get("turns", 1)))
+			if String(ability.get("effect", "")) == "weaken":
+				player_weaken_pct = maxi(player_weaken_pct, debuff_value)
+				player_weaken_turns = maxi(player_weaken_turns, debuff_turns)
+			summaries.append("%s te maldice (−%d%% daño, %d turnos)" % [enemy_name, debuff_value, debuff_turns])
+			_play_enemy_support(index, "incorrect")
+			continue
+
+		attacked = true
 		_play_enemy_attack(index)
+		var hits := maxi(1, int(ability.get("hits", 1)))
+		var received_here := 0
+		var absorbed_here := 0
+		var bonus := int(bonus_for_round[index]) if index < bonus_for_round.size() else 0
+		for _hit in range(hits):
+			if Game.hp() <= 0:
+				break
+			var damage := Game.enemy_ability_damage(ability, attacker_count, bonus, vulnerable_for_round)
+			var blocked := mini(player_shield, damage)
+			player_shield -= blocked
+			absorbed += blocked
+			absorbed_here += blocked
+			var received := damage - blocked
+			if received > 0:
+				var lost := Game.damage_player(received)
+				total += lost
+				received_here += lost
+		var effect := String(ability.get("effect", ""))
+		var drained := 0
+		if effect == "drain" and received_here > 0:
+			drained = int(roundf(float(received_here) * float(ability.get("value", 0.0))))
+			if drained > 0:
+				enemy_hps[index] = mini(enemy_max_hps[index], enemy_hps[index] + drained)
+		var marked := false
+		if effect == "vulnerable":
+			player_vulnerable_bonus = maxi(player_vulnerable_bonus, int(ability.get("value", 0)))
+			player_vulnerable_turns = maxi(player_vulnerable_turns, maxi(1, int(ability.get("turns", 1))))
+			marked = true
 		if is_instance_valid(player_portrait):
 			player_portrait.play_effect("impact")
 		if is_instance_valid(focus_player_portrait):
 			focus_player_portrait.play_effect("impact")
-		var damage := Game.enemy_damage(enemies[index], attacker_count)
-		var received := Game.damage_player(damage)
-		total += received
-		summaries.append("%s golpea por %d" % [String(enemies[index].get("name", "Enemigo")), received])
-		Audio.play_sfx("player_hit")
+		if received_here > 0:
+			Audio.play_sfx("player_hit")
 		if vfx != null:
 			var player_center := _portrait_center(_active_player_portrait())
-			var attacker_portrait: FantasyPortrait = enemy_actors[index].portrait
+			var attacker_portrait: FantasyPortrait = enemy_actors[index].portrait if index < enemy_actors.size() else null
 			var enemy_center := _portrait_center(attacker_portrait)
 			var hit_aim := (player_center - enemy_center).normalized()
 			vfx.burst(player_center, "impact", 0.9, hit_aim)
-			vfx.pop_number(player_center, "-%d" % received, UIKit.DANGER, 28, Vector2(0, -60))
-	return {"total": total, "summary": ", ".join(summaries)}
+			if received_here > 0:
+				vfx.pop_number(player_center, "-%d" % received_here, UIKit.DANGER, 28, Vector2(0, -60))
+			elif absorbed_here > 0:
+				vfx.pop_number(player_center, "0", UIKit.STEEL, 22, Vector2(0, -60))
+		var summary := "%s golpea por %d" % [enemy_name, received_here]
+		if hits > 1:
+			summary = "%s golpea %d veces por %d" % [enemy_name, hits, received_here]
+		if absorbed_here > 0:
+			summary += " (escudo −%d)" % absorbed_here
+		if drained > 0:
+			summary += ", se cura %d" % drained
+		if marked:
+			summary += ", te marca (+%d de daño)" % int(ability.get("value", 0))
+		summaries.append(summary)
+	for i in range(enemies.size()):
+		if i < buff_turns_at_start.size() and int(buff_turns_at_start[i]) > 0:
+			enemy_bonus_turns[i] = maxi(0, enemy_bonus_turns[i] - 1)
+			if enemy_bonus_turns[i] == 0:
+				enemy_bonus_damage[i] = 0
+	return {"total": total, "absorbed": absorbed, "attacked": attacked, "summary": ", ".join(summaries)}
 
 
 func _apply_enemy_attack() -> int:
@@ -1284,8 +1894,14 @@ func _on_timeout() -> void:
 		return
 	phase = "feedback"
 	_set_focus(true)
+	var weaken_at_start := player_weaken_turns
+	var vulnerable_at_start := player_vulnerable_turns
+	var enemy_fragile_before := enemy_fragile_turns.duplicate()
 	var enemy_attack_result := _apply_enemy_attacks()
 	var dmg := int(enemy_attack_result.get("total", 0))
+	var timeout_summary := String(enemy_attack_result.get("summary", ""))
+	_tick_player_statuses(weaken_at_start, vulnerable_at_start)
+	_tick_enemy_statuses(enemy_fragile_before)
 	Game.charge_berserk_turn()
 	berserk_armed = false
 	_clear_phase()
@@ -1307,7 +1923,7 @@ func _on_timeout() -> void:
 	head.add_child(head_copy)
 	head_copy.add_child(UIKit.eyebrow("El tiempo se agotó", UIKit.DANGER))
 	head_copy.add_child(UIKit.heading("La duda tiene un costo", 25, UIKit.DANGER))
-	cv.add_child(UIKit.label("Los enemigos aprovechan la duda: %s. Recibes %d de daño." % [String(enemy_attack_result.get("summary", "")), dmg], 17, UIKit.TEXT))
+	cv.add_child(UIKit.label("Los enemigos aprovechan la duda: %s. Recibes %d de daño." % [timeout_summary, dmg] if dmg > 0 else "Los enemigos se reagrupan: %s. No recibes daño." % timeout_summary, 17, UIKit.TEXT))
 	cv.add_child(UIKit.label("El reloj limita la elección del ataque; resolver la pregunta no tiene cronómetro.", 13, UIKit.MUTED))
 	var footer := UIKit.hbox(10)
 	footer.alignment = BoxContainer.ALIGNMENT_END
@@ -1380,6 +1996,11 @@ func _victory() -> void:
 		loot_copy.add_child(UIKit.eyebrow("Botín encontrado", UIKit.GOLD))
 		loot_copy.add_child(UIKit.heading(String(it.get("name", loot)), 19, UIKit.TEXT))
 		loot_copy.add_child(UIKit.label(String(it.get("desc", "")), 12, UIKit.STEEL))
+		var lore := String(it.get("lore", ""))
+		if lore != "":
+			var lore_label := UIKit.label("«%s»" % lore, 11, UIKit.MUTED)
+			lore_label.max_lines_visible = 2
+			loot_copy.add_child(lore_label)
 		if Game.inventory_full():
 			cv.add_child(UIKit.label("Inventario lleno (4/4). Elegí qué reemplazar.", 13, UIKit.DANGER))
 			_render_loot_choice(loot, cv)
@@ -1597,6 +2218,11 @@ func _inventory_item_card(item_id: String, index: int) -> Control:
 	var desc := UIKit.label(String(it.get("desc", "")), 10, UIKit.STEEL)
 	desc.max_lines_visible = 2
 	info.add_child(desc)
+	var lore := String(it.get("lore", ""))
+	if lore != "":
+		var lore_label := UIKit.label("«%s»" % lore, 9, UIKit.MUTED)
+		lore_label.max_lines_visible = 1
+		info.add_child(lore_label)
 	var actions := UIKit.hbox(5)
 	cv.add_child(actions)
 	if slot in ["weapon", "armor", "relic"]:

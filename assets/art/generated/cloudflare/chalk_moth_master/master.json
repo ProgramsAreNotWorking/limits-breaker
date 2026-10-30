@@ -1,0 +1,176 @@
+{
+  "schema": "generate2dsprite.master.v1",
+  "tool": {
+    "name": "master_still",
+    "version": "0.4.0"
+  },
+  "created": "2026-10-29T06:20:03.899Z",
+  "name": "chalk_moth",
+  "subject": "the Chalk Moth, full body",
+  "identity_recap": "Chalk Moth, full body (Eerie insect from a ruined sanctuary, narrow segmented charcoal body, six thin jointed legs, two broad pale ash-grey wings with ragged edges and sparse dark veins folded down like a funeral mantle, tiny sunken black eyes with no white shine or mouth, two short antennae)",
+  "facing": "front",
+  "view": "front view",
+  "finish": "hd",
+  "class": "mob",
+  "framing": {
+    "canvas": [
+      1024,
+      1024
+    ],
+    "subject_height_px": 860,
+    "top_margin_px": 80,
+    "lead_px": 0,
+    "preset": "custom",
+    "subject_bbox": [
+      128,
+      80,
+      896,
+      940
+    ],
+    "anchor": [
+      468.0,
+      940.0
+    ],
+    "opaque_area_px": 227298,
+    "width_limited": false
+  },
+  "key": "#FF00FF",
+  "files": {
+    "master": {
+      "path": "master.png",
+      "sha256": "013b7a9865fbacea7679db27005a9c34c1f5b0a966a55e32890ea8b2889ee13e",
+      "bytes": 446210,
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    "cutout": {
+      "path": "master_rgba.png",
+      "sha256": "859871ff72977ba0e95915c84545cd15b4e57e17ceaaf6735b7a7bc33d7b02f3",
+      "bytes": 507888,
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    "source": {
+      "path": "source.png",
+      "sha256": "4e5653b223d5e4833823583c7e5a3e467fc069708b4ccf4086af4629f034268f",
+      "bytes": 987488,
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    "spec": {
+      "path": "spec.json",
+      "sha256": "370028be75883382be1122850ca92021dd956e8957dc634da6afc72c0b5f975a",
+      "bytes": 1079
+    },
+    "prompt": {
+      "path": "prompt.txt",
+      "sha256": "ebc7aad805a9b4707b001594ab8d4b70006c4408a00ccdd1b89f9b1e8547d4c2",
+      "bytes": 2301
+    }
+  },
+  "references": [],
+  "transform": {
+    "mapping": "master = scale * source + offset (continuous pixel coordinates: pixel i spans [i, i + 1))",
+    "source_size": [
+      1024,
+      1024
+    ],
+    "source_subject_bbox": [
+      168,
+      92,
+      860,
+      868
+    ],
+    "crop_box": [
+      162,
+      86,
+      866,
+      874
+    ],
+    "crop_margin_px": 6,
+    "scale": 1.1082474226804124,
+    "offset": [
+      -57.63917525773195,
+      -21.95876288659794
+    ],
+    "canvas": [
+      1024,
+      1024
+    ],
+    "resampler": "lanczos",
+    "premultiplied": true,
+    "alpha_floor_px": 2415,
+    "subject_parts": 1,
+    "ignored_parts": 1,
+    "ignored_px": 6,
+    "source_touches": [],
+    "key_rgb": [
+      255,
+      0,
+      255
+    ]
+  },
+  "route": "cloudflare-mcp-workers-ai-flux-2-klein-4b",
+  "provenance": {
+    "command": "external",
+    "run": null,
+    "take": null,
+    "source_name": "chalk_moth_cutout.png",
+    "source_sha256": "4e5653b223d5e4833823583c7e5a3e467fc069708b4ccf4086af4629f034268f",
+    "media": null,
+    "media_cli_source": null,
+    "edit": null
+  },
+  "matte": {
+    "requested": "soft",
+    "key_estimate": {
+      "key": [
+        255.0,
+        0.0,
+        255.0
+      ],
+      "source": "native_alpha",
+      "valid": false,
+      "ring_share": 0.0,
+      "coverage": 0.0,
+      "distance_from_declared": 0.0
+    },
+    "quality": "native_alpha",
+    "qa": {
+      "key": [
+        255.0,
+        0.0,
+        255.0
+      ],
+      "opaque_key_px": 0,
+      "outer_ring_spill_fraction": 0.0,
+      "semitransparent_fraction": 0.0,
+      "enclosed_key_pockets": 0,
+      "key_hued_px": 0,
+      "visible_px": 185069,
+      "outer_ring_px": 4310,
+      "thresholds": {
+        "key_tolerance": 48.0,
+        "spill_threshold": 20.0,
+        "min_pocket_area": 16,
+        "opaque_alpha": 128,
+        "spill_hue_balance": 0.5
+      },
+      "method": "forge_matte.matte_qa v1: straight-colour key distance and dominance on the keyed image; two-channel keys count spill only where the key channels are balanced"
+    },
+    "key_choice": {
+      "status": "ok",
+      "overlap_share": 0.0,
+      "rule": "reject a key when more than 0.5% of subject pixels have key dominance >= 40; first acceptable candidate wins"
+    }
+  },
+  "warnings": [
+    "the subject is upscaled x1.11 (776 px source height): detail will be soft; ask the route for a larger figure"
+  ]
+}

@@ -28,7 +28,6 @@ const DIFF_COLORS := [Color("#6eae7b"), Color("#6f9ec8"), Color("#d0a15f"), Colo
 const PortraitPainter := preload("res://src/ui/fantasy_portrait.gd")
 const ItemIconPainter := preload("res://src/ui/equipment_icon.gd")
 const FramePanel := preload("res://src/ui/ui_frame.gd")
-const ToonArt := preload("res://src/ui/toon_art.gd")
 
 const DISPLAY_FONT_PATH := "res://assets/fonts/Cinzel.ttf"
 const BODY_FONT_PATH := "res://assets/fonts/Inter.ttf"
@@ -399,7 +398,6 @@ static func add_transparent_art(parent: Control, path: String, minimum_size: Vec
 	image.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	image.texture = load(path) as Texture2D
 	image.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	ToonArt.apply(image, 10.0, 0.20, 4.0, 1.05)
 	parent.add_child(image)
 	return image
 

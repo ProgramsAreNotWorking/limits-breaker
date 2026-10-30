@@ -7,7 +7,7 @@ Godot 4.7.2, GDScript y una escena principal 2D a 1280×720 con escalado `canvas
 ## Capas
 
 - `src/core/math_engine.gd`: problemas, respuestas, pasos, tablas, gráficas y validación matemática, independiente de la presentación.
-- `src/core/combat.gd`: perfiles de cuatro ataques, mitigación física/mágica, grupos de hasta cuatro enemigos, progresión por nivel, mundos, equipo, mejoras, botín y bandas aleatorias del reloj de selección.
+- `src/core/combat.gd`: perfiles de seis técnicas, mitigación física/mágica, grupos de hasta cuatro enemigos, progresión por nivel, mundos, equipo, mejoras, botín y bandas aleatorias del reloj de selección.
 - `src/core/game.gd`: estado de run, nivel y XP temporales, carga Berserk, guardado, ajustes de audio/accesibilidad y registro persistente de maestría. Las claves antiguas como `select_time` se ignoran al cargar.
 - `src/main.gd` y `src/ui/`: router y pantallas de menú, combate, fragua, ángel, muerte, victoria, maestría y ajustes.
 - `src/audio/`: síntesis procedural y `Audio` como administrador central.
@@ -17,7 +17,7 @@ Godot 4.7.2, GDScript y una escena principal 2D a 1280×720 con escalado `canvas
 
 ## Interfaz de respuestas
 
-`src/ui/combat_screen.gd` concentra la selección de objetivo y técnica, la generación aleatoria de dificultad, el `LineEdit` de respuesta y el envío con `Enter`. `src/ui/enemy_battle_actor.gd` representa cada enemigo seleccionable y dibuja la barra de vida pequeña sobre el retrato de los no jefes. Los ataques de área usan el objetivo seleccionado como ancla y respetan el máximo de cuatro enemigos por encuentro. Solo se usa el teclado físico; no existe teclado matemático en pantalla. El campo acepta dígitos, signo, coma o punto decimal, fracciones y texto de límites; la validación final vive en `MathEngine`. La fragua y el ángel tienen sus propios campos y comparten el mismo estilo de validación local.
+`src/ui/combat_screen.gd` concentra la selección de objetivo y técnica, la generación aleatoria de dificultad, el `LineEdit` de respuesta y el envío con `Enter`. El panel de resolución muestra una tira compacta de acciones enemigas para que las intenciones sigan visibles cuando el panel crece, y `enemy_death_turns` con `_purge_expired_enemy_corpses()` retira a los derrotados después de dos turnos completos. `src/ui/enemy_battle_actor.gd` representa cada enemigo seleccionable y dibuja la barra de vida pequeña sobre el retrato de los no jefes. Los ataques de área usan el objetivo seleccionado como ancla y respetan el máximo de cuatro enemigos por encuentro. Solo se usa el teclado físico; no existe teclado matemático en pantalla. El campo acepta dígitos, signo, coma o punto decimal, fracciones y texto de límites; la validación final vive en `MathEngine`. La fragua y el ángel tienen sus propios campos y comparten el mismo estilo de validación local.
 
 El reloj de selección se sortea en `Combat.selection_time_for()` al inicio de cada turno, usando `SELECT_TIME_BY_TIER`; las bandas no se solapan y descienden con el tier del enemigo. `CombatScreen` guarda el límite sorteado en `time_limit` para dibujar la barra y descuenta `time_left` solo durante la fase de selección. Resolver la operación no consume ese reloj. La pantalla de ajustes ya no expone un control de tiempo.
 
@@ -27,7 +27,7 @@ El reloj de selección se sortea en `Combat.selection_time_for()` al inicio de c
 
 ## Recursos
 
-Las pantallas solicitan recursos a `AssetManifest`. `UIKit.add_optional_image` carga placas raster; `UIKit.add_portrait` carga maestros PNG con alfa y `UIKit.add_item_icon` carga los iconos de equipo. `UIKit.panel` puede usar el marco PNG con nueve parches; el HUD de combate usa paneles planos de carbón y acero para conservar contraste y evitar halos al escalar. Los textos y las ecuaciones siguen siendo nodos editables, no están horneados en los fondos. `src/ui/toon_art.gd` aplica el tratamiento ilustrado de `src/ui/cartoon_art.gdshader` solo a fondos, retratos, iconos y arte transparente; la UI y los textos quedan fuera. La procedencia y los límites del arte están en `docs/ART_ASSETS.md`; la dirección cartoon y sus prompts están en `docs/ART_STYLE_CARTOON.md`.
+Las pantallas solicitan recursos a `AssetManifest`. `UIKit.add_optional_image` carga placas raster; `UIKit.add_portrait` carga maestros PNG con alfa y `UIKit.add_item_icon` carga los iconos de equipo. `UIKit.panel` puede usar el marco PNG con nueve parches; el HUD de combate usa paneles planos de carbón y acero para conservar contraste y evitar halos al escalar. Los textos y las ecuaciones siguen siendo nodos editables, no están horneados en los fondos. Los PNG se dibujan sin filtros de posterización ni contornos añadidos. La procedencia de los recursos está en `docs/ART_ASSETS.md`; la dirección visual está en `docs/ART_DIRECTION.md`.
 
 ## Pruebas
 

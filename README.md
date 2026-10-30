@@ -6,9 +6,10 @@ Roguelike RPG de fantasía oscura en el que resolver límites es el sistema de c
 
 ## Qué incluye
 
-- Combate por turnos con cuatro ataques físicos y mágicos, selección de objetivo y grupos de hasta cuatro enemigos.
+- Combate por turnos con cuatro técnicas ofensivas, una defensa y una curación, selección de objetivo y grupos de hasta cuatro enemigos. Las intenciones enemigas siguen visibles en el panel de resolución y los derrotados se retiran después de dos turnos completos.
+- Enemigos con ataque básico, defensa y habilidades especiales; los fuertes y élites añaden una tercera y el miniboss y el jefe llegan a cuatro.
 - Ejercicios de límites directos y laterales, gráficas, tablas y factorización. La dificultad varía según la progresión de la run y la maestría; resolver no tiene cronómetro.
-- Cuatro mundos, quince enemigos, veintidós objetos, equipo, inventario, fragua, eventos especiales, muerte permanente y un jefe final.
+- Cuatro mundos, dieciocho enemigos, veintiséis objetos, equipo, inventario, fragua, eventos especiales, muerte permanente y un jefe final.
 - Maestría matemática persistente, selección adaptativa de temas, guardado local y ajustes de audio y accesibilidad.
 - Música y efectos locales, partículas y efectos de combate. El movimiento se compone con tweens y animación de interfaz; los recursos gráficos son imágenes estáticas PNG.
 - Pantalla de resultado de combate compacta y opciones gráficas para elegir resolución de ventana y modo ventana o pantalla completa.
@@ -23,7 +24,7 @@ godot --path .
 
 ## Controles
 
-- Usa el ratón o el teclado para navegar por los menús y elegir ataques.
+- Usa el ratón o el teclado para navegar por los menús y elegir técnicas.
 - Escribe las respuestas con un teclado físico; no hay teclado en pantalla. Se aceptan dígitos, signo, coma o punto decimal, fracciones y texto de límites. Pulsa `Enter` para responder.
 - El reloj limita el tiempo para elegir el ataque, no para resolver el ejercicio. El tiempo se determina por el nivel del enemigo.
 
@@ -34,9 +35,12 @@ En **Opciones** puedes elegir el tamaño de la ventana y cambiar entre modo vent
 ## Documentación
 
 - [Diseño y reglas del juego](docs/GAME_DESIGN.md)
+- [Personajes](docs/PERSONAJES.md)
+- [Enemigos](docs/ENEMIGOS.md)
+- [Objetos](docs/OBJETOS.md)
 - [Arquitectura técnica](docs/TECHNICAL_ARCHITECTURE.md)
 - [Inventario y procedencia de recursos](docs/ART_ASSETS.md)
-- [Dirección visual](docs/ART_STYLE_CARTOON.md)
+- [Dirección visual](docs/ART_DIRECTION.md)
 - [Audio](docs/AUDIO.md) y [estilos musicales](docs/AUDIO_STYLES.md)
 
 La carpeta `assets/` contiene los recursos usados por el juego. Las licencias de las fuentes tipográficas y del complemento Godot MCP incluido están junto a esos componentes.

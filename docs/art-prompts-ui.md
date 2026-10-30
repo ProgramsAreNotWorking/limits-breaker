@@ -2,7 +2,7 @@
 
 Actualizado: 2026-10-27. Estos prompts están preparados para generar **imágenes estáticas** más adelante. No se generó nada en esta pasada y el juego sigue funcionando con los PNG actuales.
 
-Para la nueva dirección de fantasía oscura ilustrada, la referencia principal es [ART_STYLE_CARTOON.md](ART_STYLE_CARTOON.md). Los prompts de esta página siguen siendo útiles para composición, zonas seguras y encuadre; el bloque de estilo debe adaptarse a la dirección cartoon cuando se generen imágenes nuevas.
+La dirección visual vigente es [ART_DIRECTION.md](ART_DIRECTION.md). Los prompts de esta página fijan composición, zonas seguras y encuadre; al generar imágenes nuevas, usa su style lock pictórico.
 
 ## Reglas de la familia visual
 

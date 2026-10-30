@@ -1,0 +1,8 @@
+PAINTERLY DARK FANTASY — LIMITS BREAKER STYLE LOCK
+Premium painterly 2D dark-fantasy inventory illustration matching the existing Limits Breaker equipment icons. One compact dimensional object with a crisp but fine edge, layered material shading and restrained directional highlights. Matte iron, leather, cloth, glass and stone; charcoal shadows, muted steel, burgundy, contained violet and warm amber. Clear at 32 px with generous transparent padding; natural material rendering, not flat or glossy.
+
+Create one isolated consumable icon: a squat, stoppered smoky-glass tonic vial with one broad shoulder and a short neck. It is half-filled with opaque chalk-white liquid; a few pale flecks rest at the bottom. The liquid is still, with no glow. A single thin bronze wire circles the neck. Center the whole vial upright in a square canvas, occupy about 60 percent of the image and leave generous empty margin. No label or writing.
+
+Use an edge-to-edge flat solid RGB #FF00FF matte background, with no ground, gradient, cast shadow, frame or scenery. Do not use magenta on the object; the matte will be removed to transparency during asset preparation. If native alpha is supported, preserve true transparency instead.
+
+NEGATIVE: multiple vials, pouring liquid, hand, person, skull, text, letters, numbers, equations, runes, label, UI, card, frame, border, logo, watermark, signature, floor, shadow, scenery, bright potion glow, neon, rainbow, photorealism, 3D render, blur, magenta object details, colored or textured background.

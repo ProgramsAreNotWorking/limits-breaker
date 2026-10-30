@@ -1,0 +1,22 @@
+{
+  "schema": "generate2dsprite.master_spec.v1",
+  "name": "slag_hound",
+  "subject": "the Slag Hound, full body",
+  "identity": "A single low, broad, four-legged hound made of dark clinker and vitrified slag, blunt cracked muzzle, small amber eyes, thin ember seams across the shoulder plates, and a pointed slag tail.",
+  "pose": "Standing on all four paws in a braced three-quarter stance.",
+  "recap": "Slag Hound, full body (A single low, broad, four-legged hound made of dark clinker and vitrified slag, blunt cracked muzzle, small amber eyes, thin ember seams across the shoulder plates, and a pointed slag tail)",
+  "facing": "right",
+  "facing_parts": null,
+  "view": null,
+  "class": "mob",
+  "finish": "hd",
+  "key": "#FF00FF",
+  "genre": null,
+  "pronoun": "they",
+  "identity_ref": null,
+  "style_ref": null,
+  "allowed_text": null,
+  "extra_bans": [],
+  "opaque_parts": null,
+  "extra": null
+}

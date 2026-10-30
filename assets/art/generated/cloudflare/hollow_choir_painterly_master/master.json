@@ -1,0 +1,174 @@
+{
+  "schema": "generate2dsprite.master.v1",
+  "tool": {
+    "name": "master_still",
+    "version": "0.4.0"
+  },
+  "created": "2026-10-29T06:55:36.799Z",
+  "name": "hollow_choir",
+  "subject": "a singular hollow wraith with three collar masks, full body",
+  "identity_recap": "singular hollow wraith with three collar masks, full body (Tall, narrow wraith in charcoal and burgundy vestments; one deep hood cavity glows muted violet; exactly three small ivory masks with empty eyes form one collar; two long dark hands and one continuous robe)",
+  "facing": "front",
+  "view": "front view",
+  "finish": "hd",
+  "class": "mob",
+  "framing": {
+    "canvas": [
+      1024,
+      1024
+    ],
+    "subject_height_px": 471,
+    "top_margin_px": 406,
+    "lead_px": 100,
+    "preset": "mob",
+    "subject_bbox": [
+      397,
+      406,
+      627,
+      877
+    ],
+    "anchor": [
+      531.5,
+      877.0
+    ],
+    "opaque_area_px": 59186,
+    "width_limited": false
+  },
+  "key": "#FF00FF",
+  "files": {
+    "master": {
+      "path": "master.png",
+      "sha256": "6977cbdee7c6b4679e5957e646c524d23e5073d9d5099ebaac9c966992dee09a",
+      "bytes": 119197,
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    "cutout": {
+      "path": "master_rgba.png",
+      "sha256": "6ab3345dc6093096eed46ca11ba33d7bd9e2d2f5c49eb3fcba84e7d0d4fce3d7",
+      "bytes": 138051,
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    "source": {
+      "path": "source.png",
+      "sha256": "81e2a96da4d72dc0b6da670f120e49fdb04214be51e151071ded75a8c2b69c43",
+      "bytes": 430944,
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    "spec": {
+      "path": "spec.json",
+      "sha256": "cea50b357208e5baad7e1d0e447b9ca3cf718373632bac5f94d527eaa772dc05",
+      "bytes": 1016
+    },
+    "prompt": {
+      "path": "prompt.txt",
+      "sha256": "8562ddea8a355edc16b415509dd200c30e3761673f6d786b22fab5ebd91a745b",
+      "bytes": 2312
+    }
+  },
+  "references": [],
+  "transform": {
+    "mapping": "master = scale * source + offset (continuous pixel coordinates: pixel i spans [i, i + 1))",
+    "source_size": [
+      1024,
+      1024
+    ],
+    "source_subject_bbox": [
+      345,
+      46,
+      807,
+      997
+    ],
+    "crop_box": [
+      339,
+      40,
+      813,
+      1003
+    ],
+    "crop_margin_px": 6,
+    "scale": 0.4952681388012618,
+    "offset": [
+      226.7255520504732,
+      383.217665615142
+    ],
+    "canvas": [
+      1024,
+      1024
+    ],
+    "resampler": "box",
+    "premultiplied": true,
+    "alpha_floor_px": 0,
+    "subject_parts": 1,
+    "ignored_parts": 11,
+    "ignored_px": 16,
+    "source_touches": [],
+    "key_rgb": [
+      255,
+      0,
+      255
+    ]
+  },
+  "route": "cloudflare-mcp-workers-ai-flux-2-klein-4b",
+  "provenance": {
+    "command": "external",
+    "run": null,
+    "take": null,
+    "source_name": "hollow_choir_painterly_cutout.png",
+    "source_sha256": "81e2a96da4d72dc0b6da670f120e49fdb04214be51e151071ded75a8c2b69c43",
+    "media": null,
+    "media_cli_source": null,
+    "edit": null
+  },
+  "matte": {
+    "requested": "soft",
+    "key_estimate": {
+      "key": [
+        255.0,
+        0.0,
+        255.0
+      ],
+      "source": "native_alpha",
+      "valid": false,
+      "ring_share": 0.0,
+      "coverage": 0.0,
+      "distance_from_declared": 0.0
+    },
+    "quality": "native_alpha",
+    "qa": {
+      "key": [
+        255.0,
+        0.0,
+        255.0
+      ],
+      "opaque_key_px": 0,
+      "outer_ring_spill_fraction": 0.17674418604651163,
+      "semitransparent_fraction": 0.0033285663951584487,
+      "enclosed_key_pockets": 0,
+      "key_hued_px": 0,
+      "visible_px": 241245,
+      "outer_ring_px": 2795,
+      "thresholds": {
+        "key_tolerance": 48.0,
+        "spill_threshold": 20.0,
+        "min_pocket_area": 16,
+        "opaque_alpha": 128,
+        "spill_hue_balance": 0.5
+      },
+      "method": "forge_matte.matte_qa v1: straight-colour key distance and dominance on the keyed image; two-channel keys count spill only where the key channels are balanced"
+    },
+    "key_choice": {
+      "status": "ok",
+      "overlap_share": 0.004875,
+      "rule": "reject a key when more than 0.5% of subject pixels have key dominance >= 40; first acceptable candidate wins"
+    }
+  },
+  "warnings": []
+}
